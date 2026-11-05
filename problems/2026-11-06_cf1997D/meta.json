@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-06",
+  "contestId": 1997,
+  "index": "D",
+  "name": "Maximize the Root",
+  "rating": 1500,
+  "tags": [
+    "binary search",
+    "dfs and similar",
+    "dp",
+    "greedy",
+    "trees"
+  ],
+  "url": "https://codeforces.com/problemset/problem/1997/D"
+}

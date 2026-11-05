@@ -1,0 +1,27 @@
+[
+  {
+    "word": "subtree",
+    "zipf": 1.95,
+    "count": 1
+  },
+  {
+    "word": "vertices",
+    "zipf": 2.96,
+    "count": 8
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 5
+  },
+  {
+    "word": "vertex",
+    "zipf": 3.21,
+    "count": 5
+  },
+  {
+    "word": "constraint",
+    "zipf": 3.28,
+    "count": 1
+  }
+]
