@@ -7,21 +7,29 @@
   {
     "word": "vertices",
     "zipf": 2.96,
-    "count": 8
+    "count": 8,
+    "phon": "'vә:tisi:z",
+    "trans": "n. 至高点；天顶；头顶（vertex的复数）"
   },
   {
     "word": "integer",
     "zipf": 3.02,
-    "count": 5
+    "count": 5,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
   },
   {
     "word": "vertex",
     "zipf": 3.21,
-    "count": 5
+    "count": 5,
+    "phon": "'vә:teks",
+    "trans": "n. 顶点, 最高点, 头顶, 天顶"
   },
   {
     "word": "constraint",
     "zipf": 3.28,
-    "count": 1
+    "count": 1,
+    "phon": "kәn'streint",
+    "trans": "n. 强制, 约束"
   }
 ]

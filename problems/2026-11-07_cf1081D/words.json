@@ -2,36 +2,50 @@
   {
     "word": "vertexes",
     "zipf": 1.17,
-    "count": 1
+    "count": 1,
+    "phon": "'vɜ:teksɪz",
+    "trans": "n. 最高点( vertex的名词复数 ); 顶点; <数>（三角形、圆锥体等与底相对的）顶; （三角形、多边形等的）角的顶点"
   },
   {
     "word": "undirected",
     "zipf": 2.12,
-    "count": 2
+    "count": 2,
+    "phon": ".ʌndi'rektid",
+    "trans": "a. 未受指导的, 无姓名和地址的"
   },
   {
     "word": "denoting",
     "zipf": 2.9,
-    "count": 1
+    "count": 1,
+    "phon": "diˈnəutɪŋ",
+    "trans": "v. 为…的符号( denote的现在分词 ); 为…的名称; 指示; 指出"
   },
   {
     "word": "vertices",
     "zipf": 2.96,
-    "count": 4
+    "count": 4,
+    "phon": "'vә:tisi:z",
+    "trans": "n. 至高点；天顶；头顶（vertex的复数）"
   },
   {
     "word": "integer",
     "zipf": 3.02,
-    "count": 5
+    "count": 5,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
   },
   {
     "word": "farthest",
     "zipf": 3.06,
-    "count": 3
+    "count": 3,
+    "phon": "'fɑ:ðist",
+    "trans": "a. 最远的, 最久的"
   },
   {
     "word": "vertex",
     "zipf": 3.21,
-    "count": 4
+    "count": 4,
+    "phon": "'vә:teks",
+    "trans": "n. 顶点, 最高点, 头顶, 天顶"
   }
 ]

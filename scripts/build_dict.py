@@ -1,23 +1,18 @@
 r"""build_dict.py — 一次性构建 ECDICT 离线释义子集（data/ecdict-subset.json）
 
-数据源 ECDICT（github.com/skywind3000/ECDICT，开源免费）：77 万词条，含中文释义、
-音标、考试标签（CET4/6/考研/TOEFL/IELTS/GRE…）、exchange 词形变换。
+数据源：ECDICT 1.0.28 的 stardict 包（简明英汉字典增强版，340 万词条，
+sametypesequence=m 纯文本格式，词条首行 `*[音标]`，其后为中文释义行）。
 
-收录规则：
-- 0 < Zipf < 4.6 的词（覆盖生词阈值筛选 + 保底补充两个场景；长尾罕词正是要展示的）；
-- 或带考试标签 / 柯林斯星级 / BNC·COCA 词频的词（精选常用词，供保底释义）。
-- 每词只存第一条例子行中文释义（≤120 字符），控制体积。
-- exchange 的 0:原形 存进词条（vertices→vertex），释义查询时回退到原形。
-
-产物 data/ecdict-subset.json 体积约 20-40MB，**不入库**（见 .gitignore）：
+收录规则：只保留 Zipf ∈ (0, 4.6) 的单词——低段正是我们要展示的生词长尾，
+上限覆盖保底补充的回填词。产物约 20-30MB，不入库（见 .gitignore）：
 本人和队友各构建一次即可，Actions 构建机在 CI 里现算。
 """
 from __future__ import annotations
 
 import argparse
-import csv
-import io
 import json
+import struct
+import sys
 import tempfile
 import urllib.request
 import zipfile
@@ -27,11 +22,12 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "ecdict-subset.json"
 REL_URL = "https://github.com/skywind3000/ECDICT/releases/download/1.0.28/ecdict-stardict-28.zip"
 MAX_ZIPF = 4.6
+DIR = "stardict-ecdict-2.4.2"
 
 
 def main() -> None:
-    if hasattr(__import__("sys").stdout, "reconfigure"):
-        __import__("sys").stdout.reconfigure(encoding="utf-8", errors="replace")
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
     ap = argparse.ArgumentParser(description="构建 ECDICT 离线释义子集")
     ap.add_argument("--zip", help="已下载好的 ecdict-stardict zip 路径（默认自动下载）")
@@ -40,53 +36,77 @@ def main() -> None:
 
     zp = Path(args.zip) if args.zip else Path(tempfile.gettempdir()) / "ecdict-stardict-28.zip"
     if not zp.exists():
-        print(f"[i] 下载 {REL_URL}（约 70MB）…")
+        print(f"[i] 下载 {REL_URL}（约 70MB，国内较慢）…")
         urllib.request.urlretrieve(REL_URL, zp)
 
     zf = zipfile.ZipFile(zp)
-    csv_name = next(n for n in zf.namelist() if n.lower().endswith(".csv"))
-    print(f"[i] 读取 {csv_name} …")
 
-    w_map: dict = {}
+    # ---- 第一遍：流式扫 idx（word\0 + offset(4B BE) + size(4B BE)），按词频过滤 ----
+    idx = zf.open(f"{DIR}/{DIR}.idx")
+    kept = []  # (word_lower, off, size)
     total = 0
-    with zf.open(csv_name) as raw:
-        reader = csv.DictReader(io.TextIOWrapper(raw, encoding="utf-8-sig", errors="replace"))
-        for row in reader:
-            total += 1
-            w = (row.get("word") or "").strip().lower()
-            if not w or not w.isascii() or not w.isalpha():
-                continue  # 跳过多词短语、带符号的词条
-            tag = (row.get("tag") or "").strip()
-            collins = (row.get("collins") or "").strip()
-            frq = (row.get("frq") or "").strip()
-            bnc = (row.get("bnc") or "").strip()
-            z = zipf_frequency(w, "en")
-            if z >= MAX_ZIPF and not (tag or collins or frq or bnc):
+    buf = b""
+    print("[i] 扫描 idx（340 万词条）…")
+    while True:
+        chunk = idx.read(1 << 20)
+        if not chunk:
+            break
+        buf += chunk
+        pos = 0
+        while True:
+            z = buf.find(b"\x00", pos)
+            if z < 0 or z + 9 > len(buf):
+                break
+            w = None
+            try:
+                w = buf[pos:z].decode("utf-8")
+                off, size = struct.unpack_from(">II", buf, z + 1)
+            except Exception:
+                pass
+            pos = z + 9
+            if not w:
                 continue
-            if z <= 0 and not (tag or collins or frq or bnc):
-                continue  # 无词频无标签的零散词条，多半是垃圾
-            trans = (row.get("translation") or "").strip()
-            entry = {}
-            if row.get("phonetic", "").strip():
-                entry["p"] = row["phonetic"].strip()[:40]
-            if trans:
-                entry["t"] = trans.split("\n")[0][:120]
-            if tag:
-                entry["g"] = " ".join(tag.split())
-            lemma = ""
-            for kv in (row.get("exchange") or "").split("/"):
-                if kv.startswith("0:") or kv.startswith("0："):
-                    lemma = kv.split(":", 1)[1].strip().lower()
-            if lemma and lemma != w:
-                entry["0"] = lemma
-            if entry:
-                w_map[w] = entry
-            if total % 200000 == 0:
-                print(f"[i] 已扫 {total} 行，收录 {len(w_map)} 词…")
+            total += 1
+            wl = w.lower()
+            if wl.isascii() and wl.isalpha() and len(wl) > 1:
+                zz = zipf_frequency(wl, "en")
+                if 0 < zz < MAX_ZIPF:
+                    kept.append((wl, off, size))
+            if total % 1000000 == 0:
+                print(f"[i] idx 已扫 {total} 条，命中 {len(kept)} …")
+        buf = buf[pos:]
+    print(f"[i] idx 共 {total} 条，按词频筛出 {len(kept)} 条")
+
+    # ---- 第二遍：按 offset 排序后单趟流式读 dict（不用随机 seek）----
+    kept.sort(key=lambda r: r[1])
+    d = zf.open(f"{DIR}/{DIR}.dict")
+    w_map: dict = {}
+    cursor = 0
+    print("[i] 流式读取 dict …")
+    for i, (wl, off, size) in enumerate(kept):
+        if off > cursor:
+            d.read(off - cursor)
+            cursor = off
+        raw = d.read(size).decode("utf-8", "replace")
+        cursor = off + size
+        lines = [ln.strip() for ln in raw.split("\n") if ln.strip()]
+        if not lines:
+            continue
+        entry = {}
+        if lines[0].startswith("*[") and "]" in lines[0]:
+            entry["p"] = lines[0][2:lines[0].index("]")][:40]
+            lines = lines[1:]
+        senses = [ln for ln in lines if not ln.startswith("[")]  # 跳过 [网络] 等标签行
+        if senses:
+            entry["t"] = senses[0][:110]  # 只取第一条释义，避免第二行常是被截断的残句
+        if entry:
+            w_map.setdefault(wl, entry)
+        if (i + 1) % 100000 == 0:
+            print(f"[i] dict 已处理 {i + 1}/{len(kept)} …")
 
     OUT.parent.mkdir(exist_ok=True)
     OUT.write_text(json.dumps({"v": 1, "w": w_map}, ensure_ascii=False), encoding="utf-8")
-    print(f"[ok] 扫描 {total} 行，收录 {len(w_map)} 词 → {OUT}（{OUT.stat().st_size / 1e6:.1f} MB）")
+    print(f"[ok] 收录 {len(w_map)} 词 → {OUT}（{OUT.stat().st_size / 1e6:.1f} MB）")
 
 
 if __name__ == "__main__":
