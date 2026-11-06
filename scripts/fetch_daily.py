@@ -309,18 +309,26 @@ PAGE_TEMPLATE = r"""<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__DATE__ · __TITLE__</title>
 <script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
 window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
 </script>
 <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 <style>
-:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c}
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;color:var(--fg);background:var(--bg);
   font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
 main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
 .meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
 .badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
-.badge.gray{background:#e4e8ee;color:#5a6472}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
 h1{font-size:22px;margin:2px 0 4px}
 h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
 h2{font-size:17px;margin:34px 0 10px}
@@ -342,19 +350,20 @@ h2{font-size:17px;margin:34px 0 10px}
 .chip.known b{text-decoration:line-through}
 .chip.hidden{display:none}
 #defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
-  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:#3d4b5c}
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
 #defbox:empty{display:none}
-.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:#5a6472;
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
   padding:0 4px;margin:0 2px;white-space:nowrap}
 .statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
   padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
 .statement p{margin:.7em 0}
 .statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
-.statement pre{background:#eef1f5;padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
 .statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
 .statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
-mark.vw{background:#fdf3d8;color:inherit;padding:0 1px;border-radius:3px}
-mark.vw.dim{background:#f1f2f4;color:#a8b0ba}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
 body.nohl mark.vw{background:transparent;color:inherit}
 footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 </style>
@@ -375,6 +384,7 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <div class="toolbar">
     <button id="btn-known">显示已认识</button>
     <button id="btn-hl">高亮：开</button>
+    <button id="btn-theme">🌙 深色</button>
   </div>
   <div id="words"></div>
   <div id="defbox"></div>
@@ -395,6 +405,8 @@ let known = new Set(LS.get('known', []));
 let pins  = new Set(LS.get('pins', []));
 let showKnown = LS.get('showKnown', false);
 let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
 
 const info = w => WORDS.find(x => x.word === w) || {};
 
@@ -453,9 +465,15 @@ function applyHl() {
   document.body.classList.toggle('nohl', !hl);
   $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
 }
+$('#btn-theme').onclick = () => { dark = !dark; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#btn-theme').textContent = dark ? '☀️ 浅色' : '🌙 深色';
+}
 
 render();
 applyHl();
+applyTheme();
 updateMarks();
 </script>
 </body>
