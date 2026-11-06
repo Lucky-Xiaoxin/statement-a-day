@@ -41,7 +41,7 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 <body>
 <main>
 <h1>每日英文题面</h1>
-<div class="sub">rating 1400–1800 · 点击进入题面 + 生词页 · 主题跟随题面页的设置</div>
+<div class="sub">A statement a day keeps the WA away · rating 1400–1800 · 点击进入题面与生词页</div>
 __ROWS__
 <footer>由 scripts/build_index.py 生成于 __GEN__</footer>
 </main>

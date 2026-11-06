@@ -7,7 +7,7 @@
 - 待验证（CI 首跑才能确认）：非官方 Google 接口从 Actions 出发的真实成功率与译文质量；cron 漂移幅度。
 - v2 候选：历史词频统计（生词口径，按出现天数）、句式库高亮、Anki CSV 导出。
 - 已知限制：本地（国内）构建无译文（预期）；ECDICT 子集需每人构建一次（70MB，国内较慢，`--zip` 可指定手动下载包）；MathJax 需联网；`--handle` 拉全量提交较慢。
-- 环境：Windows / Git Bash / Python 3.14，主目录 `E:\english-questions-paper`
+- 环境：Windows / Git Bash / Python 3.14，主目录 `E:\statement-a-day`
 - 工作约定（用户要求）：
   - `AGENTS.md` 只放当前项目状态；
   - 稳定不变的结论放 `docs/decisions.md`；

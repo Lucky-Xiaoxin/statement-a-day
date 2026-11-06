@@ -1,4 +1,5 @@
-# english-questions-paper
+# statement-a-day
+> **A statement a day keeps the WA away.**
 
 为 ICPC/CF 英文题面阅读训练做的全免费小工具：每天从 Codeforces 随机抽一道 rating ∈ [1400, 1800] 的原题，自动生成「题面 + 生词表」单页。点击生词标记"我认识"（存浏览器 localStorage，队友互不影响）。
 
