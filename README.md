@@ -32,8 +32,27 @@ python scripts/fetch_daily.py           # 今天的题，生成后自动打开�
 - 工具栏：显示/隐藏已认识、高亮开关；右上角 Switch 切换深色模式（默认跟随系统，灰黑配色）
 - 公式由 MathJax 渲染（需联网）；生词按 Zipf 词频从罕见到常见排序
 
+## 部署（GitHub Actions + Pages）
+
+外壳已就绪：`.github/workflows/daily.yml` 每天北京时间约 08:00 自动抓题、生成页面（含折叠译文）、发布站点。**你要做的只有 4 步**：
+
+1. 在 GitHub 新建**公开**空仓库（Public 是 Actions/Pages 免费的前提）
+2. 关联并推送：
+   ```bash
+   git remote add origin https://github.com/<你>/<仓库名>.git
+   git push -u origin main
+   ```
+3. 仓库 Settings → Pages → Build and deployment → **Source 选 GitHub Actions**
+4. Actions 标签页 → daily-problem → **Run workflow** 手动跑一次（验证 + 首次部署）
+
+之后每天上午站点自动更新，队友（和你的手机）访问 `https://<你>.github.io/<仓库名>/`。
+
+备注：
+- 若「提交每日产物」一步报 403：Settings → Actions → General → Workflow permissions 改为 **Read and write permissions**。
+- CI 首次运行会自动下载 ECDICT（约 70MB）构建释义子集并缓存，之后不再下载。
+- 译文只在 CI（境外网络）生成并烤进页面；本地跑没有译文属预期（见 docs/decisions.md §6）。
+
 ## 备注
 
 - 题面版权归出题人，个人/队内学习使用，请低调。
-- 题目选取的种子 = 日期 + 区间：同一台机器当天重跑结果一致；以后挂上 GitHub Actions 统一出题后全队同题。
-- 句子级双语译文计划随 Actions 外壳上线：境外构建机翻译后烤进页面，国内浏览零请求（见 docs/decisions.md §6）。
+- 题目选取的种子 = 日期 + 区间：Actions 统一出题后全队同题；本地当天重跑幂等。

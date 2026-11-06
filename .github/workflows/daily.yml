@@ -1,0 +1,66 @@
+name: daily-problem
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # UTC 00:00 = 北京时间 08:00（GitHub cron 有 0-60 分钟漂移，正常）
+  workflow_dispatch: {}    # 手动触发：补卡 / 重部署
+
+permissions:
+  contents: write          # 提交每日页面
+  pages: write             # 发布 Pages
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  daily:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 缓存 ECDICT 释义子集
+        uses: actions/cache@v4
+        with:
+          path: data
+          key: ecdict-subset-v1
+          restore-keys: ecdict-subset-v1
+
+      - name: 安装依赖
+        run: pip install wordfreq
+
+      - name: 抓题并生成页面（含折叠译文）
+        env:
+          TZ: Asia/Shanghai   # 保证"今天"按北京时间算
+        run: |
+          if [ ! -f data/ecdict-subset.json ]; then python scripts/build_dict.py; fi
+          python scripts/fetch_daily.py --translate --no-open
+          python scripts/build_index.py
+
+      - name: 提交每日产物
+        run: |
+          git config user.name "eqp-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [[ -n "$(git status --porcelain problems/)" ]]; then
+            git add problems/
+            git commit -m "daily: $(TZ=Asia/Shanghai date +%F) 题面与页面"
+            git push
+          else
+            echo "今天没有新变化（该日期页已存在）"
+          fi
+
+      - name: 发布 Pages
+        uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: problems
+      - id: deployment
+        uses: actions/deploy-pages@v4

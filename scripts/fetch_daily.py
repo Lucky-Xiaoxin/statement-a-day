@@ -52,12 +52,12 @@ STOP = {
 
 # ---------------------------------------------------------------- HTTP ----
 
-def http_get(url: str, *, as_json: bool = False, retries: int = 3):
+def http_get(url: str, *, as_json: bool = False, retries: int = 3, timeout: int = 30):
     last = None
     for i in range(retries):
         try:
             req = urllib.request.Request(url, headers=UA)
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with urllib.request.urlopen(req, timeout=timeout) as r:
                 data = r.read()
             return json.loads(data.decode("utf-8")) if as_json else data
         except urllib.error.HTTPError as e:
@@ -300,6 +300,54 @@ def highlight_words(html: str, words: list) -> str:
         for p in parts)
 
 
+# ---------------------------------------------------------------- 译文 ----
+
+# 非官方 Google 翻译接口：无 key、无注册；国内本地不可达（预期），CI 构建机（境外）可用。
+GOOGLE_TURL = ("https://translate.googleapis.com/translate_a/single"
+               "?client=gtx&sl=en&tl=zh-CN&dt=t&q=")
+
+BLOCK_RE = re.compile(r"<(p|li)\b[^>]*>(.*?)</\1>", re.S | re.I)
+
+
+def google_translate(text: str) -> str | None:
+    try:
+        url = GOOGLE_TURL + urllib.parse.quote(text)
+        data = json.loads(http_get(url, retries=1, timeout=12).decode("utf-8", "replace"))
+        return "".join(seg[0] for seg in data[0] if seg and seg[0]) or None
+    except Exception:
+        return None
+
+
+def translate_blocks(body_html: str) -> tuple[str, list]:
+    """给 <p>/<li> 块注入 data-ti 并逐段机翻，返回 (新 html, [zh 或 None, ...])。
+    整体失败时返回原文 + []（页面自动隐藏译文按钮）。"""
+    blocks: list = []
+
+    def tag_block(m: re.Match) -> str:
+        tag, inner = m.group(1), m.group(2)
+        text = re.sub(r"\\\(.*?\\\)|\\\[.*?\\\]", " [式] ", inner, flags=re.S)
+        text = unescape(re.sub(r"<[^>]+>", " ", text))
+        text = re.sub(r"\s+", " ", text).strip()
+        i = len(blocks)
+        blocks.append(text)
+        return m.group(0).replace("<" + tag, f'<{tag} data-ti="{i}"', 1)
+
+    html = BLOCK_RE.sub(tag_block, body_html)
+    zh: list = []
+    ok = 0
+    for t in blocks:
+        if len(t) < 3 or len(t) > 3500 or not re.search(r"[A-Za-z]", t):
+            zh.append(None)
+            continue
+        zh.append(google_translate(t))
+        ok += 1 if zh[-1] else 0
+        time.sleep(0.4)  # 对非官方接口客气点
+    if ok == 0:
+        return body_html, []
+    print(f"[i] 译文：{ok}/{len(blocks)} 段")
+    return html, zh
+
+
 # ---------------------------------------------------------------- 页面 ----
 
 PAGE_TEMPLATE = r"""<!DOCTYPE html>
@@ -373,6 +421,10 @@ h2{font-size:17px;margin:34px 0 10px}
 .statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
 mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
 mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
 body.nohl mark.vw{background:transparent;color:inherit}
 footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 </style>
@@ -396,6 +448,7 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <div class="hint">点词 = 标记"我认识"（存本浏览器，队友互不影响） · <b>ⓘ</b> = 中文释义（ECDICT） · <b>☆</b> = 固定保留 · 「补」= 阈值外保底词</div>
   <div class="toolbar">
     <button id="btn-known">显示已认识</button>
+    <button id="btn-trans" style="display:none">译文：关</button>
     <button id="btn-hl">高亮：开</button>
   </div>
   <div id="words"></div>
@@ -408,6 +461,7 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 </main>
 <script>
 const WORDS = __WORDS__;
+const TRANS = __TRANS__;
 const $ = s => document.querySelector(s);
 const LS = {
   get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
@@ -483,6 +537,25 @@ function applyTheme() {
   $('#chk-dark').checked = dark;
 }
 
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
 render();
 applyHl();
 applyTheme();
@@ -493,7 +566,7 @@ updateMarks();
 """
 
 
-def render_page(meta: dict, title: str, body_html: str, words: list) -> str:
+def render_page(meta: dict, title: str, body_html: str, words: list, trans: list | None = None) -> str:
     html = PAGE_TEMPLATE
     repl = {
         "__DATE__": meta["date"],
@@ -505,6 +578,7 @@ def render_page(meta: dict, title: str, body_html: str, words: list) -> str:
         "__URL__": meta["url"],
         "__BODY__": body_html,
         "__WORDS__": json.dumps(words, ensure_ascii=False),
+        "__TRANS__": json.dumps(trans or [], ensure_ascii=False),
         "__GENERATED__": time.strftime("%Y-%m-%d %H:%M:%S"),
     }
     for k, v in repl.items():
@@ -525,6 +599,8 @@ def main() -> None:
     ap.add_argument("--handle", help="CF 用户名，排除已 solve 的题")
     ap.add_argument("--zipf", type=float, default=3.5, help="词频阈值，越小生词越多")
     ap.add_argument("--min-words", type=int, default=5, help="生词保底数量，0 = 关闭保底补充")
+    ap.add_argument("--translate", action="store_true",
+                    help="构建时段落级机翻（需境外网络，CI 上用；本地默认关）")
     ap.add_argument("--no-open", action="store_true", help="生成后不自动打开浏览器")
     args = ap.parse_args()
 
@@ -573,9 +649,17 @@ def main() -> None:
     words = enrich_words(extract_words(text, args.zipf, args.min_words), load_dict())
     body_html = highlight_words(body_html, words)
 
+    trans: list = []
+    if args.translate:
+        body_html, trans = translate_blocks(body_html)
+        if any(trans):
+            (day_dir / "trans.json").write_text(json.dumps(trans, ensure_ascii=False), encoding="utf-8")
+        else:
+            print("[warn] 未取到译文：本地（国内）到不了谷歌接口属预期，CI 上会自动带上")
+
     (day_dir / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     (day_dir / "words.json").write_text(json.dumps(words, ensure_ascii=False, indent=2), encoding="utf-8")
-    (day_dir / "page.html").write_text(render_page(meta, title, body_html, words), encoding="utf-8")
+    (day_dir / "page.html").write_text(render_page(meta, title, body_html, words, trans), encoding="utf-8")
 
     if not words:
         print("[warn] 生词表为空：题面可能没解析到正文，检查 statement.html")
