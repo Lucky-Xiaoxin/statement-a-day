@@ -375,9 +375,6 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <div class="toolbar">
     <button id="btn-known">显示已认识</button>
     <button id="btn-hl">高亮：开</button>
-    <button id="btn-export">导出词库</button>
-    <button id="btn-import">导入词库</button>
-    <input type="file" id="file-import" accept=".json" style="display:none">
   </div>
   <div id="words"></div>
   <div id="defbox"></div>
@@ -456,25 +453,6 @@ function applyHl() {
   document.body.classList.toggle('nohl', !hl);
   $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
 }
-$('#btn-export').onclick = () => {
-  const blob = new Blob([JSON.stringify({ known: [...known], pins: [...pins], exported_at: new Date().toISOString() }, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'eqp-known-words.json';
-  a.click();
-};
-$('#btn-import').onclick = () => $('#file-import').click();
-$('#file-import').onchange = async e => {
-  const f = e.target.files[0]; if (!f) return;
-  try {
-    const d = JSON.parse(await f.text());
-    if (!Array.isArray(d.known)) throw new Error('bad');
-    known = new Set(d.known); pins = new Set(d.pins || []);
-    LS.set('known', [...known]); LS.set('pins', [...pins]);
-    render(); updateMarks(); alert('导入成功：' + known.size + ' 个已知词');
-  } catch { alert('文件格式不对'); }
-  e.target.value = '';
-};
 
 render();
 applyHl();

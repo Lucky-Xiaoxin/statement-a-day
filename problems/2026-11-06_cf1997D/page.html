@@ -71,9 +71,6 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <div class="toolbar">
     <button id="btn-known">显示已认识</button>
     <button id="btn-hl">高亮：开</button>
-    <button id="btn-export">导出词库</button>
-    <button id="btn-import">导入词库</button>
-    <input type="file" id="file-import" accept=".json" style="display:none">
   </div>
   <div id="words"></div>
   <div id="defbox"></div>
@@ -81,7 +78,7 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <h2>题面</h2>
   <div class="statement" lang="en"><div class="problem-statement"><div><p>You are given a rooted tree, consisting of \(n\) <mark class="vw" data-w="vertices">vertices</mark>. The <mark class="vw" data-w="vertices">vertices</mark> in the tree are numbered from \(1\) to \(n\), and the root is the <mark class="vw" data-w="vertex">vertex</mark> \(1\). The value \(a_i\) is written at the \(i\)-th <mark class="vw" data-w="vertex">vertex</mark>.</p><p>You can perform the following operation any number of times (possibly zero): choose a <mark class="vw" data-w="vertex">vertex</mark> \(v\) <span class="tex-font-style-bf">which has at least one child</span>; increase \(a_v\) by \(1\); and decrease \(a_u\) by \(1\) for all <mark class="vw" data-w="vertices">vertices</mark> \(u\) that are in the <mark class="vw" data-w="subtree">subtree</mark> of \(v\) (except \(v\) itself). However, after each operation, the values on all <mark class="vw" data-w="vertices">vertices</mark> should be non-negative.</p><p>Your task is to calculate the maximum possible value written at the root using the aforementioned operation.</p></div><div class="input-specification"><div class="section-title">Input</div><p>The first line contains a single <mark class="vw" data-w="integer">integer</mark> \(t\) (\(1 \le t \le 10^4\)) — the number of test cases.</p><p>The first line of each test case contains a single <mark class="vw" data-w="integer">integer</mark> \(n\) (\(2 \le n \le 2 \cdot 10^5\)) — the number of <mark class="vw" data-w="vertices">vertices</mark> in the tree.</p><p>The second line contains \(n\) <mark class="vw" data-w="integer">integers</mark> \(a_1, a_2, \dots, a_n\) (\(0 \le a_i \le 10^9\)) — the initial values written at <mark class="vw" data-w="vertices">vertices</mark>.</p><p>The third line contains \(n-1\) <mark class="vw" data-w="integer">integers</mark> \(p_2, p_3, \dots, p_n\) (\(1 \le p_i \le n\)), where \(p_i\) is the parent of the \(i\)-th <mark class="vw" data-w="vertex">vertex</mark> in the tree. <mark class="vw" data-w="vertex">Vertex</mark> \(1\) is the root.</p><p>Additional <mark class="vw" data-w="constraint">constraint</mark> on the input: the sum of \(n\) over all test cases doesn't exceed \(2 \cdot 10^5\).</p></div><div class="output-specification"><div class="section-title">Output</div><p>For each test case, print a single <mark class="vw" data-w="integer">integer</mark> — the maximum possible value written at the root using the aforementioned operation.</p></div><div class="note"><div class="section-title">Note</div><p>In the first test case, the following sequence of operations is possible:</p><ul> <li> perform the operation on \(v=3\), then the values on the <mark class="vw" data-w="vertices">vertices</mark> will be \([0, 1, 1, 1]\); </li><li> perform the operation on \(v=1\), then the values on the <mark class="vw" data-w="vertices">vertices</mark> will be \([1, 0, 0, 0]\). </li></ul></div></div></div>
 
-  <footer>由 scripts/fetch_daily.py 生成于 2026-11-07 01:20:42 · 公式由 MathJax 渲染（需联网）</footer>
+  <footer>由 scripts/fetch_daily.py 生成于 2026-11-07 01:40:07 · 公式由 MathJax 渲染（需联网）</footer>
 </main>
 <script>
 const WORDS = [{"word": "subtree", "zipf": 1.95, "count": 1}, {"word": "vertices", "zipf": 2.96, "count": 8, "phon": "'vә:tisi:z", "trans": "n. 至高点；天顶；头顶（vertex的复数）"}, {"word": "integer", "zipf": 3.02, "count": 5, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "vertex", "zipf": 3.21, "count": 5, "phon": "'vә:teks", "trans": "n. 顶点, 最高点, 头顶, 天顶"}, {"word": "constraint", "zipf": 3.28, "count": 1, "phon": "kәn'streint", "trans": "n. 强制, 约束"}];
@@ -152,25 +149,6 @@ function applyHl() {
   document.body.classList.toggle('nohl', !hl);
   $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
 }
-$('#btn-export').onclick = () => {
-  const blob = new Blob([JSON.stringify({ known: [...known], pins: [...pins], exported_at: new Date().toISOString() }, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'eqp-known-words.json';
-  a.click();
-};
-$('#btn-import').onclick = () => $('#file-import').click();
-$('#file-import').onchange = async e => {
-  const f = e.target.files[0]; if (!f) return;
-  try {
-    const d = JSON.parse(await f.text());
-    if (!Array.isArray(d.known)) throw new Error('bad');
-    known = new Set(d.known); pins = new Set(d.pins || []);
-    LS.set('known', [...known]); LS.set('pins', [...pins]);
-    render(); updateMarks(); alert('导入成功：' + known.size + ' 个已知词');
-  } catch { alert('文件格式不对'); }
-  e.target.value = '';
-};
 
 render();
 applyHl();
