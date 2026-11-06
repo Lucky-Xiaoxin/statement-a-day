@@ -1,0 +1,14 @@
+{
+  "date": "2026-11-07",
+  "contestId": 1081,
+  "index": "D",
+  "name": "Maximum Distance",
+  "rating": 1800,
+  "tags": [
+    "dsu",
+    "graphs",
+    "shortest paths",
+    "sortings"
+  ],
+  "url": "https://codeforces.com/problemset/problem/1081/D"
+}

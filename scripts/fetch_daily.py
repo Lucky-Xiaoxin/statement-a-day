@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 r"""
-fetch_daily.py — 每日一题英文题面阅读工具（MVP）
+fetch_daily.py — 每日一题英文题面阅读工具（MVP v0.2）
 
 流程：Codeforces API 选一道 rating ∈ [--min-rating, --max-rating] 的题（排除已 solve、
 以前出过的）→ 抓题面 HTML → 清洗（去 header/样例、$$$ LaTeX 转 \( \)、图片绝对化）
-→ wordfreq 频率过滤出生词表 → 生成自包含 page.html（点词标"我认识"，存浏览器
-localStorage，队友各自独立）。
+→ wordfreq 频率过滤出生词表（不足 --min-words 用阈值外罕词补足）→ ECDICT 子集
+补充中文释义/音标 → 生成自包含 page.html（点词标"我认识"，内文淡黄高亮，
+已知词存浏览器 localStorage，队友各自独立）。
 
 用法：
     python scripts/fetch_daily.py                    # 今天的题（当天重跑幂等）
     python scripts/fetch_daily.py --date 2026-11-01  # 补卡某天
     python scripts/fetch_daily.py --handle xxx       # 排除已 solve 的题
     python scripts/fetch_daily.py --zipf 3.0         # 放宽词频阈值（生词更多）
+    python scripts/fetch_daily.py --min-words 0      # 关闭保底补充
 
 依赖：Python 3.10+ 与 wordfreq（pip install wordfreq），其余全部标准库。
+首次使用先跑 scripts/build_dict.py 构建离线释义子集（data/ecdict-subset.json）。
 """
 from __future__ import annotations
 
@@ -34,8 +37,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "problems"
+DICT_PATH = ROOT / "data" / "ecdict-subset.json"
 UA = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) eqp-study-tool/0.1",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) eqp-study-tool/0.2",
     "Accept-Encoding": "identity",
 }
 
@@ -187,10 +191,23 @@ def clean_statement(raw: str) -> tuple[str, str, str]:
 
 # ---------------------------------------------------------------- 取词 ----
 
-def extract_words(text: str, min_zipf: float, cap: int = 60) -> list:
+def merge_plurals(entries: list) -> list:
+    """permutation / permutations 这类单复数对合并成一条（保留单数形式）。"""
+    by_w = {d["word"]: dict(d) for d in entries}
+    for d in entries:
+        w = d["word"]
+        if w.endswith("s") and w[:-1] in by_w:
+            s = by_w[w[:-1]]
+            s["count"] += d["count"]
+            s["zipf"] = min(s["zipf"], d["zipf"])
+            del by_w[w]
+    return sorted(by_w.values(), key=lambda d: (d["zipf"], -d["count"]))
+
+
+def extract_words(text: str, min_zipf: float, min_words: int = 5, cap: int = 60) -> list:
     from wordfreq import zipf_frequency
 
-    # 缩写展开，避免 doesn't 被拆成 "does" + "not" 之外的碎片
+    # 缩写展开，避免 doesn't 被拆成碎片
     text = re.sub(r"(?i)n't\b", " not", text)
     text = re.sub(r"(?i)'(re|ve|ll|m|d)\b", r" \1", text)
 
@@ -202,30 +219,85 @@ def extract_words(text: str, min_zipf: float, cap: int = 60) -> list:
             continue
         freq[w] = freq.get(w, 0) + 1
 
-    out = []
+    cand = []
     for w, c in freq.items():
         # 只以大写形式出现的词大概率是人名（Alice/Bob/Bessie），跳过
         if w not in toks_raw and w.capitalize() in toks_raw:
             continue
         z = zipf_frequency(w, "en") or zipf_frequency(w.rstrip("s"), "en") or 0.0
-        if z < min_zipf:
-            out.append({"word": w, "zipf": round(z, 2), "count": c})
-    out.sort(key=lambda d: (d["zipf"], -d["count"]))
-    out = merge_plurals(out)
-    return out[:cap]
+        cand.append({"word": w, "zipf": round(z, 2), "count": c})
+    cand = merge_plurals(cand)
+    cand.sort(key=lambda d: (d["zipf"], -d["count"]))
+
+    main = [d for d in cand if d["zipf"] < min_zipf][:cap]
+    picked = {d["word"] for d in main}
+    if min_words > 0:
+        for d in cand:  # 保底：不足 min_words 用阈值外最罕的词补足
+            if len(main) >= min_words:
+                break
+            if d["word"] in picked:
+                continue
+            main.append(dict(d, bf=1))
+            picked.add(d["word"])
+    return main
 
 
-def merge_plurals(entries: list) -> list:
-    """permutation / permutations 这类单复对合并成一条（保留单数形式）。"""
-    by_w = {d["word"]: dict(d) for d in entries}
-    for d in entries:
-        w = d["word"]
-        if w.endswith("s") and w[:-1] in by_w:
-            s = by_w[w[:-1]]
-            s["count"] += d["count"]
-            s["zipf"] = min(s["zipf"], d["zipf"])
-            del by_w[w]
-    return sorted(by_w.values(), key=lambda d: (d["zipf"], -d["count"]))
+# ---------------------------------------------------------------- 释义 ----
+
+def load_dict() -> dict:
+    if not DICT_PATH.exists():
+        print("[warn] 未找到 data/ecdict-subset.json：先跑一次 scripts/build_dict.py，页面将没有释义")
+        return {"w": {}}
+    try:
+        return json.loads(DICT_PATH.read_text(encoding="utf-8"))
+    except Exception as e:
+        print(f"[warn] 释义子集解析失败，忽略：{e}")
+        return {"w": {}}
+
+
+def enrich_words(words: list, d: dict) -> list:
+    wm = d.get("w", {})
+    for x in words:
+        e = wm.get(x["word"])
+        if not e:
+            continue
+        base = wm.get(e.get("0", ""), e)  # 本词条没释义时回退到原形
+        if base.get("p"):
+            x["phon"] = base["p"]
+        if base.get("t"):
+            x["trans"] = base["t"]
+        if base.get("g"):
+            x["tags"] = base["g"]
+    return words
+
+
+# ---------------------------------------------------------------- 高亮 ----
+
+def highlight_words(html: str, words: list) -> str:
+    """题面内文给生词加淡黄底；跳过标签/公式/代码段；保底补充的常见词不高亮。"""
+    ws = sorted({d["word"] for d in words if not d.get("bf")}, key=len, reverse=True)
+    if not ws:
+        return html
+    pat = re.compile(r"\b(" + "|".join(re.escape(w) for w in ws) + r")(?:'s|es|s)?\b", re.I)
+
+    def wrap_text(seg: str) -> str:
+        out = []
+        for piece in re.split(r"(&[A-Za-z]+;|&#\d+;)", seg):
+            if piece.startswith("&") and piece.endswith(";"):
+                out.append(piece)  # 不碰 HTML 实体
+            else:
+                out.append(pat.sub(
+                    lambda m: '<mark class="vw" data-w="' + m.group(1).lower() + '">'
+                              + m.group(0) + "</mark>",
+                    piece))
+        return "".join(out)
+
+    parts = re.split(
+        r"(<[^>]+>|\\\[.*?\\\]|\\\(.*?\\\)|<pre\b.*?</pre>|<code\b.*?</code>)",
+        html, flags=re.S | re.I)
+    return "".join(
+        p if p.startswith("<") or p.startswith("\\") else wrap_text(p)
+        for p in parts)
 
 
 # ---------------------------------------------------------------- 页面 ----
@@ -268,11 +340,12 @@ h2{font-size:17px;margin:34px 0 10px}
 .chip .mini:hover{color:var(--acc)}
 .chip.known{opacity:.4}
 .chip.known b{text-decoration:line-through}
-.chip.stale{border-style:dashed;opacity:.65}
 .chip.hidden{display:none}
 #defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
   padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:#3d4b5c}
 #defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:#5a6472;
+  padding:0 4px;margin:0 2px;white-space:nowrap}
 .statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
   padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
 .statement p{margin:.7em 0}
@@ -280,6 +353,9 @@ h2{font-size:17px;margin:34px 0 10px}
 .statement pre{background:#eef1f5;padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
 .statement img{max-width:100%}
 .statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+mark.vw{background:#fdf3d8;color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:#f1f2f4;color:#a8b0ba}
+body.nohl mark.vw{background:transparent;color:inherit}
 footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 </style>
 </head>
@@ -295,9 +371,10 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <h1>__TITLE__</h1>
 
   <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
-  <div class="hint">点词 = 标记"我认识"（存本浏览器，队友互不影响） · <b>ⓘ</b> = 查英文释义 · <b>☆</b> = 固定保留 · 见过 ≥3 次自动沉底</div>
+  <div class="hint">点词 = 标记"我认识"（存本浏览器，队友互不影响） · <b>ⓘ</b> = 中文释义（ECDICT） · <b>☆</b> = 固定保留 · 「补」= 阈值外保底词</div>
   <div class="toolbar">
     <button id="btn-known">显示已认识</button>
+    <button id="btn-hl">高亮：开</button>
     <button id="btn-export">导出词库</button>
     <button id="btn-import">导入词库</button>
     <input type="file" id="file-import" accept=".json" style="display:none">
@@ -319,65 +396,68 @@ const LS = {
 };
 let known = new Set(LS.get('known', []));
 let pins  = new Set(LS.get('pins', []));
-let seen  = LS.get('seen', {});
 let showKnown = LS.get('showKnown', false);
+let hl = LS.get('hl', true);
 
-WORDS.forEach(w => { seen[w.word] = (seen[w.word] || 0) + 1; });
-LS.set('seen', seen);
-
-const stale = w => (seen[w] || 0) >= 3 && !pins.has(w);
-const rank  = w => known.has(w) ? 2 : (stale(w) ? 1 : 0);
+const info = w => WORDS.find(x => x.word === w) || {};
 
 function render() {
   const box = $('#words');
   box.innerHTML = '';
-  const sorted = [...WORDS].sort((a, b) => rank(a.word) - rank(b.word) || a.zipf - b.zipf);
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
   for (const item of sorted) {
     const w = item.word;
     const chip = document.createElement('span');
-    chip.className = 'chip' + (known.has(w) ? ' known' : '') + (stale(w) ? ' stale' : '');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
     if (known.has(w) && !showKnown) chip.classList.add('hidden');
-    chip.title = 'Zipf ' + item.zipf + (stale(w) ? ' · 已见过 ' + seen[w] + ' 次' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
 
     const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
     const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
     if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
 
-    const info = document.createElement('button'); info.className = 'mini'; info.textContent = 'ⓘ';
-    info.onclick = e => { e.stopPropagation(); lookup(w); };
+    const btn = document.createElement('button'); btn.className = 'mini'; btn.textContent = 'ⓘ';
+    btn.onclick = e => { e.stopPropagation(); lookup(w); };
     const star = document.createElement('button'); star.className = 'mini';
     star.textContent = pins.has(w) ? '★' : '☆';
     star.onclick = e => { e.stopPropagation(); pins.has(w) ? pins.delete(w) : pins.add(w); LS.set('pins', [...pins]); render(); };
-    chip.appendChild(info); chip.appendChild(star);
+    chip.appendChild(btn); chip.appendChild(star);
 
-    chip.onclick = () => { known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); };
+    chip.onclick = () => { known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
     box.appendChild(chip);
   }
   $('#btn-known').textContent = showKnown ? '隐藏已认识' : '显示已认识';
 }
 
-async function lookup(w) {
+function lookup(w) {
   const box = $('#defbox');
-  box.textContent = '查询中…';
-  try {
-    const r = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(w));
-    if (!r.ok) throw new Error('miss');
-    const [e] = await r.json();
-    const phon = e.phonetic || (e.phonetics || []).filter(p => p.text).map(p => p.text)[0] || '';
-    let html = '<b>' + w + '</b> <i style="color:var(--dim)">' + phon + '</i><br>';
-    for (const m of (e.meanings || []).slice(0, 2)) {
-      html += '<b style="color:var(--acc)">' + m.partOfSpeech + '</b> · ' + m.definitions[0].definition + '<br>';
-    }
-    html += '<a target="_blank" href="https://translate.google.com/?sl=en&tl=zh&text=' + encodeURIComponent(w) + '">→ Google 翻译看中文释义</a>';
-    box.innerHTML = html;
-  } catch {
-    box.innerHTML = 'dictionaryapi.dev 没查到 <b>' + w + '</b>。<a target="_blank" href="https://translate.google.com/?sl=en&tl=zh&text=' + encodeURIComponent(w) + '">→ Google 翻译</a>';
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
   }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
 }
 
 $('#btn-known').onclick = () => { showKnown = !showKnown; LS.set('showKnown', showKnown); render(); };
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
 $('#btn-export').onclick = () => {
-  const blob = new Blob([JSON.stringify({ known: [...known], pins: [...pins], seen, exported_at: new Date().toISOString() }, null, 2)], { type: 'application/json' });
+  const blob = new Blob([JSON.stringify({ known: [...known], pins: [...pins], exported_at: new Date().toISOString() }, null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
   a.download = 'eqp-known-words.json';
@@ -389,14 +469,16 @@ $('#file-import').onchange = async e => {
   try {
     const d = JSON.parse(await f.text());
     if (!Array.isArray(d.known)) throw new Error('bad');
-    known = new Set(d.known); pins = new Set(d.pins || []); seen = d.seen || {};
-    LS.set('known', [...known]); LS.set('pins', [...pins]); LS.set('seen', seen);
-    render(); alert('导入成功：' + known.size + ' 个已知词');
+    known = new Set(d.known); pins = new Set(d.pins || []);
+    LS.set('known', [...known]); LS.set('pins', [...pins]);
+    render(); updateMarks(); alert('导入成功：' + known.size + ' 个已知词');
   } catch { alert('文件格式不对'); }
   e.target.value = '';
 };
 
 render();
+applyHl();
+updateMarks();
 </script>
 </body>
 </html>
@@ -434,6 +516,7 @@ def main() -> None:
     ap.add_argument("--max-rating", type=int, default=1800)
     ap.add_argument("--handle", help="CF 用户名，排除已 solve 的题")
     ap.add_argument("--zipf", type=float, default=3.5, help="词频阈值，越小生词越多")
+    ap.add_argument("--min-words", type=int, default=5, help="生词保底数量，0 = 关闭保底补充")
     ap.add_argument("--no-open", action="store_true", help="生成后不自动打开浏览器")
     args = ap.parse_args()
 
@@ -479,7 +562,8 @@ def main() -> None:
         stmt_cache.write_text(raw, encoding="utf-8")
 
     title, body_html, text = clean_statement(raw)
-    words = extract_words(text, args.zipf)
+    words = enrich_words(extract_words(text, args.zipf, args.min_words), load_dict())
+    body_html = highlight_words(body_html, words)
 
     (day_dir / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     (day_dir / "words.json").write_text(json.dumps(words, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -487,7 +571,8 @@ def main() -> None:
 
     if not words:
         print("[warn] 生词表为空：题面可能没解析到正文，检查 statement.html")
-    print(f"[ok] {len(words)} 个生词 → {day_dir / 'page.html'}")
+    n_bf = sum(1 for d in words if d.get("bf"))
+    print(f"[ok] {len(words)} 个生词（保底补充 {n_bf} 个，{len([d for d in words if d.get('trans')])} 个有释义）→ {day_dir / 'page.html'}")
 
     if not args.no_open and sys.platform == "win32":
         try:

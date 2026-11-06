@@ -2,12 +2,12 @@
 
 > 稳定的设计结论在 `docs/decisions.md`，本文件只记录**当前进度/状态**，随工作随时更新。
 
-- 阶段：**MVP 已跑通**（2026-11-06）。`scripts/fetch_daily.py`：CF API 选题（[1400,1800] 全库随机，排除已出过，`--handle` 可排除已 solve）→ 抓题面并清洗（`$$$` LaTeX 转 `\(...\)`、去 header/样例、图片绝对化）→ wordfreq 词频过滤（剔公式/人名/缩写碎片、单复数合并）→ 自包含 `page.html`。样例：`problems/2026-11-06_cf1997D/`，浏览器实测：MathJax 渲染、点词标记、释义查询（含降级）、显示开关全部正常。
+- 阶段：**MVP v0.2**（2026-11-07）。v0.1（11-06）跑通并实测；v0.2 按试用反馈改造：释义换 ECDICT 离线子集（`scripts/build_dict.py` 一次性构建 `data/ecdict-subset.json`，不入库，队友各构建一次）、去掉自动沉底（等价于页面打开次数，零区分度）、题面内文淡黄高亮+开关、`--min-words`（默认 5）保底补充。v0.1 样例：`problems/2026-11-06_cf1997D/`。
 - 下一步：
-  1. 本人 + 队友试用几天，校准 `--zipf` 阈值（默认 3.5）；
-  2. 挂外壳：GitHub Actions cron + Pages（核心脚本不用改）；
-  3. v2 候选：句式库正则高亮、Anki CSV 导出、index 总目录页。
-- 已知限制：dictionaryapi.dev 对 CP 专业词覆盖不全（已有 Google 翻译兜底）；MathJax 渲染需联网；`--handle` 拉全量提交记录较慢。
+  1. 试跑校准 `--zipf` / `--min-words`；
+  2. 挂外壳：GitHub Actions cron + Pages，构建时加段落级折叠译文（非官方 Google 接口，境外构建机可达，烤进页面）；
+  3. v2：历史词频统计（生词口径，按出现天数）、句式库高亮、Anki CSV 导出、index 目录页。
+- 已知限制：本地（国内）构建无句子级译文（Actions 上线后解决）；ECDICT 子集需每人构建一次（GitHub Release 下载约 70MB，国内较慢，可用 `--zip` 指定手动下载的包）；MathJax 渲染需联网；`--handle` 拉全量提交记录较慢。
 - 环境：Windows / Git Bash / Python 3.14，主目录 `E:\english-questions-paper`
 - 工作约定（用户要求）：
   - `AGENTS.md` 只放当前项目状态；
