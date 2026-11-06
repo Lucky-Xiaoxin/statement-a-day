@@ -318,10 +318,10 @@ window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]
 <style>
 :root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
   --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
-  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;color-scheme:light}
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
 :root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
   --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
-  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;color-scheme:dark}
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;color:var(--fg);background:var(--bg);
   font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
@@ -337,6 +337,15 @@ h2{font-size:17px;margin:34px 0 10px}
 .toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
   padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
 .toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
 #words{display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
   padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
@@ -370,6 +379,10 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 </head>
 <body>
 <main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
   <div class="meta">
     <span class="badge gray">__DATE__</span>
     <span class="badge">rating __RATING__</span>
@@ -384,7 +397,6 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <div class="toolbar">
     <button id="btn-known">显示已认识</button>
     <button id="btn-hl">高亮：开</button>
-    <button id="btn-theme">🌙 深色</button>
   </div>
   <div id="words"></div>
   <div id="defbox"></div>
@@ -465,10 +477,10 @@ function applyHl() {
   document.body.classList.toggle('nohl', !hl);
   $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
 }
-$('#btn-theme').onclick = () => { dark = !dark; LS.set('dark', dark); applyTheme(); };
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
 function applyTheme() {
   document.documentElement.classList.toggle('dark', dark);
-  $('#btn-theme').textContent = dark ? '☀️ 浅色' : '🌙 深色';
+  $('#chk-dark').checked = dark;
 }
 
 render();
