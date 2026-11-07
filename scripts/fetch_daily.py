@@ -431,6 +431,9 @@ body:not(.showtrans) .zh{display:none}
 li .zh{display:block;margin:2px 0 6px}
 body.nohl mark.vw{background:transparent;color:inherit}
 footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
 </style>
 </head>
 <body>
@@ -460,7 +463,12 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <h2>题面</h2>
   <div class="statement" lang="en">__BODY__</div>
 
-  <footer>由 scripts/fetch_daily.py 生成于 __GENERATED__ · 公式由 MathJax 渲染（需联网）</footer>
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 __GENERATED__ · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
 </main>
 <script>
 const WORDS = __WORDS__;

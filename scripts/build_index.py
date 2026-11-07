@@ -36,6 +36,9 @@ h1{font-size:20px;margin:0 0 4px}
   font-size:12px;font-weight:600}
 .card .tg{width:100%;color:var(--dim);font-size:12px}
 footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
 </style>
 </head>
 <body>
@@ -43,7 +46,12 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 <h1>每日英文题面</h1>
 <div class="sub">A statement a day keeps the WA away · rating 1400–1800 · 点击进入题面与生词页</div>
 __ROWS__
-<footer>由 scripts/build_index.py 生成于 __GEN__</footer>
+<footer>
+<nav class="footlinks">
+<a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+</nav>
+<div style="margin-top:6px">由 scripts/build_index.py 生成于 __GEN__</div>
+</footer>
 </main>
 </body>
 </html>
