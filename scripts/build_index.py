@@ -19,8 +19,8 @@ TEMPLATE = r"""<!DOCTYPE html>
 try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
 </script>
 <style>
-:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;color-scheme:light}
-:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;color-scheme:dark}
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;--track:#4a4f58;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;color:var(--fg);background:var(--bg);
   font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
@@ -35,6 +35,15 @@ h1{font-size:20px;margin:0 0 4px}
 .card .rt{margin-left:auto;background:var(--acc);color:#fff;border-radius:6px;padding:0 8px;
   font-size:12px;font-weight:600}
 .card .tg{width:100%;color:var(--dim);font-size:12px}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
 footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 .footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
 .footlinks a:hover{color:var(--acc)}
@@ -43,6 +52,10 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 </head>
 <body>
 <main>
+<label class="switch" title="深色 / 浅色模式">
+  <input type="checkbox" id="chk-dark" aria-label="深色模式">
+  <span class="track"></span>
+</label>
 <h1>每日英文题面</h1>
 <div class="sub">A statement a day keeps the WA away · rating 1400–1800 · 点击进入题面与生词页 · <a href="stats.html" style="color:var(--acc)">总词表统计 ↗</a></div>
 __ROWS__
@@ -53,6 +66,17 @@ __ROWS__
 <div style="margin-top:6px">由 scripts/build_index.py 生成于 __GEN__</div>
 </footer>
 </main>
+<script>
+let _dark;
+try { _dark = JSON.parse(localStorage.getItem('eqp1.dark')); } catch (e) { _dark = null; }
+if (_dark === null) _dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+const _sw = document.getElementById('chk-dark');
+_sw.checked = _dark;
+_sw.onchange = e => {
+  try { localStorage.setItem('eqp1.dark', JSON.stringify(e.target.checked)); } catch (_) {}
+  document.documentElement.classList.toggle('dark', e.target.checked);
+};
+</script>
 </body>
 </html>
 """

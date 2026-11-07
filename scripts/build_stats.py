@@ -30,9 +30,9 @@ try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true ||
 </script>
 <style>
 :root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
-  --gbg:#e4e8ee;--gfg:#5a6472;color-scheme:light}
+  --gbg:#e4e8ee;--gfg:#5a6472;--track:#c9cfd8;color-scheme:light}
 :root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
-  --gbg:#3a3f47;--gfg:#a8b0ba;color-scheme:dark}
+  --gbg:#3a3f47;--gfg:#a8b0ba;--track:#4a4f58;color-scheme:dark}
 *{box-sizing:border-box}
 body{margin:0;color:var(--fg);background:var(--bg);
   font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
@@ -53,6 +53,15 @@ h1{font-size:20px;margin:0 0 4px}
   padding:10px 14px;font-size:14px;line-height:1.7;color:var(--defg,#3d4b5c);margin-bottom:12px}
 #defbox:empty{display:none}
 :root.dark #defbox{color:var(--fg)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
 table{width:100%;border-collapse:collapse;font-size:14px;background:var(--card);
   border:1px solid var(--line);border-radius:10px;overflow:hidden}
 th{color:var(--dim);font-size:12px;font-weight:600;text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
@@ -77,6 +86,10 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 </head>
 <body>
 <main>
+<label class="switch" title="深色 / 浅色模式">
+  <input type="checkbox" id="chk-dark" aria-label="深色模式">
+  <span class="track"></span>
+</label>
 <h1>总词表统计</h1>
 <div class="sub">A statement a day keeps the WA away · 口径：每日生词表按出现天数聚合，一天出现十次只计一天 · <a href="index.html">← 目录</a></div>
 <div class="toolbar">
@@ -158,6 +171,15 @@ document.querySelectorAll('.toolbar button[data-k]').forEach(b =>
   b.onclick = () => { sortKey = b.dataset.k; LS.set('statsort', sortKey); render(); });
 $('#btn-hk').onclick = () => { hideKnown = !hideKnown; LS.set('stathide', hideKnown); render(); };
 $('#q').oninput = e => { q = e.target.value.trim().toLowerCase(); render(); };
+
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+applyTheme();
 
 render();
 </script>
