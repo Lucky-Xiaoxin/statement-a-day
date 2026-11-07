@@ -51,9 +51,10 @@ h2{font-size:17px;margin:34px 0 10px}
 .chip u{text-decoration:none;color:var(--dim);font-size:11px}
 .chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
 .chip .mini:hover{color:var(--acc)}
-.chip.known{opacity:.4}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
 .chip.known b{text-decoration:line-through}
-.chip.hidden{display:none}
+.chip.known .mini.okb{color:var(--acc)}
 #defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
   padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
 #defbox:empty{display:none}
@@ -69,6 +70,10 @@ h2{font-size:17px;margin:34px 0 10px}
 .statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
 mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
 mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
 body.nohl mark.vw{background:transparent;color:inherit}
 footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 </style>
@@ -89,29 +94,28 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <h1>D. Maximize the Root</h1>
 
   <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
-  <div class="hint">点词 = 标记"我认识"（存本浏览器，队友互不影响） · <b>ⓘ</b> = 中文释义（ECDICT） · <b>☆</b> = 固定保留 · 「补」= 阈值外保底词</div>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
   <div class="toolbar">
-    <button id="btn-known">显示已认识</button>
+    <button id="btn-trans" style="display:none">译文：关</button>
     <button id="btn-hl">高亮：开</button>
   </div>
   <div id="words"></div>
   <div id="defbox"></div>
 
   <h2>题面</h2>
-  <div class="statement" lang="en"><div class="problem-statement"><div><p>You are given a rooted tree, consisting of \(n\) <mark class="vw" data-w="vertices">vertices</mark>. The <mark class="vw" data-w="vertices">vertices</mark> in the tree are numbered from \(1\) to \(n\), and the root is the <mark class="vw" data-w="vertex">vertex</mark> \(1\). The value \(a_i\) is written at the \(i\)-th <mark class="vw" data-w="vertex">vertex</mark>.</p><p>You can perform the following operation any number of times (possibly zero): choose a <mark class="vw" data-w="vertex">vertex</mark> \(v\) <span class="tex-font-style-bf">which has at least one child</span>; increase \(a_v\) by \(1\); and decrease \(a_u\) by \(1\) for all <mark class="vw" data-w="vertices">vertices</mark> \(u\) that are in the <mark class="vw" data-w="subtree">subtree</mark> of \(v\) (except \(v\) itself). However, after each operation, the values on all <mark class="vw" data-w="vertices">vertices</mark> should be non-negative.</p><p>Your task is to calculate the maximum possible value written at the root using the aforementioned operation.</p></div><div class="input-specification"><div class="section-title">Input</div><p>The first line contains a single <mark class="vw" data-w="integer">integer</mark> \(t\) (\(1 \le t \le 10^4\)) — the number of test cases.</p><p>The first line of each test case contains a single <mark class="vw" data-w="integer">integer</mark> \(n\) (\(2 \le n \le 2 \cdot 10^5\)) — the number of <mark class="vw" data-w="vertices">vertices</mark> in the tree.</p><p>The second line contains \(n\) <mark class="vw" data-w="integer">integers</mark> \(a_1, a_2, \dots, a_n\) (\(0 \le a_i \le 10^9\)) — the initial values written at <mark class="vw" data-w="vertices">vertices</mark>.</p><p>The third line contains \(n-1\) <mark class="vw" data-w="integer">integers</mark> \(p_2, p_3, \dots, p_n\) (\(1 \le p_i \le n\)), where \(p_i\) is the parent of the \(i\)-th <mark class="vw" data-w="vertex">vertex</mark> in the tree. <mark class="vw" data-w="vertex">Vertex</mark> \(1\) is the root.</p><p>Additional <mark class="vw" data-w="constraint">constraint</mark> on the input: the sum of \(n\) over all test cases doesn't exceed \(2 \cdot 10^5\).</p></div><div class="output-specification"><div class="section-title">Output</div><p>For each test case, print a single <mark class="vw" data-w="integer">integer</mark> — the maximum possible value written at the root using the aforementioned operation.</p></div><div class="note"><div class="section-title">Note</div><p>In the first test case, the following sequence of operations is possible:</p><ul> <li> perform the operation on \(v=3\), then the values on the <mark class="vw" data-w="vertices">vertices</mark> will be \([0, 1, 1, 1]\); </li><li> perform the operation on \(v=1\), then the values on the <mark class="vw" data-w="vertices">vertices</mark> will be \([1, 0, 0, 0]\). </li></ul></div></div></div>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p>You are given a <mark class="vw" data-w="rooted">rooted</mark> tree, consisting of \(n\) <mark class="vw" data-w="vertices">vertices</mark>. The <mark class="vw" data-w="vertices">vertices</mark> in the tree are <mark class="vw" data-w="numbered">numbered</mark> from \(1\) to \(n\), and the root is the <mark class="vw" data-w="vertex">vertex</mark> \(1\). The value \(a_i\) is written at the \(i\)-th <mark class="vw" data-w="vertex">vertex</mark>.</p><p>You can perform the following operation any number of times (possibly zero): choose a <mark class="vw" data-w="vertex">vertex</mark> \(v\) <span class="tex-font-style-bf">which has at least one child</span>; increase \(a_v\) by \(1\); and decrease \(a_u\) by \(1\) for all <mark class="vw" data-w="vertices">vertices</mark> \(u\) that are in the <mark class="vw" data-w="subtree">subtree</mark> of \(v\) (except \(v\) itself). However, after each operation, the values on all <mark class="vw" data-w="vertices">vertices</mark> should be non-negative.</p><p>Your task is to <mark class="vw" data-w="calculate">calculate</mark> the maximum possible value written at the root using the <mark class="vw" data-w="aforementioned">aforementioned</mark> operation.</p></div><div class="input-specification"><div class="section-title">Input</div><p>The first line contains a single <mark class="vw" data-w="integer">integer</mark> \(t\) (\(1 \le t \le 10^4\)) — the number of test cases.</p><p>The first line of each test case contains a single <mark class="vw" data-w="integer">integer</mark> \(n\) (\(2 \le n \le 2 \cdot 10^5\)) — the number of <mark class="vw" data-w="vertices">vertices</mark> in the tree.</p><p>The second line contains \(n\) <mark class="vw" data-w="integer">integers</mark> \(a_1, a_2, \dots, a_n\) (\(0 \le a_i \le 10^9\)) — the initial values written at <mark class="vw" data-w="vertices">vertices</mark>.</p><p>The third line contains \(n-1\) <mark class="vw" data-w="integer">integers</mark> \(p_2, p_3, \dots, p_n\) (\(1 \le p_i \le n\)), where \(p_i\) is the parent of the \(i\)-th <mark class="vw" data-w="vertex">vertex</mark> in the tree. <mark class="vw" data-w="vertex">Vertex</mark> \(1\) is the root.</p><p>Additional <mark class="vw" data-w="constraint">constraint</mark> on the input: the sum of \(n\) over all test cases doesn't <mark class="vw" data-w="exceed">exceed</mark> \(2 \cdot 10^5\).</p></div><div class="output-specification"><div class="section-title">Output</div><p>For each test case, print a single <mark class="vw" data-w="integer">integer</mark> — the maximum possible value written at the root using the <mark class="vw" data-w="aforementioned">aforementioned</mark> operation.</p></div><div class="note"><div class="section-title">Note</div><p>In the first test case, the following sequence of operations is possible:</p><ul> <li> perform the operation on \(v=3\), then the values on the <mark class="vw" data-w="vertices">vertices</mark> will be \([0, 1, 1, 1]\); </li><li> perform the operation on \(v=1\), then the values on the <mark class="vw" data-w="vertices">vertices</mark> will be \([1, 0, 0, 0]\). </li></ul></div></div></div>
 
-  <footer>由 scripts/fetch_daily.py 生成于 2026-11-07 01:45:54 · 公式由 MathJax 渲染（需联网）</footer>
+  <footer>由 scripts/fetch_daily.py 生成于 2026-11-07 15:34:58 · 公式由 MathJax 渲染（需联网）</footer>
 </main>
 <script>
-const WORDS = [{"word": "subtree", "zipf": 1.95, "count": 1}, {"word": "vertices", "zipf": 2.96, "count": 8, "phon": "'vә:tisi:z", "trans": "n. 至高点；天顶；头顶（vertex的复数）"}, {"word": "integer", "zipf": 3.02, "count": 5, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "vertex", "zipf": 3.21, "count": 5, "phon": "'vә:teks", "trans": "n. 顶点, 最高点, 头顶, 天顶"}, {"word": "constraint", "zipf": 3.28, "count": 1, "phon": "kәn'streint", "trans": "n. 强制, 约束"}];
+const WORDS = [{"word": "subtree", "zipf": 1.95, "count": 1}, {"word": "vertices", "zipf": 2.96, "count": 8, "phon": "'vә:tisi:z", "trans": "n. 至高点；天顶；头顶（vertex的复数）"}, {"word": "integer", "zipf": 3.02, "count": 5, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "vertex", "zipf": 3.21, "count": 5, "phon": "'vә:teks", "trans": "n. 顶点, 最高点, 头顶, 天顶"}, {"word": "constraint", "zipf": 3.28, "count": 1, "phon": "kәn'streint", "trans": "n. 强制, 约束"}, {"word": "aforementioned", "zipf": 3.54, "count": 2, "phon": "ә'fɒ:.menʃәnd", "trans": "a. 上述的, 前述的"}, {"word": "rooted", "zipf": 3.82, "count": 1, "phon": "'ru:tid", "trans": "a. 生根的, 有根的, 根深蒂固的"}, {"word": "numbered", "zipf": 3.82, "count": 1, "phon": "'nʌmbәd", "trans": "a. 计数的, 编号的"}, {"word": "calculate", "zipf": 3.87, "count": 1, "phon": "'kælkjuleit", "trans": "v. 计算, 预测, 计划, 打算"}, {"word": "exceed", "zipf": 3.92, "count": 1, "phon": "ik'si:d", "trans": "vt. 超过, 超越, 胜过"}];
+const TRANS = [];
 const $ = s => document.querySelector(s);
 const LS = {
   get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
   set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
 };
 let known = new Set(LS.get('known', []));
-let pins  = new Set(LS.get('pins', []));
-let showKnown = LS.get('showKnown', false);
 let hl = LS.get('hl', true);
 let dark = LS.get('dark', null);
 if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
@@ -127,7 +131,6 @@ function render() {
     const w = item.word;
     const chip = document.createElement('span');
     chip.className = 'chip' + (known.has(w) ? ' known' : '');
-    if (known.has(w) && !showKnown) chip.classList.add('hidden');
     chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
       + (item.trans ? '\n' + item.trans : '');
 
@@ -136,17 +139,14 @@ function render() {
     if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
     if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
 
-    const btn = document.createElement('button'); btn.className = 'mini'; btn.textContent = 'ⓘ';
-    btn.onclick = e => { e.stopPropagation(); lookup(w); };
-    const star = document.createElement('button'); star.className = 'mini';
-    star.textContent = pins.has(w) ? '★' : '☆';
-    star.onclick = e => { e.stopPropagation(); pins.has(w) ? pins.delete(w) : pins.add(w); LS.set('pins', [...pins]); render(); };
-    chip.appendChild(btn); chip.appendChild(star);
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
 
-    chip.onclick = () => { known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.onclick = () => lookup(w);
     box.appendChild(chip);
   }
-  $('#btn-known').textContent = showKnown ? '隐藏已认识' : '显示已认识';
 }
 
 function lookup(w) {
@@ -167,7 +167,6 @@ function updateMarks() {
     m.classList.toggle('dim', known.has(m.dataset.w)));
 }
 
-$('#btn-known').onclick = () => { showKnown = !showKnown; LS.set('showKnown', showKnown); render(); };
 $('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
 function applyHl() {
   document.body.classList.toggle('nohl', !hl);
@@ -177,6 +176,25 @@ $('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); 
 function applyTheme() {
   document.documentElement.classList.toggle('dark', dark);
   $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
 }
 
 render();

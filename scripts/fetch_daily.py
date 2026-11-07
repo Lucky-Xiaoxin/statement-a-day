@@ -318,8 +318,9 @@ def google_translate(text: str) -> str | None:
         return None
 
 
-def translate_blocks(body_html: str) -> tuple[str, list]:
+def translate_blocks(body_html: str, pre_zh: list | None = None) -> tuple[str, list]:
     """给 <p>/<li> 块注入 data-ti 并逐段机翻，返回 (新 html, [zh 或 None, ...])。
+    pre_zh 非空时直接复用已有译文（trans.json），不再调接口。
     整体失败时返回原文 + []（页面自动隐藏译文按钮）。"""
     blocks: list = []
 
@@ -333,6 +334,8 @@ def translate_blocks(body_html: str) -> tuple[str, list]:
         return m.group(0).replace("<" + tag, f'<{tag} data-ti="{i}"', 1)
 
     html = BLOCK_RE.sub(tag_block, body_html)
+    if pre_zh is not None and len(pre_zh) == len(blocks):
+        return html, list(pre_zh)
     zh: list = []
     ok = 0
     for t in blocks:
@@ -403,9 +406,10 @@ h2{font-size:17px;margin:34px 0 10px}
 .chip u{text-decoration:none;color:var(--dim);font-size:11px}
 .chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
 .chip .mini:hover{color:var(--acc)}
-.chip.known{opacity:.4}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
 .chip.known b{text-decoration:line-through}
-.chip.hidden{display:none}
+.chip.known .mini.okb{color:var(--acc)}
 #defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
   padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
 #defbox:empty{display:none}
@@ -445,9 +449,8 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <h1>__TITLE__</h1>
 
   <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
-  <div class="hint">点词 = 标记"我认识"（存本浏览器，队友互不影响） · <b>ⓘ</b> = 中文释义（ECDICT） · <b>☆</b> = 固定保留 · 「补」= 阈值外保底词</div>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
   <div class="toolbar">
-    <button id="btn-known">显示已认识</button>
     <button id="btn-trans" style="display:none">译文：关</button>
     <button id="btn-hl">高亮：开</button>
   </div>
@@ -468,8 +471,6 @@ const LS = {
   set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
 };
 let known = new Set(LS.get('known', []));
-let pins  = new Set(LS.get('pins', []));
-let showKnown = LS.get('showKnown', false);
 let hl = LS.get('hl', true);
 let dark = LS.get('dark', null);
 if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
@@ -485,7 +486,6 @@ function render() {
     const w = item.word;
     const chip = document.createElement('span');
     chip.className = 'chip' + (known.has(w) ? ' known' : '');
-    if (known.has(w) && !showKnown) chip.classList.add('hidden');
     chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
       + (item.trans ? '\n' + item.trans : '');
 
@@ -494,17 +494,14 @@ function render() {
     if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
     if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
 
-    const btn = document.createElement('button'); btn.className = 'mini'; btn.textContent = 'ⓘ';
-    btn.onclick = e => { e.stopPropagation(); lookup(w); };
-    const star = document.createElement('button'); star.className = 'mini';
-    star.textContent = pins.has(w) ? '★' : '☆';
-    star.onclick = e => { e.stopPropagation(); pins.has(w) ? pins.delete(w) : pins.add(w); LS.set('pins', [...pins]); render(); };
-    chip.appendChild(btn); chip.appendChild(star);
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
 
-    chip.onclick = () => { known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.onclick = () => lookup(w);
     box.appendChild(chip);
   }
-  $('#btn-known').textContent = showKnown ? '隐藏已认识' : '显示已认识';
 }
 
 function lookup(w) {
@@ -525,7 +522,6 @@ function updateMarks() {
     m.classList.toggle('dim', known.has(m.dataset.w)));
 }
 
-$('#btn-known').onclick = () => { showKnown = !showKnown; LS.set('showKnown', showKnown); render(); };
 $('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
 function applyHl() {
   document.body.classList.toggle('nohl', !hl);
@@ -597,7 +593,7 @@ def main() -> None:
     ap.add_argument("--min-rating", type=int, default=1400)
     ap.add_argument("--max-rating", type=int, default=1800)
     ap.add_argument("--handle", help="CF 用户名，排除已 solve 的题")
-    ap.add_argument("--zipf", type=float, default=3.5, help="词频阈值，越小生词越多")
+    ap.add_argument("--zipf", type=float, default=4.0, help="词频阈值，越小生词越多（2026-11-07 起 4.0 试行）")
     ap.add_argument("--min-words", type=int, default=5, help="生词保底数量，0 = 关闭保底补充")
     ap.add_argument("--translate", action="store_true",
                     help="构建时段落级机翻（需境外网络，CI 上用；本地默认关）")
@@ -651,9 +647,17 @@ def main() -> None:
 
     trans: list = []
     if args.translate:
-        body_html, trans = translate_blocks(body_html)
+        tf = day_dir / "trans.json"
+        pre = None
+        if tf.exists():  # 同一天重跑：复用已翻译结果，不再打接口
+            try:
+                pre = json.loads(tf.read_text(encoding="utf-8"))
+            except Exception:
+                pre = None
+        body_html, trans = translate_blocks(body_html, pre_zh=pre)
         if any(trans):
-            (day_dir / "trans.json").write_text(json.dumps(trans, ensure_ascii=False), encoding="utf-8")
+            if pre is None:
+                tf.write_text(json.dumps(trans, ensure_ascii=False), encoding="utf-8")
         else:
             print("[warn] 未取到译文：本地（国内）到不了谷歌接口属预期，CI 上会自动带上")
 

@@ -51,9 +51,10 @@ h2{font-size:17px;margin:34px 0 10px}
 .chip u{text-decoration:none;color:var(--dim);font-size:11px}
 .chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
 .chip .mini:hover{color:var(--acc)}
-.chip.known{opacity:.4}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
 .chip.known b{text-decoration:line-through}
-.chip.hidden{display:none}
+.chip.known .mini.okb{color:var(--acc)}
 #defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
   padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
 #defbox:empty{display:none}
@@ -93,9 +94,8 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <h1>D. Maximum Distance</h1>
 
   <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
-  <div class="hint">点词 = 标记"我认识"（存本浏览器，队友互不影响） · <b>ⓘ</b> = 中文释义（ECDICT） · <b>☆</b> = 固定保留 · 「补」= 阈值外保底词</div>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
   <div class="toolbar">
-    <button id="btn-known">显示已认识</button>
     <button id="btn-trans" style="display:none">译文：关</button>
     <button id="btn-hl">高亮：开</button>
   </div>
@@ -103,12 +103,12 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
   <div id="defbox"></div>
 
   <h2>题面</h2>
-  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">Chouti was tired of the tedious homework, so he opened up an old programming problem he created years ago.</p><p data-ti="1">You are given a connected <mark class="vw" data-w="undirected">undirected</mark> graph with \(n\) <mark class="vw" data-w="vertices">vertices</mark> and \(m\) weighted edges. There are \(k\) special <mark class="vw" data-w="vertices">vertices</mark>: \(x_1, x_2, \ldots, x_k\).</p><p data-ti="2">Let's define the cost of the path as the <span class="tex-font-style-bf">maximum</span> weight of the edges in it. And the <span class="tex-font-style-it">distance</span> between two <mark class="vw" data-w="vertexes">vertexes</mark> as the <span class="tex-font-style-bf">minimum</span> cost of the paths connecting them.</p><p data-ti="3">For each special <mark class="vw" data-w="vertex">vertex</mark>, find another special <mark class="vw" data-w="vertex">vertex</mark> which is <mark class="vw" data-w="farthest">farthest</mark> from it (in terms of the previous paragraph, i.e. the corresponding <span class="tex-font-style-it">distance</span> is maximum possible) and output the distance between them.</p><p data-ti="4">The original constraints are really small so he thought the problem was boring. Now, he raises the constraints and hopes you can solve it for him.</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="5">The first line contains three <mark class="vw" data-w="integer">integers</mark> \(n\), \(m\) and \(k\) (\(2 \leq k \leq n \leq 10^5\), \(n-1 \leq m \leq 10^5\)) — the number of <mark class="vw" data-w="vertices">vertices</mark>, the number of edges and the number of special <mark class="vw" data-w="vertices">vertices</mark>.</p><p data-ti="6">The second line contains \(k\) distinct <mark class="vw" data-w="integer">integers</mark> \(x_1, x_2, \ldots, x_k\) (\(1 \leq x_i \leq n\)).</p><p data-ti="7">Each of the following \(m\) lines contains three <mark class="vw" data-w="integer">integers</mark> \(u\), \(v\) and \(w\) (\(1 \leq u,v \leq n, 1 \leq w \leq 10^9\)), <mark class="vw" data-w="denoting">denoting</mark> there is an edge between \(u\) and \(v\) of weight \(w\). The given graph is <mark class="vw" data-w="undirected">undirected</mark>, so an edge \((u, v)\) can be used in the both directions.</p><p data-ti="8">The graph may have multiple edges and self-loops.</p><p data-ti="9">It is guaranteed, that the graph is connected.</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="10">The first and only line should contain \(k\) <mark class="vw" data-w="integer">integers</mark>. The \(i\)-th <mark class="vw" data-w="integer">integer</mark> is the distance between \(x_i\) and the <mark class="vw" data-w="farthest">farthest</mark> special <mark class="vw" data-w="vertex">vertex</mark> from it.</p></div><div class="note"><div class="section-title">Note</div><p data-ti="11">In the first example, the distance between <mark class="vw" data-w="vertex">vertex</mark> \(1\) and \(2\) equals to \(2\) because one can walk through the edge of weight \(2\) connecting them. So the distance to the <mark class="vw" data-w="farthest">farthest</mark> node for both \(1\) and \(2\) equals to \(2\).</p><p data-ti="12">In the second example, one can find that distance between \(1\) and \(2\), distance between \(1\) and \(3\) are both \(3\) and the distance between \(2\) and \(3\) is \(2\).</p><p data-ti="13">The graph may have multiple edges between and self-loops, as in the first example.</p></div></div></div>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">Chouti was tired of the <mark class="vw" data-w="tedious">tedious</mark> homework, so he opened up an old programming problem he created years ago.</p><p data-ti="1">You are given a connected <mark class="vw" data-w="undirected">undirected</mark> graph with \(n\) <mark class="vw" data-w="vertices">vertices</mark> and \(m\) <mark class="vw" data-w="weighted">weighted</mark> edges. There are \(k\) special <mark class="vw" data-w="vertices">vertices</mark>: \(x_1, x_2, \ldots, x_k\).</p><p data-ti="2">Let's define the cost of the path as the <span class="tex-font-style-bf">maximum</span> weight of the edges in it. And the <span class="tex-font-style-it">distance</span> between two <mark class="vw" data-w="vertexes">vertexes</mark> as the <span class="tex-font-style-bf">minimum</span> cost of the paths connecting them.</p><p data-ti="3">For each special <mark class="vw" data-w="vertex">vertex</mark>, find another special <mark class="vw" data-w="vertex">vertex</mark> which is <mark class="vw" data-w="farthest">farthest</mark> from it (in terms of the previous paragraph, i.e. the corresponding <span class="tex-font-style-it">distance</span> is maximum possible) and output the distance between them.</p><p data-ti="4">The original <mark class="vw" data-w="constraints">constraints</mark> are really small so he thought the problem was boring. Now, he raises the <mark class="vw" data-w="constraints">constraints</mark> and hopes you can solve it for him.</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="5">The first line contains three <mark class="vw" data-w="integer">integers</mark> \(n\), \(m\) and \(k\) (\(2 \leq k \leq n \leq 10^5\), \(n-1 \leq m \leq 10^5\)) — the number of <mark class="vw" data-w="vertices">vertices</mark>, the number of edges and the number of special <mark class="vw" data-w="vertices">vertices</mark>.</p><p data-ti="6">The second line contains \(k\) distinct <mark class="vw" data-w="integer">integers</mark> \(x_1, x_2, \ldots, x_k\) (\(1 \leq x_i \leq n\)).</p><p data-ti="7">Each of the following \(m\) lines contains three <mark class="vw" data-w="integer">integers</mark> \(u\), \(v\) and \(w\) (\(1 \leq u,v \leq n, 1 \leq w \leq 10^9\)), <mark class="vw" data-w="denoting">denoting</mark> there is an edge between \(u\) and \(v\) of weight \(w\). The given graph is <mark class="vw" data-w="undirected">undirected</mark>, so an edge \((u, v)\) can be used in the both directions.</p><p data-ti="8">The graph may have multiple edges and self-<mark class="vw" data-w="loops">loops</mark>.</p><p data-ti="9">It is guaranteed, that the graph is connected.</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="10">The first and only line should contain \(k\) <mark class="vw" data-w="integer">integers</mark>. The \(i\)-th <mark class="vw" data-w="integer">integer</mark> is the distance between \(x_i\) and the <mark class="vw" data-w="farthest">farthest</mark> special <mark class="vw" data-w="vertex">vertex</mark> from it.</p></div><div class="note"><div class="section-title">Note</div><p data-ti="11">In the first example, the distance between <mark class="vw" data-w="vertex">vertex</mark> \(1\) and \(2\) <mark class="vw" data-w="equals">equals</mark> to \(2\) because one can walk through the edge of weight \(2\) connecting them. So the distance to the <mark class="vw" data-w="farthest">farthest</mark> <mark class="vw" data-w="node">node</mark> for both \(1\) and \(2\) <mark class="vw" data-w="equals">equals</mark> to \(2\).</p><p data-ti="12">In the second example, one can find that distance between \(1\) and \(2\), distance between \(1\) and \(3\) are both \(3\) and the distance between \(2\) and \(3\) is \(2\).</p><p data-ti="13">The graph may have multiple edges between and self-<mark class="vw" data-w="loops">loops</mark>, as in the first example.</p></div></div></div>
 
-  <footer>由 scripts/fetch_daily.py 生成于 2026-11-07 11:54:19 · 公式由 MathJax 渲染（需联网）</footer>
+  <footer>由 scripts/fetch_daily.py 生成于 2026-11-07 15:34:58 · 公式由 MathJax 渲染（需联网）</footer>
 </main>
 <script>
-const WORDS = [{"word": "vertexes", "zipf": 1.17, "count": 1, "phon": "'vɜ:teksɪz", "trans": "n. 最高点( vertex的名词复数 ); 顶点; <数>（三角形、圆锥体等与底相对的）顶; （三角形、多边形等的）角的顶点"}, {"word": "undirected", "zipf": 2.12, "count": 2, "phon": ".ʌndi'rektid", "trans": "a. 未受指导的, 无姓名和地址的"}, {"word": "denoting", "zipf": 2.9, "count": 1, "phon": "diˈnəutɪŋ", "trans": "v. 为…的符号( denote的现在分词 ); 为…的名称; 指示; 指出"}, {"word": "vertices", "zipf": 2.96, "count": 4, "phon": "'vә:tisi:z", "trans": "n. 至高点；天顶；头顶（vertex的复数）"}, {"word": "integer", "zipf": 3.02, "count": 5, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "farthest", "zipf": 3.06, "count": 3, "phon": "'fɑ:ðist", "trans": "a. 最远的, 最久的"}, {"word": "vertex", "zipf": 3.21, "count": 4, "phon": "'vә:teks", "trans": "n. 顶点, 最高点, 头顶, 天顶"}];
+const WORDS = [{"word": "vertexes", "zipf": 1.17, "count": 1, "phon": "'vɜ:teksɪz", "trans": "n. 最高点( vertex的名词复数 ); 顶点; <数>（三角形、圆锥体等与底相对的）顶; （三角形、多边形等的）角的顶点"}, {"word": "undirected", "zipf": 2.12, "count": 2, "phon": ".ʌndi'rektid", "trans": "a. 未受指导的, 无姓名和地址的"}, {"word": "denoting", "zipf": 2.9, "count": 1, "phon": "diˈnəutɪŋ", "trans": "v. 为…的符号( denote的现在分词 ); 为…的名称; 指示; 指出"}, {"word": "vertices", "zipf": 2.96, "count": 4, "phon": "'vә:tisi:z", "trans": "n. 至高点；天顶；头顶（vertex的复数）"}, {"word": "integer", "zipf": 3.02, "count": 5, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "farthest", "zipf": 3.06, "count": 3, "phon": "'fɑ:ðist", "trans": "a. 最远的, 最久的"}, {"word": "vertex", "zipf": 3.21, "count": 4, "phon": "'vә:teks", "trans": "n. 顶点, 最高点, 头顶, 天顶"}, {"word": "tedious", "zipf": 3.5, "count": 1, "phon": "'ti:diәs", "trans": "a. 沉闷的, 冗长乏味的"}, {"word": "loops", "zipf": 3.65, "count": 2, "trans": "n. 封闭的环形；循环（loop复数）"}, {"word": "weighted", "zipf": 3.68, "count": 1, "phon": "'weitid", "trans": "a. 偏向的, 偏重的, 有利的"}, {"word": "equals", "zipf": 3.74, "count": 2, "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"}, {"word": "constraints", "zipf": 3.8, "count": 2, "phon": "kən'streɪnt", "trans": "n. 强制( constraint的复数形式 ); 限制; 约束"}, {"word": "node", "zipf": 3.88, "count": 1, "phon": "nәud", "trans": "n. 节, 结节, 瘤"}];
 const TRANS = ["Couti 厌倦了繁琐的作业，因此他打开了他多年前创建的一个旧编程问题。", "给您一个具有 [式] 顶点和 [式] 加权边的连通无向图。有 [式] 特殊顶点： [式] 。", "让我们将路径的成本定义为其中边的最大权重。两个顶点之间的距离作为连接它们的路径的最小成本。", "对于每个特殊顶点 ，找到离它最远的另一个特殊顶点（就前一段而言，即对应的距离是最大可能的）并输出它们之间的距离。", "原来的约束实在是太小了，所以他觉得这个问题很无聊。现在他提出了约束条件，希望你能帮他解决。", "第一行包含三个整数 [式] 、 [式] 和 [式] ( [式] , [式] ) — 顶点数、边数和特殊顶点数。", "第二行包含 [式] 个不同的整数 [式] ( [式] )。", "以下 [式] 行中的每一行都包含三个整数 [式] 、 [式] 和 [式] ( [式] )，表示 [式] 和 [式] 之间有一条边，权重为 [式] 。给定的图是无向的，因此可以在两个方向上使用边[式]。", "该图可能具有多条边和自环。", "保证图是连通的。", "第一行也是唯一一行应包含 [式] 整数。第 [式] 整数是 [式] 与距离它最远的特殊顶点之间的距离。", "在第一个示例中，顶点 [式] 和 [式] 之间的距离等于 [式]，因为可以穿过连接它们的权重 [式] 的边。因此 [式] 和 [式] 到最远节点的距离都等于 [式] 。", "在第二个例子中，可以发现 [式] 和 [式] 之间的距离，[式] 和 [式] 之间的距离都是 [式] ， [式] 和 [式] 之间的距离是 [式] 。", "该图可能具有多条边和自环，如第一个示例中所示。"];
 const $ = s => document.querySelector(s);
 const LS = {
@@ -116,8 +116,6 @@ const LS = {
   set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
 };
 let known = new Set(LS.get('known', []));
-let pins  = new Set(LS.get('pins', []));
-let showKnown = LS.get('showKnown', false);
 let hl = LS.get('hl', true);
 let dark = LS.get('dark', null);
 if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
@@ -133,7 +131,6 @@ function render() {
     const w = item.word;
     const chip = document.createElement('span');
     chip.className = 'chip' + (known.has(w) ? ' known' : '');
-    if (known.has(w) && !showKnown) chip.classList.add('hidden');
     chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
       + (item.trans ? '\n' + item.trans : '');
 
@@ -142,17 +139,14 @@ function render() {
     if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
     if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
 
-    const btn = document.createElement('button'); btn.className = 'mini'; btn.textContent = 'ⓘ';
-    btn.onclick = e => { e.stopPropagation(); lookup(w); };
-    const star = document.createElement('button'); star.className = 'mini';
-    star.textContent = pins.has(w) ? '★' : '☆';
-    star.onclick = e => { e.stopPropagation(); pins.has(w) ? pins.delete(w) : pins.add(w); LS.set('pins', [...pins]); render(); };
-    chip.appendChild(btn); chip.appendChild(star);
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
 
-    chip.onclick = () => { known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.onclick = () => lookup(w);
     box.appendChild(chip);
   }
-  $('#btn-known').textContent = showKnown ? '隐藏已认识' : '显示已认识';
 }
 
 function lookup(w) {
@@ -173,7 +167,6 @@ function updateMarks() {
     m.classList.toggle('dim', known.has(m.dataset.w)));
 }
 
-$('#btn-known').onclick = () => { showKnown = !showKnown; LS.set('showKnown', showKnown); render(); };
 $('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
 function applyHl() {
   document.body.classList.toggle('nohl', !hl);

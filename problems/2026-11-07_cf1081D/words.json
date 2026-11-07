@@ -47,5 +47,45 @@
     "count": 4,
     "phon": "'vә:teks",
     "trans": "n. 顶点, 最高点, 头顶, 天顶"
+  },
+  {
+    "word": "tedious",
+    "zipf": 3.5,
+    "count": 1,
+    "phon": "'ti:diәs",
+    "trans": "a. 沉闷的, 冗长乏味的"
+  },
+  {
+    "word": "loops",
+    "zipf": 3.65,
+    "count": 2,
+    "trans": "n. 封闭的环形；循环（loop复数）"
+  },
+  {
+    "word": "weighted",
+    "zipf": 3.68,
+    "count": 1,
+    "phon": "'weitid",
+    "trans": "a. 偏向的, 偏重的, 有利的"
+  },
+  {
+    "word": "equals",
+    "zipf": 3.74,
+    "count": 2,
+    "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"
+  },
+  {
+    "word": "constraints",
+    "zipf": 3.8,
+    "count": 2,
+    "phon": "kən'streɪnt",
+    "trans": "n. 强制( constraint的复数形式 ); 限制; 约束"
+  },
+  {
+    "word": "node",
+    "zipf": 3.88,
+    "count": 1,
+    "phon": "nәud",
+    "trans": "n. 节, 结节, 瘤"
   }
 ]

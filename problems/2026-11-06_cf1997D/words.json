@@ -31,5 +31,40 @@
     "count": 1,
     "phon": "kәn'streint",
     "trans": "n. 强制, 约束"
+  },
+  {
+    "word": "aforementioned",
+    "zipf": 3.54,
+    "count": 2,
+    "phon": "ә'fɒ:.menʃәnd",
+    "trans": "a. 上述的, 前述的"
+  },
+  {
+    "word": "rooted",
+    "zipf": 3.82,
+    "count": 1,
+    "phon": "'ru:tid",
+    "trans": "a. 生根的, 有根的, 根深蒂固的"
+  },
+  {
+    "word": "numbered",
+    "zipf": 3.82,
+    "count": 1,
+    "phon": "'nʌmbәd",
+    "trans": "a. 计数的, 编号的"
+  },
+  {
+    "word": "calculate",
+    "zipf": 3.87,
+    "count": 1,
+    "phon": "'kælkjuleit",
+    "trans": "v. 计算, 预测, 计划, 打算"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
   }
 ]
