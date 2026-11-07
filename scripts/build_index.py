@@ -44,7 +44,7 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 <body>
 <main>
 <h1>每日英文题面</h1>
-<div class="sub">A statement a day keeps the WA away · rating 1400–1800 · 点击进入题面与生词页</div>
+<div class="sub">A statement a day keeps the WA away · rating 1400–1800 · 点击进入题面与生词页 · <a href="stats.html" style="color:var(--acc)">总词表统计 ↗</a></div>
 __ROWS__
 <footer>
 <nav class="footlinks">

@@ -44,6 +44,7 @@ jobs:
           if [ ! -f data/ecdict-subset.json ]; then python scripts/build_dict.py; fi
           python scripts/fetch_daily.py --translate --no-open
           python scripts/build_index.py
+          python scripts/build_stats.py
 
       - name: 提交每日产物
         run: |
