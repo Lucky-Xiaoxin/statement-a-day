@@ -1,0 +1,56 @@
+[
+  {
+    "word": "inversion",
+    "zipf": 2.67,
+    "count": 8,
+    "phon": "in'vә:ʃәn",
+    "trans": "n. 倒转, 倒置, 倒装"
+  },
+  {
+    "word": "denoting",
+    "zipf": 2.9,
+    "count": 1,
+    "phon": "diˈnəutɪŋ",
+    "trans": "v. 为…的符号( denote的现在分词 ); 为…的名称; 指示; 指出"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 4,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "indices",
+    "zipf": 3.41,
+    "count": 1,
+    "phon": "'indisi:z",
+    "trans": "pl. 索引, 指针, 指数, 指标"
+  },
+  {
+    "word": "denotes",
+    "zipf": 3.42,
+    "count": 1,
+    "phon": "diˈnəuts",
+    "trans": "v. 为…的符号( denote的第三人称单数 ); 为…的名称; 指示; 指出"
+  },
+  {
+    "word": "swap",
+    "zipf": 3.94,
+    "count": 2,
+    "phon": "swɒp",
+    "trans": "n. 以货易货"
+  },
+  {
+    "word": "binary",
+    "zipf": 3.95,
+    "count": 2,
+    "phon": "'bainәri",
+    "trans": "a. 由两部分组成的, 二进位的, 二元的"
+  },
+  {
+    "word": "perform",
+    "zipf": 3.97,
+    "count": 5
+  }
+]

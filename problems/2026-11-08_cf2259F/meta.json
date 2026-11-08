@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-08",
+  "contestId": 2259,
+  "index": "F",
+  "name": "Binary Bubble Sort Inversions",
+  "rating": 1800,
+  "tags": [
+    "data structures",
+    "math",
+    "two pointers"
+  ],
+  "url": "https://codeforces.com/problemset/problem/2259/F"
+}
