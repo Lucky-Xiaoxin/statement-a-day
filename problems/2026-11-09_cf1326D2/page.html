@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-09 · D2. Prefix-Suffix Palindrome (Hard version)</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-09</span>
+    <span class="badge">rating 1800</span>
+    <span>cf1326D2</span>
+    <span>#binary search #greedy #hashing #string suffix structures #strings</span>
+    <a href="https://codeforces.com/problemset/problem/1326/D2" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>D2. Prefix-Suffix Palindrome (Hard version)</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0"><span class="tex-font-style-bf">This is the hard version of the problem. The difference is the <mark class="vw" data-w="constraint">constraint</mark> on the sum of <mark class="vw" data-w="length">lengths</mark> of strings and the number of test cases. You can make <mark class="vw" data-w="hacks">hacks</mark> only if you solve all versions of this task.</span></p><p data-ti="1">You are given a string \(s\), consisting of <mark class="vw" data-w="lowercase">lowercase</mark> English letters. Find the longest string, \(t\), which <mark class="vw" data-w="satisfies">satisfies</mark> the following conditions: </p><ul> <li data-ti="2"> The <mark class="vw" data-w="length">length</mark> of \(t\) does not <mark class="vw" data-w="exceed">exceed</mark> the <mark class="vw" data-w="length">length</mark> of \(s\). </li><li data-ti="3"> \(t\) is a <mark class="vw" data-w="palindrome">palindrome</mark>. </li><li data-ti="4"> There exists two strings \(a\) and \(b\) (possibly empty), such that \(t = a + b\) ( &quot;<span class="tex-font-style-tt">\(+\)</span>&quot; represents <mark class="vw" data-w="concatenation">concatenation</mark>), and \(a\) is <mark class="vw" data-w="prefix">prefix</mark> of \(s\) while \(b\) is <mark class="vw" data-w="suffix">suffix</mark> of \(s\). </li></ul></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="5">The input consists of multiple test cases. The first line contains a single <mark class="vw" data-w="integer">integer</mark> \(t\) (\(1 \leq t \leq 10^5\)), the number of test cases. The next \(t\) lines each describe a test case.</p><p data-ti="6">Each test case is a non-empty string \(s\), consisting of <mark class="vw" data-w="lowercase">lowercase</mark> English letters.</p><p data-ti="7">It is guaranteed that the sum of <mark class="vw" data-w="length">lengths</mark> of strings over all test cases does not <mark class="vw" data-w="exceed">exceed</mark> \(10^6\).</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="8">For each test case, print the longest string which <mark class="vw" data-w="satisfies">satisfies</mark> the conditions described above. If there exists multiple possible solutions, print any of them.</p></div><div class="note"><div class="section-title">Note</div><p data-ti="9">In the first test, the string \(s = \)&quot;<span class="tex-font-style-tt">a</span>&quot; <mark class="vw" data-w="satisfies">satisfies</mark> all conditions.</p><p data-ti="10">In the second test, the string &quot;<span class="tex-font-style-tt"><mark class="vw" data-w="abcdfdcba">abcdfdcba</mark></span>&quot; <mark class="vw" data-w="satisfies">satisfies</mark> all conditions, because:</p><ul> <li data-ti="11"> Its <mark class="vw" data-w="length">length</mark> is \(9\), which does not <mark class="vw" data-w="exceed">exceed</mark> the <mark class="vw" data-w="length">length</mark> of the string \(s\), which <mark class="vw" data-w="equals">equals</mark> \(11\). </li><li data-ti="12"> It is a <mark class="vw" data-w="palindrome">palindrome</mark>. </li><li data-ti="13"> &quot;<span class="tex-font-style-tt"><mark class="vw" data-w="abcdfdcba">abcdfdcba</mark></span>&quot; \(=\) &quot;<span class="tex-font-style-tt"><mark class="vw" data-w="abcdfdc">abcdfdc</mark></span>&quot; \(+\) &quot;<span class="tex-font-style-tt">ba</span>&quot;, and &quot;<span class="tex-font-style-tt"><mark class="vw" data-w="abcdfdc">abcdfdc</mark></span>&quot; is a <mark class="vw" data-w="prefix">prefix</mark> of \(s\) while &quot;<span class="tex-font-style-tt">ba</span>&quot; is a <mark class="vw" data-w="suffix">suffix</mark> of \(s\). </li></ul><p data-ti="14">It can be proven that there does not exist a longer string which <mark class="vw" data-w="satisfies">satisfies</mark> the conditions.</p><p data-ti="15">In the fourth test, the string &quot;<span class="tex-font-style-tt">c</span>&quot; is correct, because &quot;<span class="tex-font-style-tt">c</span>&quot; \(=\) &quot;<span class="tex-font-style-tt">c</span>&quot; \(+\) &quot;<span class="tex-font-style-tt"></span>&quot; and \(a\) or \(b\) can be empty. The other possible solution for this test is &quot;<span class="tex-font-style-tt">s</span>&quot;.</p></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-09 11:52:04 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "abcdfdcba", "zipf": 0.0, "count": 2}, {"word": "abcdfdc", "zipf": 0.0, "count": 2}, {"word": "palindrome", "zipf": 2.17, "count": 2, "phon": "'pælindrәum", "trans": "n. 回文, 回文结构"}, {"word": "concatenation", "zipf": 2.27, "count": 1, "phon": ".kɒnkæti'neiʃәn", "trans": "n. 串联, 连结, 一系列相互联系的事物"}, {"word": "lowercase", "zipf": 2.8, "count": 2, "phon": "'lәuәkeis", "trans": "n. 小写字母"}, {"word": "suffix", "zipf": 3.05, "count": 2, "phon": "'sʌfiks", "trans": "n. 后缀, 下标"}, {"word": "satisfies", "zipf": 3.2, "count": 5, "trans": "n. 满足因素"}, {"word": "prefix", "zipf": 3.23, "count": 2, "phon": "'pri:fiks", "trans": "前缀, 称谓"}, {"word": "constraint", "zipf": 3.28, "count": 1, "phon": "kәn'streint", "trans": "n. 强制, 约束"}, {"word": "integer", "zipf": 3.39, "count": 1, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "hacks", "zipf": 3.45, "count": 1, "phon": "hæks", "trans": "n. 骑用马( hack的名词复数 ); 用靴头踢"}, {"word": "equals", "zipf": 3.74, "count": 1, "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"}, {"word": "length", "zipf": 3.92, "count": 6}, {"word": "exceed", "zipf": 3.92, "count": 3, "phon": "ik'si:d", "trans": "vt. 超过, 超越, 胜过"}];
+const TRANS = ["这是问题的困难版本。不同之处在于对字符串长度总和和测试用例数量的约束。只有解决了该任务的所有版本，您才能进行黑客攻击。", "给你一个字符串 [式] ，由小写英文字母组成。找到最长的字符串 [式] ，它满足以下条件：", "[式] 的长度不超过 [式] 的长度。", "[式] 是一个回文。", "存在两个字符串 [式] 和 [式]（可能为空），例如 [式] （“ [式] ”表示连接），并且 [式] 是 [式] 的前缀，而 [式] 是 [式] 的后缀。", "输入由多个测试用例组成。第一行包含一个整数 [式] ( [式] )，即测试用例的数量。接下来的 [式] 行每行描述一个测试用例。", "每个测试用例都是一个非空字符串 [式] ，由小写英文字母组成。", "保证所有测试用例的字符串长度总和不超过 [式] 。", "对于每个测试用例，打印满足上述条件的最长字符串。如果存在多种可能的解决方案，请打印其中任何一个。", "在第一个测试中，字符串 [式] \" a \" 满足所有条件。", "在第二个测试中，字符串“ abcdfdcba ”满足所有条件，因为：", "它的长度为 [式] ，不超过字符串 [式] 的长度，该字符串等于 [式] 。", "它是一个回文。", "\" abcdfdcba \" [式] \" abcdfdc \" [式] \" ba \"，\" abcdfdc \" 是 [式] 的前缀，而 \" ba \" 是 [式] 的后缀。", "可以证明，不存在满足条件的更长的串。", "在第四个测试中，字符串“c”是正确的，因为“c”[式]“c”[式]“”和[式]或[式]可以为空。该测试的另一个可能的解决方案是“s”。"];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-09",
+  "contestId": 1326,
+  "index": "D2",
+  "name": "Префиксно-суффиксный палиндром (усложненная версия)",
+  "rating": 1800,
+  "tags": [
+    "binary search",
+    "greedy",
+    "hashing",
+    "string suffix structures",
+    "strings"
+  ],
+  "url": "https://codeforces.com/problemset/problem/1326/D2"
+}
