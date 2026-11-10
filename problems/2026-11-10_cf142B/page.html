@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-10 · B. Help General</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-10</span>
+    <span class="badge">rating 1800</span>
+    <span>cf142B</span>
+    <span>#constructive algorithms #greedy #implementation</span>
+    <a href="https://codeforces.com/problemset/problem/142/B" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>B. Help General</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">Once upon a time in the Kingdom of Far Far Away lived Sir Lancelot, the chief Royal General. He was very proud of his men and he liked to invite the King to come and watch drill exercises which demonstrated the fighting techniques and tactics of the squad he was in charge of. But time went by and one day Sir Lancelot had a major argument with the Fairy Godmother (there were rumors that the argument occurred after the general spoke badly of the Godmother's flying techniques. That seemed to hurt the Fairy Godmother very deeply). </p><p data-ti="1">As the result of the argument, the Godmother put a rather strange curse upon the general. It sounded all complicated and quite <mark class="vw" data-w="harmless">harmless</mark>: &quot;<span class="tex-font-style-underline">If the <mark class="vw" data-w="squared">squared</mark> distance between some two soldiers <mark class="vw" data-w="equals">equals</mark> to <span class="tex-span">5</span>, then those soldiers will conflict with each other!</span>&quot;</p><p data-ti="2">The drill exercises are held on a <mark class="vw" data-w="rectangular">rectangular</mark> <span class="tex-span"><i>n</i> × <i>m</i></span> field, split into <span class="tex-span"><i><mark class="vw" data-w="nm">nm</mark></i></span> <mark class="vw" data-w="square">square</mark> <span class="tex-span">1 × 1</span> <mark class="vw" data-w="segments">segments</mark> for each soldier. Thus, the <mark class="vw" data-w="square">square</mark> of the distance between the soldiers that stand on <mark class="vw" data-w="square">squares</mark> <span class="tex-span">(<i>x</i><sub class="lower-index">1</sub>, <i>y</i><sub class="lower-index">1</sub>)</span> and <span class="tex-span">(<i>x</i><sub class="lower-index">2</sub>, <i>y</i><sub class="lower-index">2</sub>)</span> <mark class="vw" data-w="equals">equals</mark> exactly <span class="tex-span">(<i>x</i><sub class="lower-index">1</sub> - <i>x</i><sub class="lower-index">2</sub>)<sup class="upper-index">2</sup> + (<i>y</i><sub class="lower-index">1</sub> - <i>y</i><sub class="lower-index">2</sub>)<sup class="upper-index">2</sup></span>. Now not all <span class="tex-span"><i><mark class="vw" data-w="nm">nm</mark></i></span> squad soldiers can participate in the drill exercises as it was before the Fairy Godmother's curse. Unless, of course, the general wants the soldiers to fight with each other or even worse... For example, if he puts a soldier in the <mark class="vw" data-w="square">square</mark> <span class="tex-span">(2, 2)</span>, then he cannot put soldiers in the <mark class="vw" data-w="square">squares</mark> <span class="tex-span">(1, 4)</span>, <span class="tex-span">(3, 4)</span>, <span class="tex-span">(4, 1)</span> and <span class="tex-span">(4, 3)</span> — each of them will conflict with the soldier in the <mark class="vw" data-w="square">square</mark> <span class="tex-span">(2, 2)</span>.</p><p data-ti="3">Your task is to help the general. You are given the size of the drill exercise field. You are asked to <mark class="vw" data-w="calculate">calculate</mark> the maximum number of soldiers that can be simultaneously <mark class="vw" data-w="positioned">positioned</mark> on this field, so that no two soldiers fall under the Fairy Godmother's curse.</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="4">The single line contains space-separated <mark class="vw" data-w="integers">integers</mark> <span class="tex-span"><i>n</i></span> and <span class="tex-span"><i>m</i></span> (<span class="tex-span">1 ≤ <i>n</i>, <i>m</i> ≤ 1000</span>) that represent the size of the drill exercise field.</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="5">Print the desired maximum number of warriors.</p></div><div class="note"><div class="section-title">Note</div><p data-ti="6">In the first sample test Sir Lancelot can place his 4 soldiers on the <span class="tex-span">2 × 4</span> court as follows (the soldiers' locations are marked with gray circles on the scheme):</p><center> <img class="tex-graphics" src="https://espresso.codeforces.com/5949c8ef04ce69ae3d19123922f262416fac4f5c.png" style="max-width: 100.0%;max-height: 100.0%;" /> </center><p data-ti="7">In the second sample test he can place 6 soldiers on the <span class="tex-span">3 × 4</span> site in the following manner:</p><center> <img class="tex-graphics" src="https://espresso.codeforces.com/14f409a1ceb3cc04a1b6f42bbb218b6be0f92a05.png" style="max-width: 100.0%;max-height: 100.0%;" /> </center></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-10 13:26:57 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "integers", "zipf": 3.02, "count": 1, "phon": "'ɪntɪdʒəz", "trans": "n. 整数( integer的复数形式 )"}, {"word": "squared", "zipf": 3.39, "count": 1, "trans": "a. 方格的；成正方形的"}, {"word": "rectangular", "zipf": 3.62, "count": 1, "phon": "rek'tæŋgjulә", "trans": "a. 成直角的"}, {"word": "square", "zipf": 3.73, "count": 6}, {"word": "equals", "zipf": 3.74, "count": 2, "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"}, {"word": "harmless", "zipf": 3.79, "count": 1, "phon": "'hɑ:mlis", "trans": "a. 无害处的, 未受损害的, 无辜的, 无恶意的"}, {"word": "positioned", "zipf": 3.79, "count": 1, "trans": "a. 放置的"}, {"word": "nm", "zipf": 3.82, "count": 2, "trans": "(-/17515)"}, {"word": "calculate", "zipf": 3.87, "count": 1, "phon": "'kælkjuleit", "trans": "v. 计算, 预测, 计划, 打算"}, {"word": "segments", "zipf": 3.98, "count": 1, "trans": "n. 积弓形片模型；片段；段数（segment的复数）"}];
+const TRANS = ["从前，遥远王国里住着首席皇家将军兰斯洛特爵士。他为他的部下感到非常自豪，他喜欢邀请国王来观看演习，这些演习展示了他所负责的小队的战斗技术和战术。但时间一天天过去，有一天，兰斯洛特爵士与仙女教母发生了一场大争执（有传言，这场争执是在将军说教母的飞行技术不好之后发生的，看来对仙女教母的伤害很深）。", "争论的结果是，教母对将军下了一个相当奇怪的诅咒。听起来很复杂，而且没什么害处：“如果两个士兵之间的距离平方等于5，那么这两个士兵就会互相冲突！”", "演习在一个n×m的矩形场地上进行，每个士兵被分成nm个1×1的正方形区域。因此，站在方格 (x 1 , y 1 ) 和 ( x 2 , y 2 ) 上的士兵之间距离的平方正好等于 ( x 1 - x 2 ) 2 + (y 1 - y 2 ) 2 。现在并不是所有的nm小队士兵都能像仙女教母的诅咒之前一样参加演练。当然，除非将军希望士兵互相打斗，甚至更糟……例如，如果他将士兵放在方格 (2, 2) 中，那么他就不能将士兵放在方格 (1, 4) 、 (3, 4) 、 (4, 1) 和 (4, 3) 中——它们中的每一个都会与方格 (2, 2) 中的士兵发生冲突。", "你的任务是帮助将军。您将获得演习场地的大小。您需要计算可以同时放置在该场地上的最大士兵数量，以便没有两个士兵受到仙女教母的诅咒。", "单行包含空格分隔的整数 n 和 m ( 1 ≤ n , m ≤ 1000 )，表示演练练习场的大小。", "打印所需的最大战士数量。", "在第一个样本测试中，兰斯洛特爵士可以将他的4名士兵放置在2×4的球场上，如下所示（士兵的位置在方案上用灰色圆圈标记）：", "在第二个样本测试中，他可以按以下方式将 6 名士兵放置在 3 × 4 场地上："];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>

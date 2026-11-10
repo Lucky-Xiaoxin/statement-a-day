@@ -1,0 +1,65 @@
+[
+  {
+    "word": "integers",
+    "zipf": 3.02,
+    "count": 1,
+    "phon": "'ɪntɪdʒəz",
+    "trans": "n. 整数( integer的复数形式 )"
+  },
+  {
+    "word": "squared",
+    "zipf": 3.39,
+    "count": 1,
+    "trans": "a. 方格的；成正方形的"
+  },
+  {
+    "word": "rectangular",
+    "zipf": 3.62,
+    "count": 1,
+    "phon": "rek'tæŋgjulә",
+    "trans": "a. 成直角的"
+  },
+  {
+    "word": "square",
+    "zipf": 3.73,
+    "count": 6
+  },
+  {
+    "word": "equals",
+    "zipf": 3.74,
+    "count": 2,
+    "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"
+  },
+  {
+    "word": "harmless",
+    "zipf": 3.79,
+    "count": 1,
+    "phon": "'hɑ:mlis",
+    "trans": "a. 无害处的, 未受损害的, 无辜的, 无恶意的"
+  },
+  {
+    "word": "positioned",
+    "zipf": 3.79,
+    "count": 1,
+    "trans": "a. 放置的"
+  },
+  {
+    "word": "nm",
+    "zipf": 3.82,
+    "count": 2,
+    "trans": "(-/17515)"
+  },
+  {
+    "word": "calculate",
+    "zipf": 3.87,
+    "count": 1,
+    "phon": "'kælkjuleit",
+    "trans": "v. 计算, 预测, 计划, 打算"
+  },
+  {
+    "word": "segments",
+    "zipf": 3.98,
+    "count": 1,
+    "trans": "n. 积弓形片模型；片段；段数（segment的复数）"
+  }
+]
