@@ -115,7 +115,7 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 <nav class="footlinks">
 <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
 </nav>
-<div style="margin-top:6px">由 scripts/build_stats.py 生成于 2026-11-11 09:32</div>
+<div style="margin-top:6px">由 scripts/build_stats.py 生成于 2026-11-11 09:54</div>
 </footer>
 </main>
 <script>
@@ -134,7 +134,7 @@ let q = '';
 const CMP = {
   days: (a, b) => b.days - a.days || b.total - a.total || a.zipf - b.zipf,
   total: (a, b) => b.total - a.total || b.days - a.days || a.zipf - b.zipf,
-  zipf: (a, b) => a.zipf - b.zipf || b.days - a.days,
+  zipf: (a, b) => b.zipf - a.zipf || b.days - a.days || b.total - a.total,
 };
 
 function render() {
