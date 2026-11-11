@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-11 · C. Biathlon</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-11</span>
+    <span class="badge">rating 1700</span>
+    <span>cf84C</span>
+    <span>#binary search #implementation</span>
+    <a href="https://codeforces.com/problemset/problem/84/C" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>C. Biathlon</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">Perhaps many have heard that the World <mark class="vw" data-w="biathlon">Biathlon</mark> Championship has finished. Although our hero Valera was not present at this spectacular event himself and only watched it on TV, it excited him so much that he decided to <mark class="vw" data-w="enroll">enroll</mark> in a <mark class="vw" data-w="biathlon">biathlon</mark> section.</p><p data-ti="1">Of course, <mark class="vw" data-w="biathlon">biathlon</mark> as any sport, proved very difficult in practice. It takes much time and effort. <mark class="vw" data-w="workouts">Workouts</mark>, <mark class="vw" data-w="workouts">workouts</mark>, and <mark class="vw" data-w="workouts">workouts</mark>, — that's what <mark class="vw" data-w="awaited">awaited</mark> Valera on his way to great achievements in <mark class="vw" data-w="biathlon">biathlon</mark>.</p><p data-ti="2">As for the <mark class="vw" data-w="workouts">workouts</mark>, you all probably know that every professional <mark class="vw" data-w="biathlete">biathlete</mark> should ski fast and shoot precisely at the shooting range. Only in this case you can hope to be successful, because running and shooting are the two main components of <mark class="vw" data-w="biathlon">biathlon</mark>. Valera has been <mark class="vw" data-w="diligent">diligent</mark> in his ski <mark class="vw" data-w="training">trainings</mark>, which is why he runs really fast, however, his shooting accuracy is nothing to write home about.</p><p data-ti="3">On a <mark class="vw" data-w="biathlon">biathlon</mark> base where Valera is preparing for the <mark class="vw" data-w="competition">competition</mark>, there is a huge rifle range with <span class="tex-span"><i>n</i></span> targets. Each target have shape of a circle, and <span class="tex-font-style-bf">the center of each circle is located on the <span class="tex-span"><i>Ox</i></span> axis</span>. At the last <mark class="vw" data-w="training">training</mark> session Valera made the total of <span class="tex-span"><i>m</i></span> shots. To make monitoring of his own results easier for him, one rather well-known <mark class="vw" data-w="programmer">programmer</mark> (of course it is you) was <mark class="vw" data-w="commissioned">commissioned</mark> to write a program that would reveal how many and which targets Valera hit. More specifically, for each target the program must print the number of <span class="tex-font-style-bf">the first</span> successful shot (in the target), or &quot;-1&quot; if this was not hit. <span class="tex-font-style-bf">The target is considered hit if the shot is inside the circle or on its boundary.</span> Valera is counting on you and perhaps, thanks to you he will one day win international <mark class="vw" data-w="competition">competitions</mark>.</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="4">The first line of the input file contains the <mark class="vw" data-w="integer">integer</mark> <span class="tex-span"><i>n</i></span> (<span class="tex-span">1 ≤ <i>n</i> ≤ 10<sup class="upper-index">4</sup></span>), which is the number of targets. The next <span class="tex-span"><i>n</i></span> lines contain <mark class="vw" data-w="descriptions">descriptions</mark> of the targets. Each target is a circle whose center is located on the <span class="tex-span"><i>Ox</i></span> axis. Each circle is given by its <mark class="vw" data-w="coordinate">coordinate</mark> of the center <span class="tex-span"><i>x</i></span> (<span class="tex-span"> - 2·10<sup class="upper-index">4</sup> ≤ <i>x</i> ≤ 2·10<sup class="upper-index">4</sup></span>) and its <mark class="vw" data-w="radius">radius</mark> <span class="tex-span"><i>r</i></span> (<span class="tex-span">1 ≤ <i>r</i> ≤ 1000</span>). <span class="tex-font-style-bf">It is guaranteed that no two targets <mark class="vw" data-w="coincide">coincide</mark>, <mark class="vw" data-w="intersect">intersect</mark> or are <mark class="vw" data-w="nested">nested</mark> into each other, but they can touch each other.</span> </p><p data-ti="5">The next line contains <mark class="vw" data-w="integer">integer</mark> <span class="tex-span"><i>m</i></span> (<span class="tex-span">1 ≤ <i>m</i> ≤ 2·10<sup class="upper-index">5</sup></span>), which is the number of shots. Next <span class="tex-span"><i>m</i></span> lines contain <mark class="vw" data-w="descriptions">descriptions</mark> of the shots, which are points on the plane, given by their <mark class="vw" data-w="coordinate">coordinates</mark> <span class="tex-span"><i>x</i></span> and <span class="tex-span"><i>y</i></span> (<span class="tex-span"> - 2·10<sup class="upper-index">4</sup> ≤ <i>x</i>, <i>y</i> ≤ 2·10<sup class="upper-index">4</sup></span>).</p><p data-ti="6">All the numbers in the input are <mark class="vw" data-w="integer">integers</mark>. </p><p data-ti="7">Targets and shots are <mark class="vw" data-w="numbered">numbered</mark> starting from one in the order of the input.</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="8">Print on the first line a single number, the number of targets hit by Valera. Print on the second line for each of the targets the number of its first hit or &quot;-1&quot; (without quotes) if this number does not exist. Separate numbers with spaces.</p></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-11 11:56:38 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "biathlete", "zipf": 1.89, "count": 1, "phon": "bai'æθlit", "trans": "滑雪射击运动员"}, {"word": "biathlon", "zipf": 2.68, "count": 6, "phon": "bai'æθlәn", "trans": "n. 滑雪射击"}, {"word": "training", "zipf": 2.72, "count": 2}, {"word": "integer", "zipf": 3.02, "count": 3, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "nested", "zipf": 3.03, "count": 1, "phon": "'nestid", "trans": "a. 嵌套的"}, {"word": "intersect", "zipf": 3.19, "count": 1, "phon": ".intә'sekt", "trans": "vt. 贯穿, 横穿"}, {"word": "diligent", "zipf": 3.23, "count": 1, "phon": "'dilidʒәnt", "trans": "a. 勤勉的, 用功的"}, {"word": "enroll", "zipf": 3.45, "count": 1, "phon": "in'rәul", "trans": "vt. 登记, 使加入"}, {"word": "coincide", "zipf": 3.49, "count": 1, "phon": ".kәuin'said", "trans": "vi. 一致, 符合"}, {"word": "workouts", "zipf": 3.51, "count": 4, "phon": "ˈwɜ:kˌaʊts", "trans": "n. <非正>（尤指体育的）训练, 赛前集训（时间）( workout的复数形式 )"}, {"word": "programmer", "zipf": 3.56, "count": 1, "phon": "'prәugræmә", "trans": "n. 程序员"}, {"word": "awaited", "zipf": 3.58, "count": 1, "phon": "əˈweitid", "trans": "v. 等候( await的过去式和过去分词 ); 等待; 期待; 将发生在"}, {"word": "coordinate", "zipf": 3.82, "count": 2, "phon": "kәu'ɒ:dineit", "trans": "n. 同等的人(或物), 坐标"}, {"word": "numbered", "zipf": 3.82, "count": 1, "phon": "'nʌmbәd", "trans": "a. 计数的, 编号的"}, {"word": "competition", "zipf": 3.83, "count": 2}, {"word": "radius", "zipf": 3.86, "count": 1, "phon": "'reidiәs", "trans": "n. 半径, 范围, 辐射光线"}, {"word": "descriptions", "zipf": 3.92, "count": 2, "trans": "n. 说明, 说明书；摘要；描述（description的复数形式）"}, {"word": "commissioned", "zipf": 3.96, "count": 1, "trans": "a. 受委任的, 现役的, 受任命的"}];
+const TRANS = ["也许很多人都听说过冬季两项世界锦标赛已经结束了。尽管我们的英雄瓦莱拉本人并没有出席这场盛大的赛事，只是在电视上观看，但这让他非常兴奋，以至于他决定参加冬季两项比赛。", "当然，冬季两项运动和任何运动一样，在实践中被证明是非常困难的。这需要很多时间和精力。锻炼、锻炼、再锻炼——这就是瓦莱拉在冬季两项取得伟大成就的道路上等待着的。", "至于训练，大家可能都知道，每一个职业冬季两项运动员都应该快速滑雪并在射击场精确射击。只有在这种情况下你才有希望获得成功，因为跑步和射击是冬季两项的两个主要组成部分。瓦莱拉的滑雪训练一直很刻苦，所以他跑得很快，但是他的投篮精准度却是不值一提。", "在瓦莱拉准备比赛的一个冬季两项基地里，有一个巨大的步枪靶场，有n个目标。每个目标具有圆形形状，并且每个圆的中心位于Ox轴上。在最后一次训练中，瓦莱拉总共投篮了 m 次。为了让他更容易监控自己的结果，一位相当知名的程序员（当然就是你）受委托编写一个程序，该程序将显示瓦莱拉击中了多少个目标以及击中了哪些目标。更具体地说，对于每个目标，程序必须打印第一次成功射击的次数（在目标中），如果没有击中，则打印“-1”。如果射击在圆圈内或其边界上，则视为击中目标。瓦莱拉指望着你，也许，多亏了你，他有一天会赢得国际比赛。", "输入文件的第一行包含整数 n ( 1 ≤ n ≤ 10 4 )，它是目标的数量。接下来的 n 行包含目标的描述。每个目标都是一个圆心位于 Ox 轴上的圆。每个圆由其圆心坐标 x ( - 2·10 4 ≤ x ≤ 2·10 4 ) 和半径 r ( 1 ≤ r ≤ 1000 ) 给出。保证没有两个目标重合、相交或嵌套，但它们可以相互接触。", "下一行包含整数m ( 1 ≤ m ≤ 2·10 5 )，它是射击次数。接下来的 m 行包含对镜头的描述，这些镜头是平面上的点，由它们的坐标 x 和 y 给出（ - 2·10 4 ≤ x ，y ≤ 2·10 4 ）。", "输入中的所有数字都是整数。", "目标和射击按照输入顺序从 1 开始编号。", "在第一行打印一个数字，即瓦莱拉击中的目标数量。在每个目标的第二行打印其第一次命中的编号，如果该编号不存在，则打印“-1”（不带引号）。用空格分隔数字。"];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>

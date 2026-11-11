@@ -1,0 +1,122 @@
+[
+  {
+    "word": "biathlete",
+    "zipf": 1.89,
+    "count": 1,
+    "phon": "bai'æθlit",
+    "trans": "滑雪射击运动员"
+  },
+  {
+    "word": "biathlon",
+    "zipf": 2.68,
+    "count": 6,
+    "phon": "bai'æθlәn",
+    "trans": "n. 滑雪射击"
+  },
+  {
+    "word": "training",
+    "zipf": 2.72,
+    "count": 2
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 3,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "nested",
+    "zipf": 3.03,
+    "count": 1,
+    "phon": "'nestid",
+    "trans": "a. 嵌套的"
+  },
+  {
+    "word": "intersect",
+    "zipf": 3.19,
+    "count": 1,
+    "phon": ".intә'sekt",
+    "trans": "vt. 贯穿, 横穿"
+  },
+  {
+    "word": "diligent",
+    "zipf": 3.23,
+    "count": 1,
+    "phon": "'dilidʒәnt",
+    "trans": "a. 勤勉的, 用功的"
+  },
+  {
+    "word": "enroll",
+    "zipf": 3.45,
+    "count": 1,
+    "phon": "in'rәul",
+    "trans": "vt. 登记, 使加入"
+  },
+  {
+    "word": "coincide",
+    "zipf": 3.49,
+    "count": 1,
+    "phon": ".kәuin'said",
+    "trans": "vi. 一致, 符合"
+  },
+  {
+    "word": "workouts",
+    "zipf": 3.51,
+    "count": 4,
+    "phon": "ˈwɜ:kˌaʊts",
+    "trans": "n. <非正>（尤指体育的）训练, 赛前集训（时间）( workout的复数形式 )"
+  },
+  {
+    "word": "programmer",
+    "zipf": 3.56,
+    "count": 1,
+    "phon": "'prәugræmә",
+    "trans": "n. 程序员"
+  },
+  {
+    "word": "awaited",
+    "zipf": 3.58,
+    "count": 1,
+    "phon": "əˈweitid",
+    "trans": "v. 等候( await的过去式和过去分词 ); 等待; 期待; 将发生在"
+  },
+  {
+    "word": "coordinate",
+    "zipf": 3.82,
+    "count": 2,
+    "phon": "kәu'ɒ:dineit",
+    "trans": "n. 同等的人(或物), 坐标"
+  },
+  {
+    "word": "numbered",
+    "zipf": 3.82,
+    "count": 1,
+    "phon": "'nʌmbәd",
+    "trans": "a. 计数的, 编号的"
+  },
+  {
+    "word": "competition",
+    "zipf": 3.83,
+    "count": 2
+  },
+  {
+    "word": "radius",
+    "zipf": 3.86,
+    "count": 1,
+    "phon": "'reidiәs",
+    "trans": "n. 半径, 范围, 辐射光线"
+  },
+  {
+    "word": "descriptions",
+    "zipf": 3.92,
+    "count": 2,
+    "trans": "n. 说明, 说明书；摘要；描述（description的复数形式）"
+  },
+  {
+    "word": "commissioned",
+    "zipf": 3.96,
+    "count": 1,
+    "trans": "a. 受委任的, 现役的, 受任命的"
+  }
+]
