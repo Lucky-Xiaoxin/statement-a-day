@@ -155,7 +155,7 @@ let q = '';
 const CMP = {
   days: (a, b) => b.days - a.days || b.total - a.total || a.zipf - b.zipf,
   total: (a, b) => b.total - a.total || b.days - a.days || a.zipf - b.zipf,
-  zipf: (a, b) => a.zipf - b.zipf || b.days - a.days,
+  zipf: (a, b) => b.zipf - a.zipf || b.days - a.days || b.total - a.total,
 };
 
 function render() {
