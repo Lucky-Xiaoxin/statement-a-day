@@ -82,6 +82,33 @@ footer{margin-top:26px;color:var(--dim);font-size:12px;text-align:center}
 .footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
 .footlinks a:hover{color:var(--acc)}
 .footlinks span{opacity:.5;margin:0 8px}
+@media (max-width:640px){
+  main{padding:18px 14px 60px}
+  h1{font-size:18px}
+  .toolbar input{flex:1 1 100%;width:auto}
+  .toolbar button{flex:1 1 auto;padding:7px 10px}
+  #defbox{font-size:13.5px}
+  table{display:block;border:0;background:none}
+  thead{display:none}
+  tbody{display:block}
+  tbody tr{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;
+    background:var(--card);border:1px solid var(--line);border-radius:10px;
+    padding:10px 12px;margin-bottom:8px}
+  tbody tr:hover{background:var(--card)}
+  td{display:block;border:0;padding:0;white-space:normal}
+  td.w{order:1;flex:1 1 auto;font-size:16px}
+  td.last{order:2;margin-left:auto;font-size:12px}
+  td.days{order:3}
+  td.total{order:4}
+  td.zipf{order:5}
+  td.n{font-size:12px}
+  td.n[data-label]::before{content:attr(data-label) " ";color:var(--dim);font-size:11px}
+  td.zhc{order:6;flex:0 0 100%}
+  td.tags{order:7;flex:0 0 100%}
+  td.tags:empty{display:none}
+  td .zh{max-width:none;white-space:normal;font-size:12.5px;line-height:1.55}
+  td .tagchip{font-size:9.5px}
+}
 </style>
 </head>
 <body>
@@ -142,13 +169,13 @@ function render() {
     const tr = document.createElement('tr');
     if (known.has(e.word)) tr.className = 'kn';
     tr.innerHTML =
-      '<td><b>' + e.word + '</b>' + (e.bf ? ' <u style="color:var(--dim);font-size:10px">补</u>' : '') + '</td>' +
-      '<td class="n"><b2>' + e.days + '</b2></td>' +
-      '<td class="n">' + e.total + '</td>' +
-      '<td class="n">' + e.zipf.toFixed(2) + '</td>' +
-      '<td>' + (e.tags || '').split(' ').filter(Boolean).slice(0, 2).map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('') + '</td>' +
-      '<td><span class="zh" title="' + (e.trans || '').replace(/"/g, '&quot;') + '">' + (e.trans || '—') + '</span></td>' +
-      '<td><a href="' + e.last_dir + '/page.html">' + e.last_date + '</a></td>';
+      '<td class="w"><b>' + e.word + '</b>' + (e.bf ? ' <u style="color:var(--dim);font-size:10px">补</u>' : '') + '</td>' +
+      '<td class="n days" data-label="天数"><b2>' + e.days + '</b2></td>' +
+      '<td class="n total" data-label="次数">' + e.total + '</td>' +
+      '<td class="n zipf" data-label="Zipf">' + e.zipf.toFixed(2) + '</td>' +
+      '<td class="tags">' + (e.tags || '').split(' ').filter(Boolean).slice(0, 2).map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('') + '</td>' +
+      '<td class="zhc"><span class="zh" title="' + (e.trans || '').replace(/"/g, '&quot;') + '">' + (e.trans || '—') + '</span></td>' +
+      '<td class="last"><a href="' + e.last_dir + '/page.html">' + e.last_date + '</a></td>';
     tr.onclick = () => {
       const box = $('#defbox');
       const tags = (e.tags || '').split(' ').filter(Boolean).slice(0, 3)

@@ -3,6 +3,7 @@
 
 为 ICPC/CF 英文题面阅读训练做的全免费小工具：每天从 Codeforces 随机抽一道 rating ∈ [1400, 1800] 的原题，自动生成「题面 + 生词表」单页。点词看释义，✓ 标记已认识（存浏览器 localStorage，跨页记忆，队友互不影响）。
 
+- 在线访问：<https://lucky-xiaoxin.github.io/statement-a-day/>
 - 设计与决策（稳定结论）：[docs/decisions.md](docs/decisions.md)
 - 当前状态：[AGENTS.md](AGENTS.md)
 
