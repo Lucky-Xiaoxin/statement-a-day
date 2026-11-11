@@ -1,0 +1,47 @@
+name: deploy-pages
+
+# 合并/推送到 main 时只做「重建 → 发布」，不抓题、不翻译、不提交。
+# 日常内容仍由 daily.yml 定时生成并提交（GITHUB_TOKEN 的推送不会再触发本工作流）。
+on:
+  push:
+    branches: [main]
+    paths:
+      - "problems/**"
+      - "scripts/build_index.py"
+      - "scripts/build_stats.py"
+      - ".github/workflows/deploy.yml"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 重建目录与总词表（纯标准库）
+        run: |
+          python scripts/build_index.py
+          python scripts/build_stats.py
+
+      - name: 发布 Pages
+        uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: problems
+      - id: deployment
+        uses: actions/deploy-pages@v4
