@@ -308,6 +308,32 @@ GOOGLE_TURL = ("https://translate.googleapis.com/translate_a/single"
 
 BLOCK_RE = re.compile(r"<(p|li)\b[^>]*>(.*?)</\1>", re.S | re.I)
 
+# 简单 LaTeX → Unicode 文本（喂给翻译接口，让译文里出现 x₁、10⁵、≤ 而不是 [式]）
+SUP_TAB = str.maketrans("0123456789+-=ni()", "⁰¹²³⁴⁵⁶⁷⁸⁹⁺⁻⁼ⁿⁱ⁽⁾")
+SUB_TAB = str.maketrans("0123456789+-=aeikmnoprstuvxh()", "₀₁₂₃₄₅₆₇₈₉₊₋₌ₐₑᵢₖₘₙₒₚᵣₛₜᵤᵥₓₕ₍₎")
+_TEX_WORDS = [
+    (r"\ldots", "…"), (r"\dots", "…"), (r"\times", "×"), (r"\cdot", "·"),
+    (r"\leq", "≤"), (r"\le", "≤"), (r"\geq", "≥"), (r"\ge", "≥"),
+    (r"\neq", "≠"), (r"\ne", "≠"), (r"\pm", "±"), (r"\div", "÷"),
+    (r"\infty", "∞"), (r"\rightarrow", "→"), (r"\to", "→"), (r"\sum", "Σ"),
+    (r"\bmod", " mod "), (r"\mod", " mod "), (r"\left", ""), (r"\right", ""),
+    (r"\%", "%"), (r"\$", "$"), (r"\,", " "), (r"\;", " "), (r"\!", ""),
+]
+
+
+def tex_to_text(s: str) -> str | None:
+    """简单行内 LaTeX → 可读 Unicode 文本；含复杂结构（残余 \\ 或 {}）时返回 None。"""
+    s = s.strip()
+    for cmd, txt in sorted(_TEX_WORDS, key=lambda kv: -len(kv[0])):  # 长命令优先，防 \left 被 \le 截胡
+        s = s.replace(cmd, txt)
+    s = re.sub(r"\^\{([^{}]*)\}|\^([A-Za-z0-9])",
+               lambda m: (m.group(1) or m.group(2)).translate(SUP_TAB), s)
+    s = re.sub(r"_\{([^{}]*)\}|_([A-Za-z0-9])",
+               lambda m: (m.group(1) or m.group(2)).translate(SUB_TAB), s)
+    if "\\" in s or "{" in s or "}" in s:
+        return None  # \frac 之类的复杂结构，转不动 → [式]
+    return s.strip() or None
+
 
 def google_translate(text: str) -> str | None:
     try:
@@ -326,7 +352,11 @@ def translate_blocks(body_html: str, pre_zh: list | None = None) -> tuple[str, l
 
     def tag_block(m: re.Match) -> str:
         tag, inner = m.group(1), m.group(2)
-        text = re.sub(r"\\\(.*?\\\)|\\\[.*?\\\]", " [式] ", inner, flags=re.S)
+
+        def math_txt(mm: re.Match) -> str:
+            return " " + (tex_to_text(mm.group(1) or mm.group(2)) or "[式]") + " "
+
+        text = re.sub(r"\\\((.*?)\\\)|\\\[(.*?)\\\]", math_txt, inner, flags=re.S)
         text = unescape(re.sub(r"<[^>]+>", " ", text))
         text = re.sub(r"\s+", " ", text).strip()
         i = len(blocks)
@@ -336,18 +366,21 @@ def translate_blocks(body_html: str, pre_zh: list | None = None) -> tuple[str, l
     html = BLOCK_RE.sub(tag_block, body_html)
     if pre_zh is not None and len(pre_zh) == len(blocks):
         return html, list(pre_zh)
-    zh: list = []
+    todo = [i for i, t in enumerate(blocks) if 3 <= len(t) <= 3500 and re.search(r"[A-Za-z]", t)]
+    zh: list = [None] * len(blocks)
     ok = 0
-    for t in blocks:
-        if len(t) < 3 or len(t) > 3500 or not re.search(r"[A-Za-z]", t):
-            zh.append(None)
-            continue
-        zh.append(google_translate(t))
-        ok += 1 if zh[-1] else 0
-        time.sleep(0.4)  # 对非官方接口客气点
+    for attempt in (1, 2):  # 第二轮兜底：接口限流时歇 25 秒再试失败段
+        for i in todo:
+            if not zh[i]:
+                zh[i] = google_translate(blocks[i])
+                time.sleep(0.4)  # 对非官方接口客气点
+        ok = sum(1 for i in todo if zh[i])
+        print(f"[i] 译文第 {attempt} 轮：{ok}/{len(todo)} 段")
+        if ok == len(todo) or attempt == 2:
+            break
+        time.sleep(25)
     if ok == 0:
         return body_html, []
-    print(f"[i] 译文：{ok}/{len(blocks)} 段")
     return html, zh
 
 
@@ -667,7 +700,7 @@ def main() -> None:
             if pre is None:
                 tf.write_text(json.dumps(trans, ensure_ascii=False), encoding="utf-8")
         else:
-            print("[warn] 未取到译文：本地（国内）到不了谷歌接口属预期，CI 上会自动带上")
+            print("[warn] 未取到译文：接口当天失败（去 Actions 用 date 参数重跑该天即可修复）或本地无境外网络")
 
     (day_dir / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     (day_dir / "words.json").write_text(json.dumps(words, ensure_ascii=False, indent=2), encoding="utf-8")

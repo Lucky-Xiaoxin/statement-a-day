@@ -3,7 +3,12 @@ name: daily-problem
 on:
   schedule:
     - cron: "0 0 * * *"   # UTC 00:00 = 北京时间 08:00（GitHub cron 有 0-60 分钟漂移，正常）
-  workflow_dispatch: {}    # 手动触发：补卡 / 重部署
+  workflow_dispatch:       # 手动触发：补卡 / 重部署 / 修复某天译文
+    inputs:
+      date:
+        description: "补卡/修复某天（YYYY-MM-DD，留空=今天）"
+        required: false
+        default: ""
 
 permissions:
   contents: write          # 提交每日页面
@@ -42,7 +47,9 @@ jobs:
           TZ: Asia/Shanghai   # 保证"今天"按北京时间算
         run: |
           if [ ! -f data/ecdict-subset.json ]; then python scripts/build_dict.py; fi
-          python scripts/fetch_daily.py --translate --no-open
+          DATE_ARG=""
+          if [ -n "${{ inputs.date }}" ]; then DATE_ARG="--date ${{ inputs.date }}"; fi
+          python scripts/fetch_daily.py --translate --no-open $DATE_ARG
           python scripts/build_index.py
           python scripts/build_stats.py
 
