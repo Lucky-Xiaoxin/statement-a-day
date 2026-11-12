@@ -302,9 +302,9 @@ def highlight_words(html: str, words: list) -> str:
 
 # ---------------------------------------------------------------- 译文 ----
 
-# 非官方 Google 翻译接口：无 key、无注册；国内本地不可达（预期），CI 构建机（境外）可用。
-GOOGLE_TURL = ("https://translate.googleapis.com/translate_a/single"
-               "?client=gtx&sl=en&tl=zh-CN&dt=t&q=")
+# 免费无 key 翻译接口，按优先级组成兜底链（国内本地跑只可能走通 MyMemory）
+_GT_HOSTS = [("translate.googleapis.com", "gtx"), ("clients5.google.com", "dict-chrome-ex")]
+MYMEMORY_URL = "https://api.mymemory.translated.net/get?langpair=en|zh-CN&de=yggdya%40163.com&q="
 
 BLOCK_RE = re.compile(r"<(p|li)\b[^>]*>(.*?)</\1>", re.S | re.I)
 
@@ -335,11 +335,47 @@ def tex_to_text(s: str) -> str | None:
     return s.strip() or None
 
 
-def google_translate(text: str) -> str | None:
+def _gt(host: str, client: str, text: str) -> str | None:
+    url = (f"https://{host}/translate_a/single?client={client}"
+           f"&sl=en&tl=zh-CN&dt=t&q=" + urllib.parse.quote(text))
+    data = json.loads(http_get(url, retries=1, timeout=12).decode("utf-8", "replace"))
+    return "".join(seg[0] for seg in data[0] if seg and seg[0]) or None
+
+
+def _chunk(text: str, size: int = 450):
+    while len(text) > size:  # MyMemory 单次查询有长度上限，按空格切块
+        cut = text.rfind(" ", 200, size)
+        if cut <= 0:
+            cut = size
+        yield text[:cut]
+        text = text[cut:].lstrip()
+    if text:
+        yield text
+
+
+def _mymemory(text: str) -> str | None:
+    out = []
+    for part in _chunk(text):
+        data = json.loads(http_get(MYMEMORY_URL + urllib.parse.quote(part),
+                                   retries=1, timeout=15).decode("utf-8", "replace"))
+        t = (data.get("responseData") or {}).get("translatedText") or ""
+        if not t or t.upper().startswith("MYMEMORY WARNING"):
+            return None
+        out.append(t)
+    return "".join(out) or None
+
+
+def mt_translate(text: str) -> str | None:
+    """无 key 翻译兜底链：谷歌 gtx → 谷歌 dict-chrome-ex → MyMemory。"""
+    for host, client in _GT_HOSTS:
+        try:
+            r = _gt(host, client, text)
+            if r:
+                return r
+        except Exception:
+            pass
     try:
-        url = GOOGLE_TURL + urllib.parse.quote(text)
-        data = json.loads(http_get(url, retries=1, timeout=12).decode("utf-8", "replace"))
-        return "".join(seg[0] for seg in data[0] if seg and seg[0]) or None
+        return _mymemory(text)
     except Exception:
         return None
 
@@ -372,7 +408,7 @@ def translate_blocks(body_html: str, pre_zh: list | None = None) -> tuple[str, l
     for attempt in (1, 2):  # 第二轮兜底：接口限流时歇 25 秒再试失败段
         for i in todo:
             if not zh[i]:
-                zh[i] = google_translate(blocks[i])
+                zh[i] = mt_translate(blocks[i])
                 time.sleep(0.4)  # 对非官方接口客气点
         ok = sum(1 for i in todo if zh[i])
         print(f"[i] 译文第 {attempt} 轮：{ok}/{len(todo)} 段")
