@@ -1,0 +1,49 @@
+[
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 3,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "horde",
+    "zipf": 3.16,
+    "count": 18,
+    "phon": "hɒ:d",
+    "trans": "n. (一)群, 游牧部落, 移动群"
+  },
+  {
+    "word": "nd",
+    "zipf": 3.71,
+    "count": 5,
+    "trans": "北达科地"
+  },
+  {
+    "word": "combo",
+    "zipf": 3.8,
+    "count": 2,
+    "phon": "'kɒmbәu",
+    "trans": "n. 小型爵士乐团"
+  },
+  {
+    "word": "reset",
+    "zipf": 3.83,
+    "count": 1,
+    "phon": ".ri:'set",
+    "trans": "n. 重新设定, 重新组合, 重排版"
+  },
+  {
+    "word": "descriptions",
+    "zipf": 3.92,
+    "count": 1,
+    "trans": "n. 说明, 说明书；摘要；描述（description的复数形式）"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  }
+]
