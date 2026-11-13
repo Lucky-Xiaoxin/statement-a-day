@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-13 · C. Sequence Master</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-13</span>
+    <span class="badge">rating 1600</span>
+    <span>cf1806C</span>
+    <span>#brute force #constructive algorithms #math</span>
+    <a href="https://codeforces.com/problemset/problem/1806/C" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>C. Sequence Master</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">For some positive <mark class="vw" data-w="integer">integer</mark> \(m\), <mark class="vw" data-w="yunqian">YunQian</mark> considers an <mark class="vw" data-w="array">array</mark> \(q\) of \(2m\) (possibly negative) <mark class="vw" data-w="integer">integers</mark> <span class="tex-font-style-it">good</span>, if and only if for every possible <mark class="vw" data-w="subsequence">subsequence</mark> of \(q\) that has length \(m\), the product of the \(m\) elements in the <mark class="vw" data-w="subsequence">subsequence</mark> is equal to the sum of the \(m\) elements that are <span class="tex-font-style-bf">not</span> in the <mark class="vw" data-w="subsequence">subsequence</mark>. Formally, let \(U=\{1,2,\ldots,2m\}\). For all sets \(S \subseteq U\) such that \(|S|=m\), \(\prod\limits_{i \in S} q_i = \sum\limits_{i \in U \setminus S} q_i\).</p><p data-ti="1">Define the <span class="tex-font-style-it">distance</span> between two <mark class="vw" data-w="array">arrays</mark> \(a\) and \(b\) both of length \(k\) to be \(\sum\limits_{i=1}^k|a_i-b_i|\).</p><p data-ti="2">You are given a positive <mark class="vw" data-w="integer">integer</mark> \(n\) and an <mark class="vw" data-w="array">array</mark> \(p\) of \(2n\) <mark class="vw" data-w="integer">integers</mark>.</p><p data-ti="3">Find the minimum distance between \(p\) and \(q\) over all good <mark class="vw" data-w="array">arrays</mark> \(q\) of length \(2n\). It can be shown for all positive <mark class="vw" data-w="integer">integers</mark> \(n\), at least one good <mark class="vw" data-w="array">array</mark> exists. Note that you are <span class="tex-font-style-bf">not required</span> to <mark class="vw" data-w="construct">construct</mark> the <mark class="vw" data-w="array">array</mark> \(q\) that <mark class="vw" data-w="achieves">achieves</mark> this minimum distance.</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="4">The first line contains a single <mark class="vw" data-w="integer">integer</mark> \(t\) (\(1\le t\le 10^4\)) — the number of test cases. The description of test cases follows.</p><p data-ti="5">The first line of each test case contains a single <mark class="vw" data-w="integer">integer</mark> \(n\) (\(1\le n\le 2\cdot10^5\)).</p><p data-ti="6">The second line of each test case contains \(2n\) <mark class="vw" data-w="integer">integers</mark> \(p_1, p_2, \ldots, p_{2n}\) (\(|p_i| \le 10^9\)).</p><p data-ti="7">It is guaranteed that the sum of \(n\) over all test cases does not <mark class="vw" data-w="exceed">exceed</mark> \(2\cdot 10^5\).</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="8">For each test case, output the minimum distance between \(p\) and a good \(q\).</p></div><div class="note"><div class="section-title">Note</div><p data-ti="9">In the first test case, it is <mark class="vw" data-w="optimal">optimal</mark> to let \(q=[6,6]\).</p><p data-ti="10">In the second test case, it is <mark class="vw" data-w="optimal">optimal</mark> to let \(q=[2,2,2,2]\).</p></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-13 12:21:57 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "yunqian", "zipf": 0.0, "count": 1}, {"word": "subsequence", "zipf": 1.92, "count": 3, "phon": "'sʌbsikwәns", "trans": "n. 随后, 后来, 随后发生的事情"}, {"word": "integer", "zipf": 3.02, "count": 8, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "array", "zipf": 3.29, "count": 6, "phon": "ә'rei", "trans": "n. 排列, 衣服, 大批, 军队"}, {"word": "achieves", "zipf": 3.33, "count": 1, "phon": "əˈtʃi:vz", "trans": "v. 取得( achieve的第三人称单数 ); 获得; 实现; 成功"}, {"word": "exceed", "zipf": 3.92, "count": 1, "phon": "ik'si:d", "trans": "vt. 超过, 超越, 胜过"}, {"word": "optimal", "zipf": 3.94, "count": 2, "phon": "'ɒptimәl", "trans": "a. 最佳的, 最理想的"}, {"word": "construct", "zipf": 3.98, "count": 1, "phon": "kәn'strʌkt", "trans": "vt. 构造, 建造, 对...进行构思, 作图"}];
+const TRANS = ["对于某个正整数 m ，YunQian 认为 2m（可能是负）整数的数组 q 是好的，当且仅当对于 q 的每个可能的长度为 m 的子序列，子序列中 m 个元素的乘积等于不在子序列 中的 m 个元素之和。正式地，令 [式] 。对于所有满足 |S|=m 的集合 [式] ， [式] 。", "将长度均为 k 的两个数组 a 和 b 之间的距离定义为 [式] 。", "给定一个正整数 n 和一个由 2n 个整数组成的数组 p 。", "找出所有长度为 2n 的好数组 q 中 p 和 q 之间的最小距离。可以证明，对于所有正整数 n ，至少存在一个好的数组。请注意，您不需要构造达到此最小距离的数组 q。", "第一行包含一个整数 t ( 1≤ t≤ 10⁴ ) — 测试用例的数量。测试用例的描述如下。", "每个测试用例的第一行包含一个整数 n ( 1≤ n≤ 2·10⁵ )。", "每个测试用例的第二行包含 2n 个整数 p₁、p2、…、p2ₙ ( |pᵢ| ≤ 10⁹ )。", "保证所有测试用例的n之和不超过2·10⁵。", "对于每个测试用例，输出 p 和良好 q 之间的最小距离。", "在第一个测试用例中，最好让 q=[6,6] 。", "在第二个测试用例中，最好让 q=[2,2,2,2] 。"];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+[
+  {
+    "word": "yunqian",
+    "zipf": 0.0,
+    "count": 1
+  },
+  {
+    "word": "subsequence",
+    "zipf": 1.92,
+    "count": 3,
+    "phon": "'sʌbsikwәns",
+    "trans": "n. 随后, 后来, 随后发生的事情"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 8,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "array",
+    "zipf": 3.29,
+    "count": 6,
+    "phon": "ә'rei",
+    "trans": "n. 排列, 衣服, 大批, 军队"
+  },
+  {
+    "word": "achieves",
+    "zipf": 3.33,
+    "count": 1,
+    "phon": "əˈtʃi:vz",
+    "trans": "v. 取得( achieve的第三人称单数 ); 获得; 实现; 成功"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  },
+  {
+    "word": "optimal",
+    "zipf": 3.94,
+    "count": 2,
+    "phon": "'ɒptimәl",
+    "trans": "a. 最佳的, 最理想的"
+  },
+  {
+    "word": "construct",
+    "zipf": 3.98,
+    "count": 1,
+    "phon": "kәn'strʌkt",
+    "trans": "vt. 构造, 建造, 对...进行构思, 作图"
+  }
+]
