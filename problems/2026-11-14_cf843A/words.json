@@ -1,0 +1,43 @@
+[
+  {
+    "word": "subsequence",
+    "zipf": 1.5,
+    "count": 12,
+    "phon": "'sʌbsikwәns",
+    "trans": "n. 随后, 后来, 随后发生的事情"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 6,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "indices",
+    "zipf": 3.41,
+    "count": 2,
+    "phon": "'indisi:z",
+    "trans": "pl. 索引, 指针, 指数, 指标"
+  },
+  {
+    "word": "sorting",
+    "zipf": 3.61,
+    "count": 6,
+    "phon": "'sɔ:tiŋ",
+    "trans": "(21811/19912)"
+  },
+  {
+    "word": "fulfilling",
+    "zipf": 3.71,
+    "count": 1,
+    "trans": "a. 能实现个人抱负的；令人高兴的；令人满意的"
+  },
+  {
+    "word": "sorted",
+    "zipf": 3.83,
+    "count": 1,
+    "phon": "'sɔ:tid",
+    "trans": "a. 分选的；分类的；挑选的"
+  }
+]

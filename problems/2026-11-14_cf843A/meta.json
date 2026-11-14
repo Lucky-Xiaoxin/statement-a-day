@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-14",
+  "contestId": 843,
+  "index": "A",
+  "name": "Sorting by Subsequences",
+  "rating": 1400,
+  "tags": [
+    "dfs and similar",
+    "dsu",
+    "implementation",
+    "math",
+    "sortings"
+  ],
+  "url": "https://codeforces.com/problemset/problem/843/A"
+}
