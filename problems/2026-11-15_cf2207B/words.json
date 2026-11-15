@@ -1,0 +1,62 @@
+[
+  {
+    "word": "jumpscare",
+    "zipf": 1.82,
+    "count": 1
+  },
+  {
+    "word": "animatronic",
+    "zipf": 2.25,
+    "count": 12,
+    "trans": "电子动物的"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 4,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "defenseless",
+    "zipf": 3.05,
+    "count": 1,
+    "phon": "di'fenslis",
+    "trans": "a. 无防备的"
+  },
+  {
+    "word": "increments",
+    "zipf": 3.12,
+    "count": 1,
+    "phon": "'ɪnkrəmənts",
+    "trans": "n. 增长( increment的复数形式 ); 增量; 增额; 定期的加薪"
+  },
+  {
+    "word": "flashlight",
+    "zipf": 3.46,
+    "count": 4,
+    "phon": "'flæʃlait",
+    "trans": "n. 手电筒, 闪光信号灯"
+  },
+  {
+    "word": "numbered",
+    "zipf": 3.82,
+    "count": 2,
+    "phon": "'nʌmbәd",
+    "trans": "a. 计数的, 编号的"
+  },
+  {
+    "word": "reset",
+    "zipf": 3.83,
+    "count": 1,
+    "phon": ".ri:'set",
+    "trans": "n. 重新设定, 重新组合, 重排版"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  }
+]

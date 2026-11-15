@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-15 · B. One Night At Freddy's</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-15</span>
+    <span class="badge">rating 1600</span>
+    <span>cf2207B</span>
+    <span>#games #greedy #sortings</span>
+    <a href="https://codeforces.com/problemset/problem/2207/B" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>B. One Night At Freddy's</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0"> </p><center><table class="tex-tabular"><tbody><tr><td class="tex-tabular-text-align-center tex-tabular-border-top tex-tabular-border-bottom"><span class="tex-font-size-small"><span class="tex-font-style-it"> <a href="https://www.youtube.com/watch?v=l18A5BOTlzE&amp;t=6s">Five Nights at Freddy's 1 Song — The Living Tombstone </a></span></span></td></tr></tbody></table></center><p data-ti="1">Let \(n, m, \ell\) be positive <mark class="vw" data-w="integer">integers</mark>. You have made the unfortunate decision to work as a night guard at Freddy Fazbear's Pizzeria, where there are \(m\) <mark class="vw" data-w="animatronic">animatronics</mark> <mark class="vw" data-w="numbered">numbered</mark> \(1, \ldots, m\) waiting to <mark class="vw" data-w="jumpscare">jumpscare</mark> you.</p><p data-ti="2">The night consists of \(\ell\) seconds, <mark class="vw" data-w="numbered">numbered</mark> \(1, \ldots, \ell\). The \(j\)-th of the \(m\) <mark class="vw" data-w="animatronic">animatronics</mark> has a <span class="tex-font-style-it">danger level</span> \(d_j\), and initially \(d_1 = \ldots = d_m = 0\). Every second, the danger level of exactly one <mark class="vw" data-w="animatronic">animatronic</mark> will increase by \(1\), and throughout the night, you are able to observe all values of \(d_j\) at the current time. For example, if \(m = 2\), one possible list of danger levels after \(5\) seconds is \([d_1, d_2] = [2, 3]\).</p><p data-ti="3">You are not <mark class="vw" data-w="defenseless">defenseless</mark>, however. At each of the \(n\) fixed times \(a_i\) (\(1 \leq a_1  \lt  \ldots  \lt  a_n \leq \ell\)), you can shine your <mark class="vw" data-w="flashlight">flashlight</mark> on exactly one <mark class="vw" data-w="animatronic">animatronic</mark> \(j_i\) of your choice. This occurs immediately after the \(a_i\)-th second and sets its danger level back to zero, i.e. \(d_{j_i} := 0\). Note that this choice is made independently for each <mark class="vw" data-w="flashlight">flashlight</mark> use \(a_i\). Continuing the example from before, if \(a_1 = 5\) and you choose to flash the second <mark class="vw" data-w="animatronic">animatronic</mark> at that time, the danger levels after \(5\) seconds will be \([d_1, d_2] = [2, 0]\).</p><p data-ti="4">Let the <span class="tex-font-style-it">overall danger</span> be the maximum danger across all <mark class="vw" data-w="animatronic">animatronics</mark>, i.e. \(\max_{1 \leq j \leq m} d_j\). You will lose if the overall danger at the end of the night (after \(\ell\) seconds) is greater than \(x\). Find the minimum value of \(x\) such that regardless of the actions of the <mark class="vw" data-w="animatronic">animatronics</mark>, you can guarantee that <span class="tex-font-style-it">overall danger</span> will be less than or equal \(x\).</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="5">Each test contains multiple test cases. The first line contains the number of test cases \(t\) (\(1 \le t \le 10^4\)). The description of the test cases follows. </p><p data-ti="6">The first line of each test case contains three <mark class="vw" data-w="integer">integers</mark> \(n\), \(m\), and \(\ell\) (\(1 \leq n, m, \ell \leq 2 \cdot 10^5, n \leq \ell, 1 \leq m \cdot \ell \leq 2 \cdot 10^5\)) — the number of <mark class="vw" data-w="flashlight">flashlight</mark> actions, <mark class="vw" data-w="animatronic">animatronics</mark>, and the length of the night, respectively.</p><p data-ti="7">The next line contains \(n\) <mark class="vw" data-w="integer">integers</mark> \(a_i\) (\(1 \leq a_1  \lt  \ldots  \lt  a_n \leq \ell\)) — the times at which you get to shine your <mark class="vw" data-w="flashlight">flashlight</mark>.</p><p data-ti="8">It is guaranteed that the sum of \(m \cdot \ell\) over all test cases does not <mark class="vw" data-w="exceed">exceed</mark> \(2 \cdot 10^5\). </p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="9">For each test case, output a single <mark class="vw" data-w="integer">integer</mark> — the minimum \(x\) such that you can guarantee that your final danger level is at most \(x\).</p></div><div class="note"><div class="section-title">Note</div><p data-ti="10">In the first test case, there are \(2\) <mark class="vw" data-w="animatronic">animatronics</mark> and a night length of \(10\), and you get to flash after the \(10\)-th second. We will show that \(x = 5\) is always possible. After \(10\) seconds, notice that one <mark class="vw" data-w="animatronic">animatronic</mark> must have at least \(5\) danger, and the other must have at most \(5\) danger. So, we can flash the higher one and get a final danger level at most \(5\). It can be shown that \(5\) is the minimum possible value of \(x\).</p><p data-ti="11">In the second test case, there is only one <mark class="vw" data-w="animatronic">animatronic</mark> and a night length of \(32\). Notice that in this case, the <mark class="vw" data-w="animatronic">animatronic</mark> just <mark class="vw" data-w="increments">increments</mark> its danger by \(1\) each second. So, after the \(25\)-th second, we <mark class="vw" data-w="reset">reset</mark> its danger to \(0\). Seven more seconds pass before the night ends, so the final danger we get is always \(7\).</p><p data-ti="12">In the third test case, it can be proven that the minimum possible value of \(x\) is \(19\). </p></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-15 12:00:54 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "jumpscare", "zipf": 1.82, "count": 1}, {"word": "animatronic", "zipf": 2.25, "count": 12, "trans": "电子动物的"}, {"word": "integer", "zipf": 3.02, "count": 4, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "defenseless", "zipf": 3.05, "count": 1, "phon": "di'fenslis", "trans": "a. 无防备的"}, {"word": "increments", "zipf": 3.12, "count": 1, "phon": "'ɪnkrəmənts", "trans": "n. 增长( increment的复数形式 ); 增量; 增额; 定期的加薪"}, {"word": "flashlight", "zipf": 3.46, "count": 4, "phon": "'flæʃlait", "trans": "n. 手电筒, 闪光信号灯"}, {"word": "numbered", "zipf": 3.82, "count": 2, "phon": "'nʌmbәd", "trans": "a. 计数的, 编号的"}, {"word": "reset", "zipf": 3.83, "count": 1, "phon": ".ri:'set", "trans": "n. 重新设定, 重新组合, 重排版"}, {"word": "exceed", "zipf": 3.92, "count": 1, "phon": "ik'si:d", "trans": "vt. 超过, 超越, 胜过"}];
+const TRANS = [null, "设 [式] 为正整数。你做出了一个不幸的决定，在费斯熊弗雷迪的比萨店当夜间警卫，那里有编号为 1 的电子动画，……我正等着来吓唬你。", "夜晚由 [式] 秒组成，编号为 [式] 。 m 个电子动画设备中的第 j 个危险级别为 dj ，最初 d₁ = … = dₘ = 0 。每一秒，恰好有一个电子玩具的危险等级会增加 1 级，并且整个晚上，您都可以观察到当前时间 dj 的所有值。例如，如果 m = 2 ，5 秒后危险级别的一个可能列表为 [d₁, d2] = [2, 3] 。", "然而，你并非毫无防备。在 n 个固定时间 aᵢ ( [式] ) 中的每一个，您都可以将手电筒照射到您选择的一个电子动画 jᵢ 上。这发生在第 aᵢ 秒之后，并将其危险级别设置回零，即 dj_ᵢ := 0 。请注意，此选择是针对每个手电筒使用 aᵢ 独立做出的。继续之前的示例，如果 a₁ = 5 并且您选择当时闪烁第二个电子动画，则 5 秒后的危险级别将为 [d₁, d2] = [2, 0] 。", "令总体危险为所有电子动画中的最大危险，即 [式] 。如果当晚结束时（[式]秒后）的总体危险大于 x ，您就会失败。找到 x 的最小值，这样无论电子动画的动作如何，您都可以保证总体危险将小于或等于 x 。", "每个测试包含多个测试用例。第一行包含测试用例的数量 t ( 1 ≤ t ≤ 10⁴ )。测试用例的描述如下。", "每个测试用例的第一行包含三个整数 n 、 m 和 [式] ( [式] ) — 分别是手电筒动作的数量、电子动画和夜晚的长度。", "下一行包含 n 个整数 aᵢ ( [式] ) — 您打开手电筒的时间。", "保证所有测试用例的 [式] 之和不超过 2 · 10⁵ 。", "对于每个测试用例，输出一个整数 - 最小的 x ，这样您就可以保证最终的危险级别最多为 x 。", "在第一个测试用例中，有 2 个电子动画和 10 的夜间长度，并且您在第 10 秒后开始闪光。我们将证明 x = 5 总是可能的。 10 秒后，请注意，一个电子动画必须至少具有 5 种危险，而另一个电子动画必须最多具有 5 种危险。因此，我们可以闪现较高的一个，并获得最多 5 的最终危险等级。可以证明 5 是 x 的最小可能值。", "在第二个测试用例中，只有一个电子动画和 32 的夜间长度。请注意，在这种情况下，电子动画只是每秒将其危险度增加 1。因此，在第 25 秒后，我们将其危险度重置为 0 。距离夜晚结束还有七秒，所以我们得到的最终危险始终是 7 。", "在第三个测试用例中，可以证明 x 的最小可能值为 19 。"];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>
