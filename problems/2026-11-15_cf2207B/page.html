@@ -68,6 +68,11 @@ h2{font-size:17px;margin:34px 0 10px}
 .statement img{max-width:100%}
 :root.dark .statement img{background:#fff;border-radius:4px}
 .statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+.statement table{max-width:100%}
+/* 长公式不可换行，会把整页撑宽（手机端会因此整体缩放）。不改动公式本身的渲染，
+   只在段落级收纳溢出：段落超宽时自己横向滚动，页面宽度保持不变 */
+.statement p,.statement li{overflow-x:auto;overflow-y:hidden}
+.statement mjx-assistive-mml{width:1px;height:1px;overflow:hidden}
 mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
 mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
 .zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
@@ -79,6 +84,13 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 .footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
 .footlinks a:hover{color:var(--acc)}
 .footlinks span{opacity:.5;margin:0 8px}
+@media (max-width:640px){
+  main{padding:14px 12px 56px}
+  .statement{padding:8px 14px 14px}
+  .switch{top:10px;right:12px}
+  h1{font-size:19px}
+  h2{margin-top:26px}
+}
 </style>
 </head>
 <body>
@@ -112,7 +124,7 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
     <nav class="footlinks">
       <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
     </nav>
-    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-15 12:00:54 · 公式由 MathJax 渲染（需联网）</div>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-15 19:21:04 · 公式由 MathJax 渲染（需联网）</div>
   </footer>
 </main>
 <script>

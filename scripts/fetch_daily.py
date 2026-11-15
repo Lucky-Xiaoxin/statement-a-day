@@ -492,6 +492,11 @@ h2{font-size:17px;margin:34px 0 10px}
 .statement img{max-width:100%}
 :root.dark .statement img{background:#fff;border-radius:4px}
 .statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+.statement table{max-width:100%}
+/* 长公式不可换行，会把整页撑宽（手机端会因此整体缩放）。不改动公式本身的渲染，
+   只在段落级收纳溢出：段落超宽时自己横向滚动，页面宽度保持不变 */
+.statement p,.statement li{overflow-x:auto;overflow-y:hidden}
+.statement mjx-assistive-mml{width:1px;height:1px;overflow:hidden}
 mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
 mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
 .zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
@@ -503,6 +508,13 @@ footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
 .footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
 .footlinks a:hover{color:var(--acc)}
 .footlinks span{opacity:.5;margin:0 8px}
+@media (max-width:640px){
+  main{padding:14px 12px 56px}
+  .statement{padding:8px 14px 14px}
+  .switch{top:10px;right:12px}
+  h1{font-size:19px}
+  h2{margin-top:26px}
+}
 </style>
 </head>
 <body>
@@ -723,8 +735,8 @@ def main() -> None:
     body_html = highlight_words(body_html, words)
 
     trans: list = []
+    tf = day_dir / "trans.json"
     if args.translate:
-        tf = day_dir / "trans.json"
         pre = None
         if tf.exists():  # 同一天重跑：复用已翻译结果，不再打接口
             try:
@@ -737,6 +749,14 @@ def main() -> None:
                 tf.write_text(json.dumps(trans, ensure_ascii=False), encoding="utf-8")
         else:
             print("[warn] 未取到译文：接口当天失败（去 Actions 用 date 参数重跑该天即可修复）或本地无境外网络")
+    elif tf.exists():  # 本地重渲染（无 --translate）：复用 CI 已缓存的译文，不调任何接口
+        try:
+            cached = json.loads(tf.read_text(encoding="utf-8"))
+        except Exception:
+            cached = None
+        if cached and len(cached) == len(BLOCK_RE.findall(body_html)):
+            body_html, trans = translate_blocks(body_html, pre_zh=cached)
+            print(f"[i] 复用已缓存的译文 {sum(1 for t in trans if t)} 段")
 
     (day_dir / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2), encoding="utf-8")
     (day_dir / "words.json").write_text(json.dumps(words, ensure_ascii=False, indent=2), encoding="utf-8")
