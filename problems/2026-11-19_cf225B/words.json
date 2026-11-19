@@ -1,0 +1,36 @@
+[
+  {
+    "word": "bonacci",
+    "zipf": 1.4,
+    "count": 4
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 9,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "generalization",
+    "zipf": 3.21,
+    "count": 1,
+    "phon": ",dʒenәrәlai'zeiʃәn",
+    "trans": "n. 一般化, 普遍化, 概括"
+  },
+  {
+    "word": "distinct",
+    "zipf": 4.29,
+    "count": 2,
+    "bf": 1,
+    "phon": "dis'tiŋkt",
+    "trans": "a. 清楚的, 显著的, 不同的"
+  },
+  {
+    "word": "guaranteed",
+    "zipf": 4.29,
+    "count": 1,
+    "bf": 1,
+    "trans": "a. 有保证的, ；有人担保的"
+  }
+]

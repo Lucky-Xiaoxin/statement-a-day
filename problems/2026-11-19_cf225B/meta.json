@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-19",
+  "contestId": 225,
+  "index": "B",
+  "name": "Well-known Numbers",
+  "rating": 1600,
+  "tags": [
+    "binary search",
+    "greedy",
+    "number theory"
+  ],
+  "url": "https://codeforces.com/problemset/problem/225/B"
+}
