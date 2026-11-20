@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-20 · L. Bridge Renovation</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+.statement table{max-width:100%}
+/* 长公式不可换行，会把整页撑宽（手机端会因此整体缩放）。不改动公式本身的渲染，
+   只在段落级收纳溢出：段落超宽时自己横向滚动，页面宽度保持不变 */
+.statement p,.statement li{overflow-x:auto;overflow-y:hidden}
+.statement mjx-assistive-mml{width:1px;height:1px;overflow:hidden}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+@media (max-width:640px){
+  main{padding:14px 12px 56px}
+  .statement{padding:8px 14px 14px}
+  .switch{top:10px;right:12px}
+  h1{font-size:19px}
+  h2{margin-top:26px}
+}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-20</span>
+    <span class="badge">rating 1400</span>
+    <span>cf2038L</span>
+    <span>#brute force #dp #greedy #math #two pointers</span>
+    <a href="https://codeforces.com/problemset/problem/2038/L" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>L. Bridge Renovation</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">Recently, Monocarp started working as a director of a park located near his house. The park is quite large, so it even has a small river <mark class="vw" data-w="splitting">splitting</mark> it into several zones. Several bridges are built across this river. Three of these bridges are especially old and need to be <mark class="vw" data-w="repaired">repaired</mark>.</p><p data-ti="1">All three bridges have the same <mark class="vw" data-w="length">length</mark> but differ in <mark class="vw" data-w="width">width</mark>. Their <mark class="vw" data-w="width">widths</mark> are \(18\), \(21\) and \(25\) units, respectively.</p><p data-ti="2">During the park <mark class="vw" data-w="renovation">renovation</mark> process, Monocarp has to replace the old <mark class="vw" data-w="plank">planks</mark> that served as the surface of the bridges with the new ones.</p><center> <img class="tex-graphics" src="https://espresso.codeforces.com/2a053b0325255193bac54993a1b09d9278355079.png" style="max-width: 100.0%;max-height: 100.0%;" width="340px" /> </center><p data-ti="3"><mark class="vw" data-w="plank">Planks</mark> are sold with a standard <mark class="vw" data-w="length">length</mark> of \(60\) units. Monocarp already knows that he needs \(n\) <mark class="vw" data-w="plank">planks</mark> for each bridge. But since the bridges have different <mark class="vw" data-w="width">widths</mark>, he needs \(n\) <mark class="vw" data-w="plank">planks</mark> of <mark class="vw" data-w="length">length</mark> \(18\) for the first bridge, \(n\) <mark class="vw" data-w="plank">planks</mark> of <mark class="vw" data-w="length">length</mark> \(21\) for the second one, and \(n\) <mark class="vw" data-w="plank">planks</mark> of <mark class="vw" data-w="length">length</mark> \(25\) for the last one.</p><p data-ti="4">Workers in charge of <mark class="vw" data-w="renovation">renovation</mark> have no problem with cutting <mark class="vw" data-w="plank">planks</mark> into parts but refuse to join <mark class="vw" data-w="plank">planks</mark>, since it creates weak spots and looks ugly.</p><p data-ti="5">Monocarp wants to buy as few <mark class="vw" data-w="plank">planks</mark> as possible but struggles to <mark class="vw" data-w="calculate">calculate</mark> the required number of <mark class="vw" data-w="plank">planks</mark>. Can you help him?</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="6">The first and only line contains a single <mark class="vw" data-w="integer">integer</mark> \(n\) (\(1 \le n \le 1000\)) — the number of <mark class="vw" data-w="plank">planks</mark> required for each of the three bridges.</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="7">Print a single <mark class="vw" data-w="integer">integer</mark> — the minimum number of <mark class="vw" data-w="plank">planks</mark> of standard <mark class="vw" data-w="length">length</mark> (\(60\) units) Monocarp needs to cover all three bridges if the <mark class="vw" data-w="plank">planks</mark> can be cut into parts.</p></div><div class="note"><div class="section-title">Note</div><p data-ti="8">In the first example, it is possible to cut one <mark class="vw" data-w="plank">plank</mark> of <mark class="vw" data-w="length">length</mark> \(60\) into three <mark class="vw" data-w="plank">planks</mark> with <mark class="vw" data-w="length">lengths</mark> \(25\), \(18\) and \(17\), and cut another <mark class="vw" data-w="plank">plank</mark> of <mark class="vw" data-w="length">length</mark> \(60\) into two <mark class="vw" data-w="plank">planks</mark> with <mark class="vw" data-w="length">lengths</mark> \(39\) and \(21\). That way, Monocarp will have all the required <mark class="vw" data-w="plank">planks</mark>.</p></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-20 13:02:29 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "width", "zipf": 2.81, "count": 3, "phon": "widθ", "trans": "n. 宽度, 宽广, 广博"}, {"word": "plank", "zipf": 3.13, "count": 18, "phon": "plæŋk", "trans": "n. 厚木板, 支架, 木板制品, 冲浪板, 救急物, 政纲条目"}, {"word": "integer", "zipf": 3.39, "count": 2, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "renovation", "zipf": 3.74, "count": 2, "phon": ".renәu'veiʃәn", "trans": "n. 革新, 刷新, 修理"}, {"word": "repaired", "zipf": 3.77, "count": 1, "phon": "riˈpɛəd", "trans": "v. 纠正( repair的过去式和过去分词 ); 补救"}, {"word": "splitting", "zipf": 3.78, "count": 1, "phon": "'splitiŋ", "trans": "a. 爆裂似的, 极快的"}, {"word": "calculate", "zipf": 3.87, "count": 1, "phon": "'kælkjuleit", "trans": "v. 计算, 预测, 计划, 打算"}, {"word": "length", "zipf": 3.92, "count": 10}];
+const TRANS = ["最近，莫诺卡普开始在他家附近的一个公园担任主管。公园很大，甚至有一条小河把它分成了几个区域。这条河上建有几座桥梁。其中三座桥梁特别古老，需要修复。", "三座桥的长度相同，但宽度不同。它们的宽度分别为 18 、 21 和 25 个单位。", "在公园改造过程中，Monocarp 必须用新木板替换用作桥梁表面的旧木板。", "出售的木板标准长度为 60 单位。 Monocarp 已经知道每座桥需要 n 块木板。但由于桥的宽度不同，他需要 n 块长度为 18 的木板用于第一座桥，n 块长度为 21 的木板用于第二座桥，n 块长度为 25 的木板用于最后一座桥。", "负责装修的工人可以将木板切割成多个部分，但拒绝将木板连接起来，因为这样会产生薄弱环节，而且看起来很丑。", "Monocarp 希望购买尽可能少的木板，但难以计算所需的木板数量。你能帮助他吗？", "第一行也是唯一一行包含一个整数 n ( 1 ≤ n ≤ 1000 ) — 三座桥中每座桥所需的木板数量。", "打印一个整数 - 如果木板可以切割成多个部分，则 Monocarp 需要覆盖所有三座桥的标准长度木板的最小数量（60 个单位）。", "在第一示例中，可以将长度60的一块木板切割成长度25、18和17的三块木板，并将长度60的另一块木板切割成长度39和21的两块木板。这样，Monocarp 就会拥有所有需要的木板。"];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>

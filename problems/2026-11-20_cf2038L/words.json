@@ -1,0 +1,56 @@
+[
+  {
+    "word": "width",
+    "zipf": 2.81,
+    "count": 3,
+    "phon": "widθ",
+    "trans": "n. 宽度, 宽广, 广博"
+  },
+  {
+    "word": "plank",
+    "zipf": 3.13,
+    "count": 18,
+    "phon": "plæŋk",
+    "trans": "n. 厚木板, 支架, 木板制品, 冲浪板, 救急物, 政纲条目"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.39,
+    "count": 2,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "renovation",
+    "zipf": 3.74,
+    "count": 2,
+    "phon": ".renәu'veiʃәn",
+    "trans": "n. 革新, 刷新, 修理"
+  },
+  {
+    "word": "repaired",
+    "zipf": 3.77,
+    "count": 1,
+    "phon": "riˈpɛəd",
+    "trans": "v. 纠正( repair的过去式和过去分词 ); 补救"
+  },
+  {
+    "word": "splitting",
+    "zipf": 3.78,
+    "count": 1,
+    "phon": "'splitiŋ",
+    "trans": "a. 爆裂似的, 极快的"
+  },
+  {
+    "word": "calculate",
+    "zipf": 3.87,
+    "count": 1,
+    "phon": "'kælkjuleit",
+    "trans": "v. 计算, 预测, 计划, 打算"
+  },
+  {
+    "word": "length",
+    "zipf": 3.92,
+    "count": 10
+  }
+]
