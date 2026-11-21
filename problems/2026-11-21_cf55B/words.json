@@ -1,0 +1,70 @@
+[
+  {
+    "word": "specificator",
+    "zipf": 0.0,
+    "count": 1
+  },
+  {
+    "word": "preffered",
+    "zipf": 1.52,
+    "count": 1
+  },
+  {
+    "word": "lld",
+    "zipf": 2.01,
+    "count": 1,
+    "trans": "法学博士"
+  },
+  {
+    "word": "cin",
+    "zipf": 2.66,
+    "count": 1
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 4,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "blackboard",
+    "zipf": 3.02,
+    "count": 2,
+    "phon": "'blækbɒ:d",
+    "trans": "n. 黑板"
+  },
+  {
+    "word": "multiplication",
+    "zipf": 3.26,
+    "count": 1,
+    "phon": ".mʌltipli'keiʃәn",
+    "trans": "n. 乘法, 增加, 乘法运算"
+  },
+  {
+    "word": "arithmetic",
+    "zipf": 3.4,
+    "count": 1,
+    "phon": "ә'riθmәtik",
+    "trans": "n. 算术, 算术知识"
+  },
+  {
+    "word": "algebra",
+    "zipf": 3.77,
+    "count": 1,
+    "phon": "'ældʒibrә",
+    "trans": "n. 代数学"
+  },
+  {
+    "word": "unpleasant",
+    "zipf": 3.8,
+    "count": 1,
+    "phon": ".ʌn'pleznt",
+    "trans": "a. 使人不愉快的, 使人厌恶的, 煞风景的"
+  },
+  {
+    "word": "remember",
+    "zipf": 3.93,
+    "count": 2
+  }
+]
