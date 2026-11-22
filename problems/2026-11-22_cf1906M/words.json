@@ -1,0 +1,104 @@
+[
+  {
+    "word": "uppermost",
+    "zipf": 2.7,
+    "count": 1,
+    "phon": "'ʌpәmәust",
+    "trans": "a. 最高的, 最上面的"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 3,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "polygon",
+    "zipf": 3.04,
+    "count": 2,
+    "phon": "'pɒligәn",
+    "trans": "n. 多角形, 多边形"
+  },
+  {
+    "word": "intersect",
+    "zipf": 3.19,
+    "count": 1,
+    "phon": ".intә'sekt",
+    "trans": "vt. 贯穿, 横穿"
+  },
+  {
+    "word": "clockwise",
+    "zipf": 3.2,
+    "count": 1,
+    "phon": "'klɒkwaiz",
+    "trans": "a. 顺时针方向的"
+  },
+  {
+    "word": "triangle",
+    "zipf": 3.27,
+    "count": 9,
+    "phon": "'traiæŋgl",
+    "trans": "n. 三角形, 三个一组, 三角关系"
+  },
+  {
+    "word": "degenerate",
+    "zipf": 3.33,
+    "count": 6,
+    "phon": "di'dʒenәreit",
+    "trans": "a. 堕落的"
+  },
+  {
+    "word": "achieves",
+    "zipf": 3.33,
+    "count": 2,
+    "phon": "əˈtʃi:vz",
+    "trans": "v. 取得( achieve的第三人称单数 ); 获得; 实现; 成功"
+  },
+  {
+    "word": "labelled",
+    "zipf": 3.62,
+    "count": 1,
+    "trans": "a. 贴上标签的"
+  },
+  {
+    "word": "positioned",
+    "zipf": 3.79,
+    "count": 1,
+    "trans": "a. 放置的"
+  },
+  {
+    "word": "arbitrary",
+    "zipf": 3.85,
+    "count": 1,
+    "phon": "'ɑ:bitrәri",
+    "trans": "a. 任意的, 武断的, 专治的, 霸道的"
+  },
+  {
+    "word": "illustration",
+    "zipf": 3.92,
+    "count": 3,
+    "phon": ".ilә'streiʃәn",
+    "trans": "n. 例证, 插图"
+  },
+  {
+    "word": "satisfying",
+    "zipf": 3.93,
+    "count": 1,
+    "phon": "'sætisfaiiŋ",
+    "trans": "a. 满意的, 充分的, 足可相信的"
+  },
+  {
+    "word": "sided",
+    "zipf": 3.94,
+    "count": 2,
+    "phon": "'saidid",
+    "trans": "a. 有边的, 有面的"
+  },
+  {
+    "word": "segments",
+    "zipf": 3.98,
+    "count": 1,
+    "trans": "n. 积弓形片模型；片段；段数（segment的复数）"
+  }
+]
