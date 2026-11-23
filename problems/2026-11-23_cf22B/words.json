@@ -1,0 +1,42 @@
+[
+  {
+    "word": "rearrange",
+    "zipf": 3.01,
+    "count": 1,
+    "phon": ".ri:ә'reindʒ",
+    "trans": "vt. 再排列, 重新整理"
+  },
+  {
+    "word": "maximal",
+    "zipf": 3.06,
+    "count": 1,
+    "phon": "'mæksiml",
+    "trans": "a. 最大的, 最高的"
+  },
+  {
+    "word": "rectangular",
+    "zipf": 3.62,
+    "count": 2,
+    "phon": "rek'tæŋgjulә",
+    "trans": "a. 成直角的"
+  },
+  {
+    "word": "bargaining",
+    "zipf": 3.64,
+    "count": 4,
+    "phon": "'bɑ:giniŋ",
+    "trans": "n. 讨价还价, 谈判, 交涉"
+  },
+  {
+    "word": "perimeter",
+    "zipf": 3.68,
+    "count": 3,
+    "phon": "pә'rimitә",
+    "trans": "n. 周长, 周界, 边缘"
+  },
+  {
+    "word": "square",
+    "zipf": 3.73,
+    "count": 5
+  }
+]

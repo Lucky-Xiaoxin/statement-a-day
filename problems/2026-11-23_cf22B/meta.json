@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-23",
+  "contestId": 22,
+  "index": "B",
+  "name": "Bargaining Table",
+  "rating": 1500,
+  "tags": [
+    "brute force",
+    "dp"
+  ],
+  "url": "https://codeforces.com/problemset/problem/22/B"
+}
