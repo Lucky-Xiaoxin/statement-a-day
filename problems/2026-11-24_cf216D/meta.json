@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-24",
+  "contestId": 216,
+  "index": "D",
+  "name": "Spider's Web",
+  "rating": 1700,
+  "tags": [
+    "binary search",
+    "sortings",
+    "two pointers"
+  ],
+  "url": "https://codeforces.com/problemset/problem/216/D"
+}

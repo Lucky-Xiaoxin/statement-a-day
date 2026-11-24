@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2026-11-24 · D. Spider's Web</title>
+<script>
+try { var _d = JSON.parse(localStorage.getItem('eqp1.dark')); if (_d === true || (_d === null && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches)) document.documentElement.classList.add('dark'); } catch (e) {}
+</script>
+<script>
+window.MathJax = { tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] }, svg: { fontCache: 'global' } };
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root{--fg:#1c2733;--bg:#f6f7f9;--card:#fff;--line:#dde3ea;--dim:#8a94a0;--acc:#e8720c;
+  --gbg:#e4e8ee;--gfg:#5a6472;--defg:#3d4b5c;--prebg:#eef1f5;
+  --markbg:#fdf3d8;--markdimbg:#f1f2f4;--markdimfg:#a8b0ba;--track:#c9cfd8;color-scheme:light}
+:root.dark{--fg:#cdd3da;--bg:#24262b;--card:#2c2f35;--line:#3c4048;--dim:#8f97a3;--acc:#f0932f;
+  --gbg:#3a3f47;--gfg:#a8b0ba;--defg:#b9c0c9;--prebg:#212327;
+  --markbg:#443d22;--markdimbg:#2f3136;--markdimfg:#67707c;--track:#4a4f58;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;color:var(--fg);background:var(--bg);
+  font-family:"Segoe UI",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+main{max-width:880px;margin:0 auto;padding:20px 20px 70px}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:6px;color:var(--dim);font-size:14px}
+.badge{background:var(--acc);color:#fff;border-radius:6px;padding:1px 8px;font-weight:600}
+.badge.gray{background:var(--gbg);color:var(--gfg)}
+h1{font-size:22px;margin:2px 0 4px}
+h1 a{color:inherit;text-decoration:none;border-bottom:1px dotted var(--line)}
+h2{font-size:17px;margin:34px 0 10px}
+.hint{color:var(--dim);font-size:13px;margin:2px 0 10px}
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.toolbar button{border:1px solid var(--line);background:var(--card);border-radius:8px;
+  padding:5px 12px;font-size:13px;cursor:pointer;color:var(--fg)}
+.toolbar button:hover{border-color:var(--acc);color:var(--acc)}
+.switch{position:fixed;top:16px;right:18px;z-index:9;cursor:pointer;line-height:0}
+.switch input{position:absolute;opacity:0;width:0;height:0}
+.switch .track{display:inline-block;width:42px;height:24px;border-radius:999px;
+  background:var(--track);position:relative;transition:background .2s}
+.switch .track::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;
+  border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:left .2s}
+.switch input:checked + .track{background:var(--acc)}
+.switch input:checked + .track::after{left:21px}
+.switch input:focus-visible + .track{outline:2px solid var(--acc);outline-offset:2px}
+#words{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;
+  padding:4px 8px 4px 12px;font-size:14px;cursor:pointer;user-select:none;
+  display:inline-flex;align-items:center;gap:6px}
+.chip b{font-weight:600}
+.chip i{color:var(--dim);font-style:normal;font-size:11px}
+.chip u{text-decoration:none;color:var(--dim);font-size:11px}
+.chip .mini{border:0;background:none;cursor:pointer;color:var(--dim);font-size:12px;padding:0 2px}
+.chip .mini:hover{color:var(--acc)}
+.chip .mini.okb{color:var(--gfg)}
+.chip.known{opacity:.55}
+.chip.known b{text-decoration:line-through}
+.chip.known .mini.okb{color:var(--acc)}
+#defbox{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--card);
+  padding:10px 14px;font-size:14px;line-height:1.7;min-height:20px;color:var(--defg)}
+#defbox:empty{display:none}
+.tagchip{border:1px solid var(--line);border-radius:4px;font-size:10px;color:var(--gfg);
+  padding:0 4px;margin:0 2px;white-space:nowrap}
+.statement{background:var(--card);border:1px solid var(--line);border-radius:10px;
+  padding:6px 28px 16px;line-height:1.7;font-size:16px;overflow-wrap:break-word}
+.statement p{margin:.7em 0}
+.statement ul,.statement ol{margin:.5em 0;padding-left:1.6em}
+.statement pre{background:var(--prebg);padding:10px 12px;border-radius:6px;overflow:auto;font-size:14px}
+.statement img{max-width:100%}
+:root.dark .statement img{background:#fff;border-radius:4px}
+.statement .section-title{font-weight:700;margin:18px 0 2px;font-size:16.5px}
+.statement table{max-width:100%}
+/* 长公式不可换行，会把整页撑宽（手机端会因此整体缩放）。不改动公式本身的渲染，
+   只在段落级收纳溢出：段落超宽时自己横向滚动，页面宽度保持不变 */
+.statement p,.statement li{overflow-x:auto;overflow-y:hidden}
+.statement mjx-assistive-mml{width:1px;height:1px;overflow:hidden}
+mark.vw{background:var(--markbg);color:inherit;padding:0 1px;border-radius:3px}
+mark.vw.dim{background:var(--markdimbg);color:var(--markdimfg)}
+.zh{color:var(--dim);font-size:14.5px;line-height:1.7;border-left:2px solid var(--acc);
+  padding:2px 0 2px 10px;margin:4px 0 10px}
+body:not(.showtrans) .zh{display:none}
+li .zh{display:block;margin:2px 0 6px}
+body.nohl mark.vw{background:transparent;color:inherit}
+footer{margin-top:36px;color:var(--dim);font-size:12px;text-align:center}
+.footlinks a{color:var(--dim);text-decoration:none;text-transform:uppercase;letter-spacing:.12em}
+.footlinks a:hover{color:var(--acc)}
+.footlinks span{opacity:.5;margin:0 8px}
+@media (max-width:640px){
+  main{padding:14px 12px 56px}
+  .statement{padding:8px 14px 14px}
+  .switch{top:10px;right:12px}
+  h1{font-size:19px}
+  h2{margin-top:26px}
+}
+</style>
+</head>
+<body>
+<main>
+  <label class="switch" title="深色 / 浅色模式">
+    <input type="checkbox" id="chk-dark" aria-label="深色模式">
+    <span class="track"></span>
+  </label>
+  <div class="meta">
+    <span class="badge gray">2026-11-24</span>
+    <span class="badge">rating 1700</span>
+    <span>cf216D</span>
+    <span>#binary search #sortings #two pointers</span>
+    <a href="https://codeforces.com/problemset/problem/216/D" target="_blank">在 Codeforces 打开 ↗</a>
+  </div>
+  <h1>D. Spider's Web</h1>
+
+  <h2>今日生词 <span style="font-size:12px;color:var(--dim)">（按词频：越靠前越罕见）</span></h2>
+  <div class="hint">点词 = 看中文释义 · <b>✓</b> = 标记已认识（跨页记忆，存本浏览器） · 「补」= 阈值外保底词</div>
+  <div class="toolbar">
+    <button id="btn-trans" style="display:none">译文：关</button>
+    <button id="btn-hl">高亮：开</button>
+  </div>
+  <div id="words"></div>
+  <div id="defbox"></div>
+
+  <h2>题面</h2>
+  <div class="statement" lang="en"><div class="problem-statement"><div><p data-ti="0">Paw the Spider is making a <mark class="vw" data-w="web">web</mark>. <mark class="vw" data-w="web">Web</mark>-making is a real art, Paw has been learning to do it his whole life. Let's consider the structure of the <mark class="vw" data-w="web">web</mark>.</p><center> <img class="tex-graphics" src="https://espresso.codeforces.com/0492782481416af50339b7107392671efa23c773.png" style="max-width: 100.0%;max-height: 100.0%;" /> </center><p data-ti="1">There are <span class="tex-span"><i>n</i></span> <span class="tex-font-style-it">main</span> <mark class="vw" data-w="threads">threads</mark> going from the center of the <mark class="vw" data-w="web">web</mark>. All main <mark class="vw" data-w="threads">threads</mark> are located in one plane and divide it into <span class="tex-span"><i>n</i></span> <mark class="vw" data-w="equal">equal</mark> infinite <span class="tex-font-style-it">sectors</span>. The sectors are <mark class="vw" data-w="indexed">indexed</mark> from <span class="tex-span">1</span> to <span class="tex-span"><i>n</i></span> in the <mark class="vw" data-w="clockwise">clockwise</mark> direction. Sectors <span class="tex-span"><i>i</i></span> and <span class="tex-span"><i>i</i> + 1</span> are <span class="tex-font-style-it">adjacent</span> for every <span class="tex-span"><i>i</i></span>, <span class="tex-span">1 ≤ <i>i</i> &lt; <i>n</i></span>. In addition, sectors <span class="tex-span">1</span> and <span class="tex-span"><i>n</i></span> are also adjacent.</p><p data-ti="2">Some sectors have <span class="tex-font-style-it">bridge <mark class="vw" data-w="threads">threads</mark></span>. Each bridge <mark class="vw" data-w="connects">connects</mark> the two main <mark class="vw" data-w="threads">threads</mark> that make up this sector. The points at which the bridge is attached to the main <mark class="vw" data-w="threads">threads</mark> will be called <span class="tex-font-style-it"><mark class="vw" data-w="attachment">attachment</mark> points</span>. Both <mark class="vw" data-w="attachment">attachment</mark> points of a bridge are at the same distance from the center of the <mark class="vw" data-w="web">web</mark>. At each <mark class="vw" data-w="attachment">attachment</mark> point exactly one bridge is attached. The bridges are <span class="tex-font-style-it">adjacent</span> if they are in the same sector, and there are no other bridges between them.</p><p data-ti="3">A <span class="tex-font-style-it">cell</span> of the <mark class="vw" data-w="web">web</mark> is a <mark class="vw" data-w="trapezoid">trapezoid</mark>, which is located in one of the sectors and is <mark class="vw" data-w="bounded">bounded</mark> by two main <mark class="vw" data-w="threads">threads</mark> and two adjacent bridges. You can see that the sides of the cell may have the <mark class="vw" data-w="attachment">attachment</mark> points of bridges from adjacent sectors. If the number of <mark class="vw" data-w="attachment">attachment</mark> points on one side of the cell is not <mark class="vw" data-w="equal">equal</mark> to the number of <mark class="vw" data-w="attachment">attachment</mark> points on the other side, it creates an <mark class="vw" data-w="imbalance">imbalance</mark> of pulling forces on this cell and this may eventually destroy the entire <mark class="vw" data-w="web">web</mark>. We'll call such a cell <span class="tex-font-style-it"><mark class="vw" data-w="unstable">unstable</mark></span>. The perfect <mark class="vw" data-w="web">web</mark> does not contain <mark class="vw" data-w="unstable">unstable</mark> cells.</p><p data-ti="4"><mark class="vw" data-w="unstable">Unstable</mark> cells are marked red in the figure. Stable cells are marked green.</p><p data-ti="5">Paw the Spider isn't a <mark class="vw" data-w="skillful">skillful</mark> <mark class="vw" data-w="webmaker">webmaker</mark> yet, he is only learning to make perfect <mark class="vw" data-w="web">webs</mark>. Help Paw to determine the number of <mark class="vw" data-w="unstable">unstable</mark> cells in the <mark class="vw" data-w="web">web</mark> he has just <mark class="vw" data-w="spun">spun</mark>.</p></div><div class="input-specification"><div class="section-title">Input</div><p data-ti="6">The first line contains <mark class="vw" data-w="integer">integer</mark> <span class="tex-span"><i>n</i></span> (<span class="tex-span">3 ≤ <i>n</i> ≤ 1000</span>) — the number of main <mark class="vw" data-w="threads">threads</mark>.</p><p data-ti="7">The <span class="tex-span"><i>i</i></span>-th of following <span class="tex-span"><i>n</i></span> lines describe the bridges located in the <span class="tex-span"><i>i</i></span>-th sector: first it contains <mark class="vw" data-w="integer">integer</mark> <span class="tex-span"><i>k</i><sub class="lower-index"><i>i</i></sub></span> (<span class="tex-span">1 ≤ <i>k</i><sub class="lower-index"><i>i</i></sub> ≤ 10<sup class="upper-index">5</sup></span>) <mark class="vw" data-w="equal">equal</mark> to the number of bridges in the given sector. Then follow <span class="tex-span"><i>k</i><sub class="lower-index"><i>i</i></sub></span> different <mark class="vw" data-w="integer">integers</mark> <span class="tex-span"><i>p</i><sub class="lower-index"><i><mark class="vw" data-w="ij">ij</mark></i></sub></span> (<span class="tex-span">1 ≤ <i>p</i><sub class="lower-index"><i><mark class="vw" data-w="ij">ij</mark></i></sub> ≤ 10<sup class="upper-index">5</sup>; 1 ≤ <i>j</i> ≤ <i>k</i><sub class="lower-index"><i>i</i></sub></span>). Number <span class="tex-span"><i>p</i><sub class="lower-index"><i><mark class="vw" data-w="ij">ij</mark></i></sub></span> <mark class="vw" data-w="equal">equals</mark> the distance from the <mark class="vw" data-w="attachment">attachment</mark> points of the <span class="tex-span"><i>j</i></span>-th bridge of the <span class="tex-span"><i>i</i></span>-th sector to the center of the <mark class="vw" data-w="web">web</mark>.</p><p data-ti="8">It is guaranteed that any two bridges between adjacent sectors are attached at a different distance from the center of the <mark class="vw" data-w="web">web</mark>. It is guaranteed that the total number of the bridges doesn't <mark class="vw" data-w="exceed">exceed</mark> <span class="tex-span">10<sup class="upper-index">5</sup></span>.</p></div><div class="output-specification"><div class="section-title">Output</div><p data-ti="9">Print a single <mark class="vw" data-w="integer">integer</mark> — the number of <mark class="vw" data-w="unstable">unstable</mark> cells in Paw the Spider's <mark class="vw" data-w="web">web</mark>.</p></div></div></div>
+
+  <footer>
+    <nav class="footlinks">
+      <a href="https://github.com/Lucky-Xiaoxin" target="_blank" rel="noopener">GitHub</a><span>/</span><a href="mailto:yggdya@163.com">Email</a><span>/</span><a href="https://lucky-xiaoxin.github.io/xin-s-blog/" target="_blank" rel="noopener">Blog</a>
+    </nav>
+    <div style="margin-top:6px">由 scripts/fetch_daily.py 生成于 2026-11-24 15:45:54 · 公式由 MathJax 渲染（需联网）</div>
+  </footer>
+</main>
+<script>
+const WORDS = [{"word": "webmaker", "zipf": 0.0, "count": 1}, {"word": "trapezoid", "zipf": 2.27, "count": 1, "phon": "'træpәzɒid", "trans": "n. 梯形, 不规则四边形"}, {"word": "ij", "zipf": 2.61, "count": 3, "trans": "abbr. 长城航空二字代码"}, {"word": "integer", "zipf": 3.02, "count": 4, "phon": "'intidʒә", "trans": "n. 完整的事物, 整体, 整数"}, {"word": "web", "zipf": 3.08, "count": 13}, {"word": "skillful", "zipf": 3.13, "count": 1, "phon": "'skilful", "trans": "a. 熟练的, 巧妙的"}, {"word": "clockwise", "zipf": 3.2, "count": 1, "phon": "'klɒkwaiz", "trans": "a. 顺时针方向的"}, {"word": "indexed", "zipf": 3.28, "count": 1, "phon": "'indekst", "trans": "a. 编入索引的；有索引的"}, {"word": "imbalance", "zipf": 3.46, "count": 1, "phon": "im'bælәns", "trans": "n. 不平衡, 不均衡"}, {"word": "bounded", "zipf": 3.5, "count": 1, "phon": "'baundid", "trans": "a. 有界限的"}, {"word": "spun", "zipf": 3.67, "count": 1, "phon": "spʌn", "trans": "a. 纺成的"}, {"word": "equal", "zipf": 3.74, "count": 4}, {"word": "connects", "zipf": 3.83, "count": 1, "phon": "kəˈnekts", "trans": "v. 连接( connect的第三人称单数 ); 把…看作有关联; 由…联想到; 给…接通电话"}, {"word": "threads", "zipf": 3.85, "count": 7, "trans": "n. 线；相关串连；线程（thread的复数）"}, {"word": "unstable", "zipf": 3.87, "count": 5, "phon": ".ʌn'steibl", "trans": "a. 不稳定的"}, {"word": "attachment", "zipf": 3.88, "count": 7, "phon": "ә'tʃætʃmәnt", "trans": "n. 连接, 附属物, 连接物, 爱慕"}, {"word": "exceed", "zipf": 3.92, "count": 1, "phon": "ik'si:d", "trans": "vt. 超过, 超越, 胜过"}];
+const TRANS = ["蜘蛛爪正在结网。网页制作是一门真正的艺术，Paw 一生都在学习制作网页。让我们考虑一下网络的结构。", "有n条主线从网络中心出发。所有主线程都位于一个平面上，并将其分为n个相等的无限扇区。扇区按顺时针方向从 1 到 n 进行索引。对于每个 i ，扇区 i 和 i + 1 都是相邻的，1 ≤ i < n 。另外，扇区1和n也相邻。", "有些扇区有桥接螺纹。每个桥连接构成该扇区的两条主线。桥连接到主螺纹的点称为连接点。桥的两个附着点距腹板中心的距离相同。在每个连接点处恰好连接有一个桥。如果这些桥位于同一扇区，并且它们之间没有其他桥，则它们是相邻的。", "网的单元是梯形，其位于其中一个扇区中并由两条主线和两个相邻的桥接界。您可以看到单元的侧面可能有来自相邻扇区的桥的连接点。如果单元一侧的附着点的数量不等于另一侧的附着点的数量，则会在该单元上产生拉力的不平衡，并且这最终可能会破坏整个网。我们称这样的细胞为不稳定细胞。完美的网络不包含不稳定的细胞。", "不稳定的细胞在图中被标记为红色。稳定细胞标记为绿色。", "蜘蛛爪还不是一个熟练的织网者，他只是在学习如何制作完美的网。帮助 Paw 确定他刚刚纺成的网上不稳定细胞的数量。", "第一行包含整数 n (3 ≤ n ≤ 1000) — 主线程的数量。", "以下 n 行的第 i 行描述位于第 i 扇区中的网桥：首先，它包含等于给定扇区中网桥数量的整数 k i ( 1 ≤ k i ≤ 10 5 )。然后跟随 k i 个不同的整数 p ij ( 1 ≤ p ij ≤ 10 5 ; 1 ≤ j ≤ k i )。数字 p ij 等于从第 i 个扇区的第 j 个桥的附着点到腹板中心的距离。", "保证相邻扇区之间的任意两个桥接在距腹板中心不同距离处。保证桥的总数不超过10 5 。", "打印一个整数 - Paw the Spider's web 中不稳定单元的数量。"];
+const $ = s => document.querySelector(s);
+const LS = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('eqp1.' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('eqp1.' + k, JSON.stringify(v)); } catch {} }
+};
+let known = new Set(LS.get('known', []));
+let hl = LS.get('hl', true);
+let dark = LS.get('dark', null);
+if (dark === null) dark = !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+
+const info = w => WORDS.find(x => x.word === w) || {};
+
+function render() {
+  const box = $('#words');
+  box.innerHTML = '';
+  const sorted = [...WORDS].sort((a, b) =>
+    (known.has(a.word) - known.has(b.word)) || ((a.bf ? 1 : 0) - (b.bf ? 1 : 0)) || a.zipf - b.zipf);
+  for (const item of sorted) {
+    const w = item.word;
+    const chip = document.createElement('span');
+    chip.className = 'chip' + (known.has(w) ? ' known' : '');
+    chip.title = 'Zipf ' + item.zipf + (item.bf ? ' · 阈值外补充' : '')
+      + (item.trans ? '\n' + item.trans : '');
+
+    const b = document.createElement('b'); b.textContent = w; chip.appendChild(b);
+    const z = document.createElement('i'); z.textContent = item.zipf; chip.appendChild(z);
+    if (item.count > 1) { const c = document.createElement('u'); c.textContent = '×' + item.count; chip.appendChild(c); }
+    if (item.bf) { const f = document.createElement('u'); f.textContent = '补'; chip.appendChild(f); }
+
+    const okb = document.createElement('button'); okb.className = 'mini okb'; okb.textContent = '✓';
+    okb.title = known.has(w) ? '已认识（点击取消）' : '标记已认识（跨页记忆）';
+    okb.onclick = e => { e.stopPropagation(); known.has(w) ? known.delete(w) : known.add(w); LS.set('known', [...known]); render(); updateMarks(); };
+    chip.appendChild(okb);
+
+    chip.onclick = () => lookup(w);
+    box.appendChild(chip);
+  }
+}
+
+function lookup(w) {
+  const box = $('#defbox');
+  const d = info(w);
+  const tags = (d.tags || '').split(' ').filter(Boolean).slice(0, 3)
+    .map(t => '<span class="tagchip">' + t.toUpperCase() + '</span>').join('');
+  if (!d.trans && !d.phon) {
+    box.innerHTML = '<b>' + w + '</b> ' + tags + ' — ECDICT 子集里没有这个词的释义';
+    return;
+  }
+  box.innerHTML = '<b>' + w + '</b> <i style="color:var(--dim)">' + (d.phon || '') + '</i> ' + tags + '<br>'
+    + (d.trans || '').split('\n').join('<br>');
+}
+
+function updateMarks() {
+  document.querySelectorAll('mark.vw').forEach(m =>
+    m.classList.toggle('dim', known.has(m.dataset.w)));
+}
+
+$('#btn-hl').onclick = () => { hl = !hl; LS.set('hl', hl); applyHl(); };
+function applyHl() {
+  document.body.classList.toggle('nohl', !hl);
+  $('#btn-hl').textContent = hl ? '高亮：开' : '高亮：关';
+}
+$('#chk-dark').onchange = e => { dark = e.target.checked; LS.set('dark', dark); applyTheme(); };
+function applyTheme() {
+  document.documentElement.classList.toggle('dark', dark);
+  $('#chk-dark').checked = dark;
+}
+
+let transOn = LS.get('trans', false);
+function applyTrans() {
+  document.body.classList.toggle('showtrans', transOn);
+  $('#btn-trans').textContent = transOn ? '译文：开' : '译文：关';
+}
+if (TRANS.some(t => t)) {
+  $('#btn-trans').style.display = '';
+  document.querySelectorAll('[data-ti]').forEach(el => {
+    const zh = TRANS[+el.dataset.ti];
+    if (!zh) return;
+    const n = document.createElement(el.tagName === 'LI' ? 'span' : 'div');
+    n.className = 'zh';
+    n.textContent = zh;
+    if (el.tagName === 'LI') el.appendChild(n); else el.after(n);
+  });
+  $('#btn-trans').onclick = () => { transOn = !transOn; LS.set('trans', transOn); applyTrans(); };
+  applyTrans();
+}
+
+render();
+applyHl();
+applyTheme();
+updateMarks();
+</script>
+</body>
+</html>

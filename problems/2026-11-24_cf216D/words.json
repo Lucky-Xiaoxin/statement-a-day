@@ -1,0 +1,113 @@
+[
+  {
+    "word": "webmaker",
+    "zipf": 0.0,
+    "count": 1
+  },
+  {
+    "word": "trapezoid",
+    "zipf": 2.27,
+    "count": 1,
+    "phon": "'træpәzɒid",
+    "trans": "n. 梯形, 不规则四边形"
+  },
+  {
+    "word": "ij",
+    "zipf": 2.61,
+    "count": 3,
+    "trans": "abbr. 长城航空二字代码"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 4,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "web",
+    "zipf": 3.08,
+    "count": 13
+  },
+  {
+    "word": "skillful",
+    "zipf": 3.13,
+    "count": 1,
+    "phon": "'skilful",
+    "trans": "a. 熟练的, 巧妙的"
+  },
+  {
+    "word": "clockwise",
+    "zipf": 3.2,
+    "count": 1,
+    "phon": "'klɒkwaiz",
+    "trans": "a. 顺时针方向的"
+  },
+  {
+    "word": "indexed",
+    "zipf": 3.28,
+    "count": 1,
+    "phon": "'indekst",
+    "trans": "a. 编入索引的；有索引的"
+  },
+  {
+    "word": "imbalance",
+    "zipf": 3.46,
+    "count": 1,
+    "phon": "im'bælәns",
+    "trans": "n. 不平衡, 不均衡"
+  },
+  {
+    "word": "bounded",
+    "zipf": 3.5,
+    "count": 1,
+    "phon": "'baundid",
+    "trans": "a. 有界限的"
+  },
+  {
+    "word": "spun",
+    "zipf": 3.67,
+    "count": 1,
+    "phon": "spʌn",
+    "trans": "a. 纺成的"
+  },
+  {
+    "word": "equal",
+    "zipf": 3.74,
+    "count": 4
+  },
+  {
+    "word": "connects",
+    "zipf": 3.83,
+    "count": 1,
+    "phon": "kəˈnekts",
+    "trans": "v. 连接( connect的第三人称单数 ); 把…看作有关联; 由…联想到; 给…接通电话"
+  },
+  {
+    "word": "threads",
+    "zipf": 3.85,
+    "count": 7,
+    "trans": "n. 线；相关串连；线程（thread的复数）"
+  },
+  {
+    "word": "unstable",
+    "zipf": 3.87,
+    "count": 5,
+    "phon": ".ʌn'steibl",
+    "trans": "a. 不稳定的"
+  },
+  {
+    "word": "attachment",
+    "zipf": 3.88,
+    "count": 7,
+    "phon": "ә'tʃætʃmәnt",
+    "trans": "n. 连接, 附属物, 连接物, 爱慕"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  }
+]
