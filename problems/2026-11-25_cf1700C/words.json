@@ -1,0 +1,63 @@
+[
+  {
+    "word": "overhydrated",
+    "zipf": 0.0,
+    "count": 1
+  },
+  {
+    "word": "withering",
+    "zipf": 2.82,
+    "count": 1,
+    "phon": "'wiðәriŋ",
+    "trans": "a. 使干枯的, 使萎缩的"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 4,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "suffix",
+    "zipf": 3.05,
+    "count": 1,
+    "phon": "'sʌfiks",
+    "trans": "n. 后缀, 下标"
+  },
+  {
+    "word": "denoted",
+    "zipf": 3.17,
+    "count": 1,
+    "phon": "diˈnəutid",
+    "trans": "v. 为…的符号( denote的过去式和过去分词 ); 为…的名称; 指示; 指出"
+  },
+  {
+    "word": "prefix",
+    "zipf": 3.23,
+    "count": 2,
+    "phon": "'pri:fiks",
+    "trans": "前缀, 称谓"
+  },
+  {
+    "word": "decreasing",
+    "zipf": 3.68,
+    "count": 2,
+    "phon": "di'kri:siŋ",
+    "trans": "(12461/14946)"
+  },
+  {
+    "word": "moisture",
+    "zipf": 3.9,
+    "count": 7,
+    "phon": "'mɒistʃә",
+    "trans": "n. 湿气, 水分, 降雨"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  }
+]
