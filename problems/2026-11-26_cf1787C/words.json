@@ -1,0 +1,36 @@
+[
+  {
+    "word": "rsj",
+    "zipf": 1.64,
+    "count": 1,
+    "trans": "abbr. Rolled Steel Joist I型钢"
+  },
+  {
+    "word": "optimally",
+    "zipf": 2.78,
+    "count": 1,
+    "phon": "'əptəməli",
+    "trans": "最佳"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 6,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  },
+  {
+    "word": "choosing",
+    "zipf": 4.26,
+    "count": 1,
+    "bf": 1,
+    "trans": "v. 选择；决定（choose的ing形式）"
+  }
+]

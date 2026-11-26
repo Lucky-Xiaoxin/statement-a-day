@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-26",
+  "contestId": 1787,
+  "index": "C",
+  "name": "Remove the Bracket",
+  "rating": 1600,
+  "tags": [
+    "dp",
+    "greedy",
+    "math"
+  ],
+  "url": "https://codeforces.com/problemset/problem/1787/C"
+}
