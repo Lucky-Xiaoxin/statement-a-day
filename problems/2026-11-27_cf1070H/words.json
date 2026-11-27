@@ -1,0 +1,72 @@
+[
+  {
+    "word": "beros",
+    "zipf": 1.51,
+    "count": 4
+  },
+  {
+    "word": "substring",
+    "zipf": 1.87,
+    "count": 2,
+    "phon": "'sʌbstriŋ"
+  },
+  {
+    "word": "lowercase",
+    "zipf": 2.8,
+    "count": 2,
+    "phon": "'lәuәkeis",
+    "trans": "n. 小写字母"
+  },
+  {
+    "word": "integer",
+    "zipf": 3.39,
+    "count": 2,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "queries",
+    "zipf": 3.45,
+    "count": 3,
+    "trans": "n. 问题；怀疑；问号（query的复数形式）"
+  },
+  {
+    "word": "query",
+    "zipf": 3.64,
+    "count": 6,
+    "phon": "'kwiәri",
+    "trans": "n. 疑问, 疑问号, 质问, 查询"
+  },
+  {
+    "word": "digits",
+    "zipf": 3.66,
+    "count": 2,
+    "trans": "n. 数字；手指；足趾（digit的复数）"
+  },
+  {
+    "word": "equals",
+    "zipf": 3.74,
+    "count": 1,
+    "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"
+  },
+  {
+    "word": "ops",
+    "zipf": 3.8,
+    "count": 1,
+    "phon": "ɔps",
+    "trans": "abbr. （美国）物价管制局（Office of Price Stabilization）；管道安全处（Office of Pipeline Safety）"
+  },
+  {
+    "word": "handles",
+    "zipf": 3.85,
+    "count": 1,
+    "trans": "n. 把；柄；控键（handle的复数形式）"
+  },
+  {
+    "word": "inclusive",
+    "zipf": 3.97,
+    "count": 3,
+    "phon": "in'klu:siv",
+    "trans": "a. 包含的, 包括的"
+  }
+]
