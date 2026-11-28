@@ -1,0 +1,50 @@
+[
+  {
+    "word": "integer",
+    "zipf": 3.02,
+    "count": 4,
+    "phon": "'intidʒә",
+    "trans": "n. 完整的事物, 整体, 整数"
+  },
+  {
+    "word": "array",
+    "zipf": 3.29,
+    "count": 10,
+    "phon": "ә'rei",
+    "trans": "n. 排列, 衣服, 大批, 军队"
+  },
+  {
+    "word": "equals",
+    "zipf": 3.74,
+    "count": 3,
+    "trans": "n. （地位、实力等）相同或相等的人；对手；相等物（equal的复数形式）"
+  },
+  {
+    "word": "minimize",
+    "zipf": 3.8,
+    "count": 1,
+    "phon": "'minimaiz",
+    "trans": "vt. 将...减到最少"
+  },
+  {
+    "word": "exceed",
+    "zipf": 3.92,
+    "count": 1,
+    "phon": "ik'si:d",
+    "trans": "vt. 超过, 超越, 胜过"
+  },
+  {
+    "word": "swap",
+    "zipf": 3.94,
+    "count": 1,
+    "phon": "swɒp",
+    "trans": "n. 以货易货"
+  },
+  {
+    "word": "optimal",
+    "zipf": 3.94,
+    "count": 1,
+    "phon": "'ɒptimәl",
+    "trans": "a. 最佳的, 最理想的"
+  }
+]

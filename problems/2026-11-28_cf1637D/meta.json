@@ -1,0 +1,13 @@
+{
+  "date": "2026-11-28",
+  "contestId": 1637,
+  "index": "D",
+  "name": "Yet Another Minimization Problem",
+  "rating": 1800,
+  "tags": [
+    "dp",
+    "greedy",
+    "math"
+  ],
+  "url": "https://codeforces.com/problemset/problem/1637/D"
+}
